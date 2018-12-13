@@ -10,12 +10,8 @@ import Foundation
 
 /*----------------------------------------------------------------------------*/
 
-class Property {
-    var name: String
-
-    init(name: String) {
-        self.name = name
-    }
+struct Property {
+    let name: String
 }
 
 /*----------------------------------------------------------------------------*/

@@ -92,7 +92,6 @@ public class GridView: NSView {
     }
 
     var connectionPairs: [(c1: ConnectionView, c2: ConnectionView)] = []
-
 }
 
 // MARK: - Event Handling
@@ -120,7 +119,7 @@ extension GridView {
         var c1: ConnectionView?
         var c2: ConnectionView?
 
-        for connection in (superview as? BoardView)?.nodes.flatMap({ $0.connections }) ?? [] {
+        for connection in (superview as? BoardView)?.nodeViews.flatMap({ $0.connections }) ?? [] {
             if convert(connection.frame, from: connection.superview).contains(initialMousePoint) {
                 c1 = connection
             }

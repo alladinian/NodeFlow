@@ -12,7 +12,7 @@ public class BoardView: NSView {
 
     fileprivate let gridView = GridView(frame: .zero)
 
-    var nodes: [NodeView] {
+    var nodeViews: [NodeView] {
         return subviews.compactMap({ $0 as? NodeView })
     }
 

@@ -137,8 +137,10 @@ public class NodeView: NSView {
     }
 
     fileprivate func constraintHorizontalEdgesOf(_ a: NSView, to b: NSView) {
-        a.leadingAnchor.constraint(equalTo: b.leadingAnchor).isActive = true
-        a.trailingAnchor.constraint(equalTo: b.trailingAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            a.leadingAnchor.constraint(equalTo: b.leadingAnchor),
+            a.trailingAnchor.constraint(equalTo: b.trailingAnchor)
+        ])
     }
 
     public override func updateLayer() {
@@ -149,4 +151,60 @@ public class NodeView: NSView {
     }
 
     var connections = [ConnectionView]()
+}
+
+extension NodeView {
+
+    var isMouseOverConnection: Bool {
+        return connections.lazy.first(where: { $0.isHighlighted }) != nil
+    }
+
+    public override func becomeFirstResponder() -> Bool {
+        isSelected = true
+        return true
+    }
+
+    public override func resignFirstResponder() -> Bool {
+        isSelected = false
+        return true
+    }
+
+    public override var acceptsFirstResponder: Bool {
+        return true
+    }
+
+    public override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
+        return true
+    }
+
+    public override func hitTest(_ point: NSPoint) -> NSView? {
+        if isMouseOverConnection {
+            return nil
+        }
+        return super.hitTest(point)
+    }
+
+    override public func mouseDown(with event: NSEvent) {
+        lastMousePoint = superview!.convert(event.locationInWindow, from: nil)
+        window?.makeFirstResponder(self)
+    }
+
+    override public func mouseDragged(with event: NSEvent) {
+        guard lastMousePoint != nil else {
+            return
+        }
+        let newPoint = superview!.convert(event.locationInWindow, from: nil)
+        var origin   = frame.origin
+        origin.x += newPoint.x - lastMousePoint.x
+        origin.y += newPoint.y - lastMousePoint.y
+        setFrameOrigin(origin)
+        lastMousePoint = newPoint
+
+        (nextResponder as? NSView)?.needsDisplay = true
+    }
+
+    override public func mouseUp(with event: NSEvent) {
+        lastMousePoint = nil
+    }
+
 }
