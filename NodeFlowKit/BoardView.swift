@@ -25,7 +25,6 @@ public class BoardView: NSView {
         addSubview(gridView)
     }
 
-    // Use 'Rect' to apply on both platforms
     public override var frame: NSRect {
         didSet {
             gridView.frame = bounds

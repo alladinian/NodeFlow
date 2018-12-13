@@ -126,7 +126,6 @@ extension GridView {
             }
 
             if convert(connection.frame, from: connection.superview).contains(lastMousePoint) {
-                print("Found last connection: \(connection)")
                 c2 = connection
             }
         }
@@ -141,7 +140,14 @@ extension GridView {
     }
 
     func drawLink(from startPoint: NSPoint, to endPoint: NSPoint, color: NSColor) {
-        let resolvedThreshold = threshold((endPoint.x - startPoint.x) / 2, 50)
+        let resolvedThreshold = threshold((endPoint.x - startPoint.x) / 2, 20)
+
+        // Force Direction
+        var startPoint = startPoint
+        var endPoint = endPoint
+        if startPoint.x > endPoint.x {
+            swap(&startPoint, &endPoint)
+        }
 
         let p0 = NSMakePoint(startPoint.x, startPoint.y)
         let p3 = NSMakePoint(endPoint.x, endPoint.y)
