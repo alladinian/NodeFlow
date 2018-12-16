@@ -701,24 +701,13 @@
             </objects>
             <point key="canvasLocation" x="75" y="250"/>
         </scene>
-        <!--View Controller-->
+        <!--Board Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="NodeFlow" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="BoardController" customModule="NodeFlowKit" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="d1N-Mp-Y5O" customClass="BoardView" customModule="NodeFlowKit">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                            </customView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="d1N-Mp-Y5O" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="CMo-6T-cgI"/>
-                            <constraint firstItem="d1N-Mp-Y5O" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="N1a-T8-h3U"/>
-                            <constraint firstAttribute="trailing" secondItem="d1N-Mp-Y5O" secondAttribute="trailing" id="QAg-cd-Z61"/>
-                            <constraint firstAttribute="bottom" secondItem="d1N-Mp-Y5O" secondAttribute="bottom" id="Su3-6E-hAN"/>
-                        </constraints>
                     </view>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

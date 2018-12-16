@@ -12,11 +12,9 @@ public class BoardView: NSView {
 
     var gridBaseColor: NSColor = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1)
     var gridSpacing: Int       = 10
+    var bgColor: NSColor       = NSColor.windowBackgroundColor
 
-    var bgColor: NSColor = {
-        // Dynamic based on user's system prefs (dark/light)
-        return NSColor.windowBackgroundColor
-    }()
+    var graph: Graph?
 
     var connectionPairs: [(c1: ConnectionView, c2: ConnectionView)] = []
 
@@ -32,6 +30,10 @@ public class BoardView: NSView {
     fileprivate var initialMousePoint: CGPoint!
     fileprivate var lastMousePoint: CGPoint!
     fileprivate var isDrawingLine: Bool = false
+
+    public override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+    }
 
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
