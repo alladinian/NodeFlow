@@ -17,7 +17,7 @@ public class NodeView: NSView {
     }
 
     init(node: Node) {
-        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        super.init(frame: .zero)
         inputs  = node.inputs
         outputs = node.outputs
         commonInit()
@@ -77,10 +77,22 @@ public class NodeView: NSView {
     fileprivate let kTitleVerticalInset: CGFloat = 4
 
     func commonInit() {
+        translatesAutoresizingMaskIntoConstraints = false
+
         addSubview(titleLabel)
         addSubview(stackView)
 
-        translatesAutoresizingMaskIntoConstraints = false
+        let stackConstraints = [
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+            stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 50),
+            stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 50)
+        ]
+
+        NSLayoutConstraint.activate(stackConstraints)
+
         wantsLayer          = true
         layer?.cornerRadius = kCornerRadius
         layer?.borderWidth  = 2
@@ -89,10 +101,12 @@ public class NodeView: NSView {
         setupShadow()
 
         title = "Node"
+        titleLabel.heightAnchor.constraint(equalToConstant: kHeaderHeight).isActive = true
         stackView.addArrangedSubview(titleLabel)
 
         setupOutputs()
         setupInputs()
+
         needsDisplay = true
     }
 

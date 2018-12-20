@@ -18,7 +18,7 @@ public class ConnectionView: NSView {
     var isInput: Bool!
 
     convenience init() {
-        self.init(frame: NSRect(x: 0, y: 0, width: 16, height: 16))
+        self.init(frame: NSRect(x: 0, y: 0, width: 14, height: 14))
     }
 
     public override init(frame frameRect: NSRect) {
@@ -52,11 +52,11 @@ public class ConnectionView: NSView {
     }
 
     override public func updateTrackingAreas() {
-        for trackingArea in self.trackingAreas {
+        for trackingArea in trackingAreas {
             self.removeTrackingArea(trackingArea)
         }
         let options: NSTrackingArea.Options = [.mouseEnteredAndExited, .activeAlways]
-        let trackingArea = NSTrackingArea(rect: self.bounds, options: options, owner: self, userInfo: nil)
+        let trackingArea = NSTrackingArea(rect: bounds, options: options, owner: self, userInfo: nil)
         self.addTrackingArea(trackingArea)
     }
 

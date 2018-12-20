@@ -183,7 +183,7 @@ extension BoardView {
 // MARK: - DEBUG Visualizations
 extension BoardView {
     func drawControlPoints(_ controlPoints: [NSPoint], ofPoints points: [NSPoint]) {
-        let color = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+        let color = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1).withAlphaComponent(0.5)
         color.set()
         color.setFill()
 
