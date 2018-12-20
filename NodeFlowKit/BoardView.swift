@@ -151,35 +151,54 @@ extension BoardView {
         }
     }
 
-    func threshold(_ x: CGFloat, _ tr: CGFloat) -> CGFloat {
-        return (x > 0) ? ((x > tr) ? x : tr) : -x + tr
-    }
-
     func drawLink(from startPoint: NSPoint, to endPoint: NSPoint, color: NSColor) {
+
+        func threshold(_ x: CGFloat, _ delta: CGFloat) -> CGFloat {
+            return (x > 0) ? max(x, delta) : delta - x
+        }
+
         let resolvedThreshold = threshold((endPoint.x - startPoint.x) / 2, 20)
 
-        // Force Direction
+        // Shadow vars & Swap depending on direction
         var startPoint = startPoint
-        var endPoint = endPoint
+        var endPoint   = endPoint
         if startPoint.x > endPoint.x {
             swap(&startPoint, &endPoint)
         }
 
-        let p0 = NSMakePoint(startPoint.x, startPoint.y)
-        let p3 = NSMakePoint(endPoint.x, endPoint.y)
         let p1 = NSMakePoint(startPoint.x + resolvedThreshold, startPoint.y)
         let p2 = NSMakePoint(endPoint.x - resolvedThreshold, endPoint.y)
 
-        // p0 and p1 are on the same horizontal line
-        // distance between p0 and p1 is set with the threshold fuction
-        // the same holds for p2 and p3
         let path          = NSBezierPath()
         path.lineCapStyle = .round
         path.lineWidth    = 5
-        path.move(to: p0)
-        path.curve(to: p3, controlPoint1: p1, controlPoint2: p2)
+
+        path.move(to: startPoint)
+        path.curve(to: endPoint, controlPoint1: p1, controlPoint2: p2)
         color.set()
         path.stroke()
+
+        #if DEBUG
+        drawControlPoints([p1, p2], ofPoints: [startPoint, endPoint])
+        #endif
     }
 
+}
+
+// MARK: - DEBUG Visualizations
+extension BoardView {
+    func drawControlPoints(_ controlPoints: [NSPoint], ofPoints points: [NSPoint]) {
+        let color = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+        for (cp, p) in zip(controlPoints, points) {
+            let circle = NSBezierPath(ovalIn: NSRect(x: cp.x - 2, y: cp.y - 2, width: 4, height: 4))
+            color.setFill()
+            circle.fill()
+            let line = NSBezierPath()
+            line.lineWidth = 1
+            line.move(to: cp)
+            line.line(to: p)
+            color.set()
+            line.stroke()
+        }
+    }
 }
