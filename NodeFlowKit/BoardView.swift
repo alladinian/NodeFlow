@@ -61,10 +61,12 @@ public class BoardView: NSView {
             drawLink(from: initialMousePoint, to: lastMousePoint, color: gridBaseColor)
         }
 
+        let allConnectionViews = nodeViews.flatMap({ $0.connections })
+
         for connection in graph?.connections ?? [] {
             let input = connection.input
             let output = connection.output
-            if let c1 = nodeViews.flatMap({ $0.connections }).first(where: { $0.property === input }), let c2 = nodeViews.flatMap({ $0.connections }).first(where: { $0.property === output }) {
+            if let c1 = allConnectionViews.lazy.first(where: { $0.property === input }), let c2 = allConnectionViews.lazy.first(where: { $0.property === output }) {
                 let c1f = convert(c1.frame, from: c1.superview)
                 let c2f = convert(c2.frame, from: c2.superview)
                 drawLink(from: CGPoint(x: c1f.midX, y: c1f.midY), to: CGPoint(x: c2f.midX, y: c2f.midY), color: gridBaseColor)
