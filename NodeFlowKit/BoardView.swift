@@ -183,9 +183,9 @@ extension BoardView {
         color.set()
         path.stroke()
 
-        #if ENABLE_DEBUG_DRAW
-        drawControlPoints([p1, p2], ofPoints: [startPoint, endPoint])
-        #endif
+        if ProcessInfo.processInfo.environment["debugDraw"] != nil {
+            drawControlPoints([p1, p2], ofPoints: [startPoint, endPoint])
+        }
     }
 
 }
