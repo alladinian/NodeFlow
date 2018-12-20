@@ -175,10 +175,10 @@ extension BoardView {
 
         path.move(to: startPoint)
         path.curve(to: endPoint, controlPoint1: p1, controlPoint2: p2)
-        color.set()
+        color.set() 
         path.stroke()
 
-        #if DEBUG
+        #if ENABLE_DEBUG_DRAW
         drawControlPoints([p1, p2], ofPoints: [startPoint, endPoint])
         #endif
     }
@@ -189,15 +189,16 @@ extension BoardView {
 extension BoardView {
     func drawControlPoints(_ controlPoints: [NSPoint], ofPoints points: [NSPoint]) {
         let color = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+        color.set()
+        color.setFill()
+
         for (cp, p) in zip(controlPoints, points) {
             let circle = NSBezierPath(ovalIn: NSRect(x: cp.x - 2, y: cp.y - 2, width: 4, height: 4))
-            color.setFill()
             circle.fill()
             let line = NSBezierPath()
             line.lineWidth = 1
             line.move(to: cp)
             line.line(to: p)
-            color.set()
             line.stroke()
         }
     }
