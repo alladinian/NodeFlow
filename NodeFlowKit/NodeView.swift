@@ -16,21 +16,17 @@ class NodeView: NSView {
         }
     }
 
+    weak var node: Node!
+    var connections = [ConnectionView]()
+
     init(node: Node) {
         super.init(frame: .zero)
-        inputs  = node.inputs
-        outputs = node.outputs
+        self.node = node
         commonInit()
     }
 
-    public override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
-        commonInit()
-    }
-
-    public required init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        commonInit()
+    required init?(coder decoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     public var title: String! {
@@ -50,9 +46,6 @@ class NodeView: NSView {
             headerLayer.backgroundColor = headerColor.cgColor
         }
     }
-
-    public var inputs: [Property] = []
-    public var outputs: [Property] = []
 
     // Private
     fileprivate let titleLabel = NSTextField(labelWithString: "")
@@ -130,9 +123,9 @@ class NodeView: NSView {
     }
 
     fileprivate func setupOutputs() {
-        guard !outputs.isEmpty else { return }
-        for output in outputs {
-            let row = connectionRowWithTitle(output.name, isInput: false)
+        guard !node.outputs.isEmpty else { return }
+        for output in node.outputs {
+            let row = connectionRowForProperty(output, isInput: false)
             stackView.addArrangedSubview(row)
             constraintHorizontalEdgesOf(row, to: stackView)
         }
@@ -140,19 +133,19 @@ class NodeView: NSView {
     }
 
     fileprivate func setupInputs() {
-        for input in inputs {
-            let row = connectionRowWithTitle(input.name, isInput: true)
+        for input in node.inputs {
+            let row = connectionRowForProperty(input, isInput: true)
             stackView.addArrangedSubview(row)
             constraintHorizontalEdgesOf(row, to: stackView)
         }
     }
 
-    fileprivate func connectionRowWithTitle(_ title: String, isInput: Bool) -> NSView {
-        let connection  = ConnectionView()
+    fileprivate func connectionRowForProperty(_ property: Property, isInput: Bool) -> NSView {
+        let connection  = ConnectionView(property: property)
         connection.isInput = isInput
         connections.append(connection)
 
-        let label       = NSTextField(labelWithString: title)
+        let label       = NSTextField(labelWithString: property.name)
         label.font      = NSFont.systemFont(ofSize: 14)
         label.textColor = NSColor.textColor
         label.alignment = isInput ? .left : .right
@@ -177,8 +170,6 @@ class NodeView: NSView {
         color              = NSColor.underPageBackgroundColor.withAlphaComponent(0.7)
         layer?.borderColor = isSelected ? NSColor.selectedControlColor.cgColor : NSColor.clear.cgColor
     }
-
-    var connections = [ConnectionView]()
 }
 
 extension NodeView {

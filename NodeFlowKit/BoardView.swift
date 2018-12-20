@@ -8,15 +8,19 @@
 
 import Cocoa
 
+public protocol BoardViewDelegate: class {
+    func didConnect(_ input: ConnectionView, to output: ConnectionView)
+}
+
 public class BoardView: NSView {
 
     var gridBaseColor: NSColor = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1)
     var gridSpacing: Int       = 10
     var bgColor: NSColor       = NSColor.windowBackgroundColor
 
-    var graph: Graph?
+    weak var delegate: BoardViewDelegate?
 
-    var connectionPairs: [(c1: ConnectionView, c2: ConnectionView)] = []
+    var graph: Graph?
 
     var nodeViews: [NodeView] {
         return subviews.compactMap({ $0 as? NodeView })
@@ -57,13 +61,16 @@ public class BoardView: NSView {
             drawLink(from: initialMousePoint, to: lastMousePoint, color: gridBaseColor)
         }
 
-        for pair in connectionPairs {
-            let c1 = pair.c1
-            let c2 = pair.c2
-            let c1f = convert(c1.frame, from: c1.superview)
-            let c2f = convert(c2.frame, from: c2.superview)
-            drawLink(from: CGPoint(x: c1f.midX, y: c1f.midY), to: CGPoint(x: c2f.midX, y: c2f.midY), color: gridBaseColor)
+        for connection in graph?.connections ?? [] {
+            let input = connection.input
+            let output = connection.output
+            if let c1 = nodeViews.flatMap({ $0.connections }).first(where: { $0.property === input }), let c2 = nodeViews.flatMap({ $0.connections }).first(where: { $0.property === output }) {
+                let c1f = convert(c1.frame, from: c1.superview)
+                let c2f = convert(c2.frame, from: c2.superview)
+                drawLink(from: CGPoint(x: c1f.midX, y: c1f.midY), to: CGPoint(x: c2f.midX, y: c2f.midY), color: gridBaseColor)
+            }
         }
+
     }
 
 }
@@ -148,7 +155,9 @@ extension BoardView {
         }
 
         if let c1 = c1, let c2 = c2, c1.isInput != c2.isInput {
-            connectionPairs.append((c1, c2))
+            let input = c1.isInput ? c1 : c2
+            let output = !c1.isInput ? c1 : c2
+            delegate?.didConnect(input, to: output)
         }
     }
 

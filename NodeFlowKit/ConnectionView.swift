@@ -17,8 +17,12 @@ public class ConnectionView: NSView {
     var isHighlighted: Bool = false
     var isInput: Bool!
 
-    convenience init() {
-        self.init(frame: NSRect(x: 0, y: 0, width: 14, height: 14))
+    weak var property: Property!
+
+    init(property: Property) {
+        super.init(frame: NSRect(x: 0, y: 0, width: 14, height: 14))
+        self.property = property
+        commonInit()
     }
 
     public override init(frame frameRect: NSRect) {

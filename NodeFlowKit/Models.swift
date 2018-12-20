@@ -10,13 +10,18 @@ import Foundation
 
 /*----------------------------------------------------------------------------*/
 
-public protocol Property {
+public protocol Property: class {
     var name: String { get }
 }
 
 /*----------------------------------------------------------------------------*/
 
-public class Connection {
+public class Connection: Equatable {
+    public static func == (lhs: Connection, rhs: Connection) -> Bool {
+        return lhs.input === rhs.input && lhs.output === rhs.output && lhs.output === rhs.output
+    }
+
+    weak var graph: Graph?
     var input: Property?
     var output: Property?
 
@@ -29,6 +34,7 @@ public class Connection {
 /*----------------------------------------------------------------------------*/
 
 public class Node {
+    weak var graph: Graph?
     var inputs: [Property]
     var outputs: [Property]
     var evaluationFunction: ((Property) -> Void)
@@ -46,9 +52,16 @@ public class Graph {
     var nodes: [Node]
     var connections: [Connection]
 
-    init(nodes: [Node], connections: [Connection]) {
+    init(nodes: [Node], connections: [Connection] = []) {
         self.nodes       = nodes
-        self.connections =  connections
+        self.connections = connections
+        self.nodes.forEach({ $0.graph = self })
+        self.connections.forEach({ $0.graph = self })
+    }
+
+    func addConnection(_ connection: Connection) {
+        guard !connections.contains(connection) else { return }
+        connections.append(connection)
     }
 
     func evaluate() {

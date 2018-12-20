@@ -8,31 +8,38 @@
 
 import Cocoa
 
-struct TestProperty: Property {
+class TestProperty: Property {
     let name: String
+    init(name: String) {
+        self.name = name
+    }
 }
 
-class BoardController: NSViewController {
+class BoardController: NSViewController, BoardViewDelegate {
 
     fileprivate var boardView: BoardView!
 
-    var graph: Graph!
+    #warning("Test graph")
+    var graph: Graph = {
+        var nodes: [Node] = []
+        for _ in 1...2 {
+            let inputs = [TestProperty(name: "Property"), TestProperty(name: "OtherProperty")]
+            let outputs = [TestProperty(name: "Property"), TestProperty(name: "OtherProperty")]
+            let node = Node(inputs: inputs, outputs: outputs, evaluationFunction: {_ in })
+            nodes.append(node)
+        }
+
+        return Graph(nodes: nodes, connections: [])
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         boardView = BoardView(frame: view.bounds)
+        boardView.graph = graph
+        boardView.delegate = self
         view.addSubview(boardView)
 
-        var nodes: [Node] = []
-        for _ in 1...2 {
-            let props: [Property] = [TestProperty(name: "Property"), TestProperty(name: "OtherProperty")]
-            let node = Node(inputs: props, outputs: props, evaluationFunction: {_ in })
-            nodes.append(node)
-        }
-
-        graph = Graph(nodes: nodes, connections: [])
-
-        let nviews = nodes.map(NodeView.init)
+        let nviews = graph.nodes.map(NodeView.init)
         nviews.forEach({ boardView.addSubview($0) })
     }
 
@@ -47,4 +54,10 @@ class BoardController: NSViewController {
         }
     }
 
+    func didConnect(_ input: ConnectionView, to output: ConnectionView) {
+        let connection = Connection(input: input.property, output: output.property)
+        graph.addConnection(connection)
+    }
+
 }
+
