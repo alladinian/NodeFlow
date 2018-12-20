@@ -174,7 +174,7 @@ class NodeView: NSView {
     public override func updateLayer() {
         super.updateLayer()
         headerColor        = NSColor.textBackgroundColor
-        color              = NSColor.underPageBackgroundColor.withAlphaComponent(0.85)
+        color              = NSColor.underPageBackgroundColor.withAlphaComponent(0.7)
         layer?.borderColor = isSelected ? NSColor.selectedControlColor.cgColor : NSColor.clear.cgColor
     }
 

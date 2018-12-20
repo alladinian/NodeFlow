@@ -25,7 +25,7 @@ class BoardController: NSViewController {
 
         var nodes: [Node] = []
         for _ in 1...2 {
-            let props: [Property] = [TestProperty(name: "Test")]
+            let props: [Property] = [TestProperty(name: "Property"), TestProperty(name: "OtherProperty")]
             let node = Node(inputs: props, outputs: props, evaluationFunction: {_ in })
             nodes.append(node)
         }

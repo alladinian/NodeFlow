@@ -10,7 +10,7 @@ import Cocoa
 
 public class ConnectionView: NSView {
 
-    let ring = CALayer()
+    let ring   = CALayer()
     let circle = CALayer()
 
     var isConnected: Bool   = false
@@ -34,10 +34,10 @@ public class ConnectionView: NSView {
     func commonInit() {
         wantsLayer = true
 
-        ring.frame = bounds
+        ring.frame        = bounds
         ring.cornerRadius = ring.bounds.midY
-        ring.borderColor = NSColor.controlAccentColor.cgColor
-        ring.borderWidth = 2
+        ring.borderColor  = NSColor.controlAccentColor.cgColor
+        ring.borderWidth  = 2
         layer?.addSublayer(ring)
 
         circle.frame           = bounds.insetBy(dx: 4, dy: 4)
@@ -52,12 +52,10 @@ public class ConnectionView: NSView {
     }
 
     override public func updateTrackingAreas() {
-        for trackingArea in trackingAreas {
-            self.removeTrackingArea(trackingArea)
-        }
-        let options: NSTrackingArea.Options = [.mouseEnteredAndExited, .activeAlways]
-        let trackingArea = NSTrackingArea(rect: bounds, options: options, owner: self, userInfo: nil)
-        self.addTrackingArea(trackingArea)
+        super.updateTrackingAreas()
+        trackingAreas.forEach(removeTrackingArea)
+        let trackingArea = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeAlways], owner: self)
+        addTrackingArea(trackingArea)
     }
 
     public override func mouseEntered(with event: NSEvent) {
