@@ -26,6 +26,10 @@ public class BoardView: NSView {
         return subviews.compactMap({ $0 as? NodeView })
     }
 
+    var connectionViews: [ConnectionView] {
+        return nodeViews.flatMap({ $0.connections })
+    }
+
     public override var isFlipped: Bool { return true }
     public override var acceptsFirstResponder: Bool { return true }
     public override var wantsUpdateLayer: Bool { return false }
@@ -61,12 +65,10 @@ public class BoardView: NSView {
             drawLink(from: initialMousePoint, to: lastMousePoint, color: gridBaseColor)
         }
 
-        let allConnectionViews = nodeViews.flatMap({ $0.connections })
-
         for connection in graph?.connections ?? [] {
             let input = connection.input
             let output = connection.output
-            if let c1 = allConnectionViews.lazy.first(where: { $0.property === input }), let c2 = allConnectionViews.lazy.first(where: { $0.property === output }) {
+            if let c1 = connectionViews.lazy.first(where: { $0.property === input }), let c2 = connectionViews.lazy.first(where: { $0.property === output }) {
                 let c1f = convert(c1.frame, from: c1.superview)
                 let c2f = convert(c2.frame, from: c2.superview)
                 drawLink(from: CGPoint(x: c1f.midX, y: c1f.midY), to: CGPoint(x: c2f.midX, y: c2f.midY), color: gridBaseColor)
@@ -128,10 +130,18 @@ extension BoardView {
         window?.makeFirstResponder(self)
         initialMousePoint = convert(event.locationInWindow, from: nil)
         lastMousePoint    = initialMousePoint
+
+        // If we're on top of a connectionView start drawing a line
+        for connection in connectionViews {
+            if convert(connection.frame, from: connection.superview).contains(initialMousePoint) {
+                isDrawingLine  = true
+                break
+            }
+        }
+
     }
 
     public override func mouseDragged(with event: NSEvent) {
-        isDrawingLine  = true
         lastMousePoint = convert(event.locationInWindow, from: nil)
         if initialMousePoint == nil {
             initialMousePoint = lastMousePoint
@@ -146,7 +156,7 @@ extension BoardView {
         var c1: ConnectionView?
         var c2: ConnectionView?
 
-        for connection in nodeViews.flatMap({ $0.connections }) {
+        for connection in connectionViews {
             if convert(connection.frame, from: connection.superview).contains(initialMousePoint) {
                 c1 = connection
             }
