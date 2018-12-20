@@ -152,13 +152,6 @@ extension BoardView {
     }
 
     func drawLink(from startPoint: NSPoint, to endPoint: NSPoint, color: NSColor) {
-
-        func threshold(_ x: CGFloat, _ delta: CGFloat) -> CGFloat {
-            return (x > 0) ? max(x, delta) : delta - x
-        }
-
-        let resolvedThreshold = threshold((endPoint.x - startPoint.x) / 2, 20)
-
         // Shadow vars & Swap depending on direction
         var startPoint = startPoint
         var endPoint   = endPoint
@@ -166,8 +159,10 @@ extension BoardView {
             swap(&startPoint, &endPoint)
         }
 
-        let p1 = NSMakePoint(startPoint.x + resolvedThreshold, startPoint.y)
-        let p2 = NSMakePoint(endPoint.x - resolvedThreshold, endPoint.y)
+        let threshold = max((endPoint.x - startPoint.x) / 2, 20)
+
+        let p1 = NSMakePoint(startPoint.x + threshold, startPoint.y)
+        let p2 = NSMakePoint(endPoint.x - threshold, endPoint.y)
 
         let path          = NSBezierPath()
         path.lineCapStyle = .round
@@ -175,7 +170,7 @@ extension BoardView {
 
         path.move(to: startPoint)
         path.curve(to: endPoint, controlPoint1: p1, controlPoint2: p2)
-        color.set() 
+        color.set()
         path.stroke()
 
         #if ENABLE_DEBUG_DRAW
