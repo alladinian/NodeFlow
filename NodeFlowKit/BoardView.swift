@@ -229,12 +229,11 @@ extension BoardView {
         let fillColor   = NSColor.controlAccentColor.withAlphaComponent(0.2)
         let strokeColor = NSColor.controlAccentColor
         // Draw the selection box
-        let path = NSBezierPath()
-        path.move(to: startPoint)
-        path.line(to: CGPoint(x: startPoint.x, y: endPoint.y))
-        path.line(to: endPoint)
-        path.line(to: CGPoint(x: endPoint.x, y: startPoint.y))
-        path.close()
+        let rect = NSMakeRect(min(startPoint.x, endPoint.x),
+                              min(startPoint.y, endPoint.y),
+                              abs(startPoint.x - endPoint.x),
+                              abs(startPoint.y - endPoint.y))
+        let path = NSBezierPath(rect: rect)
         path.lineWidth = 1.0
         fillColor.setFill()
         strokeColor.setStroke()
