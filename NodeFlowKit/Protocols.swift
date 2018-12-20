@@ -8,10 +8,23 @@
 
 import Foundation
 
-public protocol Input {
-    var name: String { get }
+public protocol PropertyValue {
+
 }
 
-public protocol Output {
-    var name: String { get }
+public protocol Property: class {
+    var name: String { get set }
+    //var value: PropertyValue { get set }
+}
+
+extension NSColor: PropertyValue {
+
+}
+
+extension NSImage: PropertyValue {
+
+}
+
+extension NSNumber: PropertyValue {
+
 }

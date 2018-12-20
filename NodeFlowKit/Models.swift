@@ -10,12 +10,6 @@ import Foundation
 
 /*----------------------------------------------------------------------------*/
 
-public protocol Property: class {
-    var name: String { get }
-}
-
-/*----------------------------------------------------------------------------*/
-
 public class Connection: Equatable {
     public static func == (lhs: Connection, rhs: Connection) -> Bool {
         return lhs.input === rhs.input && lhs.output === rhs.output && lhs.output === rhs.output

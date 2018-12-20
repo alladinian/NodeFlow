@@ -17,6 +17,20 @@ public class BoardView: NSView {
     var gridBaseColor: NSColor = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1)
     var gridSpacing: Int       = 10
     var bgColor: NSColor       = NSColor.windowBackgroundColor
+    var selectionColor         = #colorLiteral(red: 0.4, green: 0.8509803922, blue: 0.937254902, alpha: 1)
+
+    // Selection variables
+    fileprivate var startPoint: NSPoint!
+    fileprivate var selectionLayer:  CAShapeLayer = {
+        let selectionLayer = CAShapeLayer()
+        selectionLayer.lineWidth   = 1.0
+        selectionLayer.fillColor   = #colorLiteral(red: 0.4, green: 0.8509803922, blue: 0.937254902, alpha: 1).withAlphaComponent(0.4).cgColor
+        selectionLayer.strokeColor = #colorLiteral(red: 0.4, green: 0.8509803922, blue: 0.937254902, alpha: 1)
+        return selectionLayer
+    }()
+
+    fileprivate var isSelectingWithRectangle = false
+
 
     weak var delegate: BoardViewDelegate?
 
@@ -60,18 +74,24 @@ public class BoardView: NSView {
         // Grid drawing
         drawGrid()
 
-        // Lines drawing
+        // Interactive line drawing
         if isDrawingLine {
-            drawLink(from: initialMousePoint, to: lastMousePoint, color: gridBaseColor)
+            drawLink(from: initialMousePoint, to: lastMousePoint)
         }
 
+        // Selection drawing
+        if isSelectingWithRectangle {
+            drawSelection(from: initialMousePoint, to: lastMousePoint)
+        }
+
+        // Permament lines drawing
         for connection in graph?.connections ?? [] {
             let input = connection.input
             let output = connection.output
             if let c1 = connectionViews.lazy.first(where: { $0.property === input }), let c2 = connectionViews.lazy.first(where: { $0.property === output }) {
                 let c1f = convert(c1.frame, from: c1.superview)
                 let c2f = convert(c2.frame, from: c2.superview)
-                drawLink(from: CGPoint(x: c1f.midX, y: c1f.midY), to: CGPoint(x: c2f.midX, y: c2f.midY), color: gridBaseColor)
+                drawLink(from: CGPoint(x: c1f.midX, y: c1f.midY), to: CGPoint(x: c2f.midX, y: c2f.midY))
             }
         }
 
@@ -139,6 +159,9 @@ extension BoardView {
             }
         }
 
+        if !isDrawingLine {
+            isSelectingWithRectangle = true
+        }
     }
 
     public override func mouseDragged(with event: NSEvent) {
@@ -151,6 +174,7 @@ extension BoardView {
 
     public override func mouseUp(with event: NSEvent) {
         isDrawingLine = false
+        isSelectingWithRectangle = false
         needsDisplay  = true
 
         var c1: ConnectionView?
@@ -173,7 +197,8 @@ extension BoardView {
         }
     }
 
-    func drawLink(from startPoint: NSPoint, to endPoint: NSPoint, color: NSColor) {
+    func drawLink(from startPoint: NSPoint, to endPoint: NSPoint) {
+        let color = gridBaseColor
         // Shadow vars & Swap depending on direction
         var startPoint = startPoint
         var endPoint   = endPoint
@@ -198,6 +223,23 @@ extension BoardView {
         if ProcessInfo.processInfo.environment["debugDraw"] != nil {
             drawControlPoints([p1, p2], ofPoints: [startPoint, endPoint])
         }
+    }
+
+    func drawSelection(from startPoint: NSPoint, to endPoint: NSPoint) {
+        let fillColor   = NSColor.controlAccentColor.withAlphaComponent(0.2)
+        let strokeColor = NSColor.controlAccentColor
+        // Draw the selection box
+        let path = NSBezierPath()
+        path.move(to: startPoint)
+        path.line(to: CGPoint(x: startPoint.x, y: endPoint.y))
+        path.line(to: endPoint)
+        path.line(to: CGPoint(x: endPoint.x, y: startPoint.y))
+        path.close()
+        path.lineWidth = 1.0
+        fillColor.setFill()
+        strokeColor.setStroke()
+        path.fill()
+        path.stroke()
     }
 
 }
