@@ -21,6 +21,7 @@
 		7D1E031A21BEA44C00032E50 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031921BEA44C00032E50 /* Extensions.swift */; };
 		7D1E031C21BEA5D700032E50 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031B21BEA5D700032E50 /* Protocols.swift */; };
 		7D1E031E21BEA65000032E50 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031D21BEA65000032E50 /* Models.swift */; };
+		7D379AF321CBCB1900F1BAD8 /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D379AF221CBCB1900F1BAD8 /* DraggableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		7D1E031921BEA44C00032E50 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7D1E031B21BEA5D700032E50 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		7D1E031D21BEA65000032E50 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		7D379AF221CBCB1900F1BAD8 /* DraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 				7D1E031921BEA44C00032E50 /* Extensions.swift */,
 				7D1E031B21BEA5D700032E50 /* Protocols.swift */,
 				7D1E031D21BEA65000032E50 /* Models.swift */,
+				7D379AF221CBCB1900F1BAD8 /* DraggableView.swift */,
 			);
 			path = NodeFlowKit;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 			files = (
 				7D1E031A21BEA44C00032E50 /* Extensions.swift in Sources */,
 				7D1E031421BEA3FF00032E50 /* ConnectionView.swift in Sources */,
+				7D379AF321CBCB1900F1BAD8 /* DraggableView.swift in Sources */,
 				5AE1CBEF21C7029F006769C5 /* BoardController.swift in Sources */,
 				7D1E031C21BEA5D700032E50 /* Protocols.swift in Sources */,
 				7D1E031621BEA42800032E50 /* BoardView.swift in Sources */,

@@ -8,7 +8,7 @@
 
 import Cocoa
 
-public class NodeView: NSView {
+class NodeView: NSView {
 
     private(set) var isSelected: Bool = false {
         didSet {
@@ -77,6 +77,7 @@ public class NodeView: NSView {
     fileprivate let kTitleVerticalInset: CGFloat = 4
 
     func commonInit() {
+
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(titleLabel)
@@ -212,26 +213,35 @@ extension NodeView {
     }
 
     override public func mouseDown(with event: NSEvent) {
-        lastMousePoint = superview!.convert(event.locationInWindow, from: nil)
+        lastMousePoint = NSEvent.mouseLocation
         window?.makeFirstResponder(self)
+        discardCursorRects()
+        NSCursor.closedHand.push()
     }
 
     override public func mouseDragged(with event: NSEvent) {
         guard lastMousePoint != nil else {
             return
         }
-        let newPoint = superview!.convert(event.locationInWindow, from: nil)
+        let newPoint = NSEvent.mouseLocation
         var origin   = frame.origin
         origin.x += newPoint.x - lastMousePoint.x
-        origin.y += newPoint.y - lastMousePoint.y
+        origin.y += (newPoint.y - lastMousePoint.y) * (isFlipped ? -1 : 1)
         setFrameOrigin(origin)
         lastMousePoint = newPoint
 
-        (nextResponder as? NSView)?.needsDisplay = true
+        superview?.needsDisplay = true
     }
 
     override public func mouseUp(with event: NSEvent) {
         lastMousePoint = nil
+        NSCursor.pop()
+        window?.invalidateCursorRects(for: self)
+    }
+
+    override func resetCursorRects() {
+        discardCursorRects()
+        addCursorRect(headerLayer.bounds, cursor: NSCursor.openHand)
     }
 
 }

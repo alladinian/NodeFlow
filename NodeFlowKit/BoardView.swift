@@ -25,6 +25,7 @@ public class BoardView: NSView {
     public override var isFlipped: Bool { return true }
     public override var acceptsFirstResponder: Bool { return true }
     public override var wantsUpdateLayer: Bool { return false }
+    public override var isOpaque: Bool { return true }
 
     // Lines
     fileprivate var initialMousePoint: CGPoint!
