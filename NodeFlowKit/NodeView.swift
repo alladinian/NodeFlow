@@ -16,6 +16,13 @@ public class NodeView: NSView {
         }
     }
 
+    init(node: Node) {
+        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        inputs  = node.inputs
+        outputs = node.outputs
+        commonInit()
+    }
+
     public override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         commonInit()
@@ -24,14 +31,6 @@ public class NodeView: NSView {
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         commonInit()
-    }
-
-    public override func awakeFromNib() {
-        super.awakeFromNib()
-        title = "Node"
-        setupOutputs()
-        setupInputs()
-        needsDisplay = true
     }
 
     public var title: String! {
@@ -52,12 +51,16 @@ public class NodeView: NSView {
         }
     }
 
-    public var inputs: [Input]   = []
-    public var outputs: [Output] = []
+    public var inputs: [Property] = []
+    public var outputs: [Property] = []
 
     // Private
-    @IBOutlet var titleLabel: NSTextField!
-    @IBOutlet var stackView: NSStackView!
+    fileprivate let titleLabel = NSTextField(labelWithString: "")
+    fileprivate let stackView: NSStackView = {
+        let stackView = NSStackView(views: [])
+        stackView.orientation = .vertical
+        return stackView
+    }()
 
     fileprivate let headerLayer = CALayer()
     fileprivate var lastMousePoint: CGPoint!
@@ -74,13 +77,23 @@ public class NodeView: NSView {
     fileprivate let kTitleVerticalInset: CGFloat = 4
 
     func commonInit() {
+        addSubview(titleLabel)
+        addSubview(stackView)
+
         translatesAutoresizingMaskIntoConstraints = false
-        wantsLayer = true
+        wantsLayer          = true
         layer?.cornerRadius = kCornerRadius
-        layer?.borderWidth = 2
+        layer?.borderWidth  = 2
 
         setupHeader()
         setupShadow()
+
+        title = "Node"
+        stackView.addArrangedSubview(titleLabel)
+
+        setupOutputs()
+        setupInputs()
+        needsDisplay = true
     }
 
     public override func layout() {

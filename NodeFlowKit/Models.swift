@@ -10,13 +10,13 @@ import Foundation
 
 /*----------------------------------------------------------------------------*/
 
-struct Property {
-    let name: String
+public protocol Property {
+    var name: String { get }
 }
 
 /*----------------------------------------------------------------------------*/
 
-class Connection {
+public class Connection {
     var input: Property?
     var output: Property?
 
@@ -28,7 +28,7 @@ class Connection {
 
 /*----------------------------------------------------------------------------*/
 
-class Node {
+public class Node {
     var inputs: [Property]
     var outputs: [Property]
     var evaluationFunction: ((Property) -> Void)
@@ -42,7 +42,7 @@ class Node {
 
 /*----------------------------------------------------------------------------*/
 
-class Graph {
+public class Graph {
     var nodes: [Node]
     var connections: [Connection]
 

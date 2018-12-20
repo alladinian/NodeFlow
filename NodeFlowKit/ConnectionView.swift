@@ -13,7 +13,7 @@ public class ConnectionView: NSView {
     let ring = CALayer()
     let circle = CALayer()
 
-    var isConnected: Bool = false
+    var isConnected: Bool   = false
     var isHighlighted: Bool = false
     var isInput: Bool!
 

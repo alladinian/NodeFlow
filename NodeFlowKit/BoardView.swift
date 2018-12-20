@@ -136,7 +136,7 @@ extension BoardView {
         var c1: ConnectionView?
         var c2: ConnectionView?
 
-        for connection in (superview as? BoardView)?.nodeViews.flatMap({ $0.connections }) ?? [] {
+        for connection in nodeViews.flatMap({ $0.connections }) {
             if convert(connection.frame, from: connection.superview).contains(initialMousePoint) {
                 c1 = connection
             }
