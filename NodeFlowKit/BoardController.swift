@@ -23,8 +23,8 @@ class BoardController: NSViewController, BoardViewDelegate {
     var graph: Graph = {
         var nodes: [Node] = []
         for _ in 1...2 {
-            let inputs = [TestProperty(name: "Property"), TestProperty(name: "OtherProperty")]
-            let outputs = [TestProperty(name: "Property"), TestProperty(name: "OtherProperty")]
+            let inputs = [TestProperty(name: "InputProperty"), TestProperty(name: "OtherInputProperty")]
+            let outputs = [TestProperty(name: "Output")]
             let node = Node(inputs: inputs, outputs: outputs, evaluationFunction: {_ in })
             nodes.append(node)
         }
@@ -56,6 +56,8 @@ class BoardController: NSViewController, BoardViewDelegate {
 
     func didConnect(_ input: ConnectionView, to output: ConnectionView) {
         let connection = Connection(input: input.property, output: output.property)
+        input.isConnected = true
+        output.isConnected = true
         graph.addConnection(connection)
     }
 

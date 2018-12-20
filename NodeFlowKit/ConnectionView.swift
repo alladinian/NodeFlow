@@ -13,11 +13,25 @@ public class ConnectionView: NSView {
     let ring   = CALayer()
     let circle = CALayer()
 
-    var isConnected: Bool   = false
-    var isHighlighted: Bool = false
+    var isConnected: Bool = false {
+        didSet {
+            needsDisplay = true
+        }
+    }
+
+    var isHighlighted: Bool = false {
+        didSet {
+            needsDisplay = true
+        }
+    }
+
     var isInput: Bool!
 
     weak var property: Property!
+
+    public override var wantsUpdateLayer: Bool {
+        return true
+    }
 
     init(property: Property) {
         super.init(frame: NSRect(x: 0, y: 0, width: 14, height: 14))
@@ -64,11 +78,19 @@ public class ConnectionView: NSView {
 
     public override func mouseEntered(with event: NSEvent) {
         isHighlighted = true
-        circle.opacity = isConnected ? 1.0 : 0.5
     }
 
     public override func mouseExited(with event: NSEvent) {
         isHighlighted = false
-        circle.opacity = isConnected ? 1.0 : 0.0
     }
+
+    public override func updateLayer() {
+        super.updateLayer()
+        if isHighlighted {
+            circle.opacity = isConnected ? 1.0 : 0.5
+        } else {
+            circle.opacity = isConnected ? 1.0 : 0.0
+        }
+    }
+
 }
