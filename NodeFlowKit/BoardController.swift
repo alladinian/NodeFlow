@@ -22,7 +22,7 @@ class BoardController: NSViewController, BoardViewDelegate {
     #warning("Test graph")
     var graph: Graph = {
         var nodes: [Node] = []
-        for _ in 1...2 {
+        for _ in 1...4 {
             let inputs = [TestProperty(name: "InputProperty"), TestProperty(name: "OtherInputProperty")]
             let outputs = [TestProperty(name: "Output")]
             let node = Node(inputs: inputs, outputs: outputs, evaluationFunction: {_ in })

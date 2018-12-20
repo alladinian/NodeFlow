@@ -226,7 +226,7 @@ extension BoardView {
     }
 
     func drawSelection(from startPoint: NSPoint, to endPoint: NSPoint) {
-        let fillColor   = NSColor.controlAccentColor.withAlphaComponent(0.2)
+        let fillColor   = NSColor.controlAccentColor.withAlphaComponent(0.1)
         let strokeColor = NSColor.controlAccentColor
         // Draw the selection box
         let rect = NSMakeRect(min(startPoint.x, endPoint.x),
