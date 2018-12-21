@@ -19,6 +19,7 @@ class TestProperty: Property {
 
 class BoardController: NSViewController, BoardViewDelegate {
 
+    fileprivate var scrollView: NSScrollView!
     fileprivate var boardView: BoardView!
 
     #warning("Test graph")
@@ -36,10 +37,16 @@ class BoardController: NSViewController, BoardViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        scrollView = NSScrollView(frame: view.bounds)
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = true
+        scrollView.autohidesScrollers = true
+        scrollView.allowsMagnification = true
         boardView = BoardView(frame: view.bounds)
         boardView.graph = graph
         boardView.delegate = self
-        view.addSubview(boardView)
+        view.addSubview(scrollView)
+        scrollView.documentView = boardView
 
         let nviews = graph.nodes.map(NodeView.init)
         nviews.forEach({ boardView.addSubview($0) })
@@ -47,7 +54,7 @@ class BoardController: NSViewController, BoardViewDelegate {
 
     override func viewDidLayout() {
         super.viewDidLayout()
-        boardView.frame = view.bounds
+        scrollView.frame = view.bounds
     }
 
     override var representedObject: Any? {
