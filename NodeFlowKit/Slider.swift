@@ -29,7 +29,7 @@ class Slider: NSControl, NSTextFieldDelegate {
         field.drawsBackground = false
         field.isBordered = false
         field.alignment = NSTextAlignment.right
-        field.font = NSFont.systemFont(ofSize: 10)
+        field.font = NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .regular)
 
         let f = NumberFormatter()
         f.numberStyle = .decimal
@@ -70,8 +70,9 @@ class Slider: NSControl, NSTextFieldDelegate {
         addSubview(textField)
         addSubview(nameField)
 
-        let stackView = NSStackView(views: [nameField, textField])
+        let stackView = NSStackView(views: [nameField, NSView(), textField])
         stackView.distribution = .equalSpacing
+        stackView.spacing = 8
         addSubview(stackView)
 
         NSLayoutConstraint.activate([

@@ -88,9 +88,9 @@ public class BoardView: NSView {
         for connection in graph?.connections ?? [] {
             let input = connection.input
             let output = connection.output
-            if let c1 = connectionViews.lazy.first(where: { $0.property === input }), let c2 = connectionViews.lazy.first(where: { $0.property === output }) {
-                let c1f = convert(c1.frame, from: c1.superview)
-                let c2f = convert(c2.frame, from: c2.superview)
+            if let inputView = connectionViews.lazy.first(where: { $0.property === input }), let outputView = connectionViews.lazy.first(where: { $0.property === output }) {
+                let c1f = convert(inputView.frame, from: inputView.superview)
+                let c2f = convert(outputView.frame, from: outputView.superview)
                 drawLink(from: CGPoint(x: c1f.midX, y: c1f.midY), to: CGPoint(x: c2f.midX, y: c2f.midY))
             }
         }
@@ -200,28 +200,29 @@ extension BoardView {
     func drawLink(from startPoint: NSPoint, to endPoint: NSPoint) {
         let color = gridBaseColor
         // Shadow vars & Swap depending on direction
-        var startPoint = startPoint
-        var endPoint   = endPoint
-        if startPoint.x > endPoint.x {
-            swap(&startPoint, &endPoint)
+        var inputPoint = startPoint
+        var outputPoint = endPoint
+
+        if inputPoint.x > outputPoint.x {
+            swap(&inputPoint, &outputPoint)
         }
 
-        let threshold = max((endPoint.x - startPoint.x) / 2, 20)
+        let threshold = max((outputPoint.x - inputPoint.x) / 2, 0)
 
-        let p1 = NSMakePoint(startPoint.x + threshold, startPoint.y)
-        let p2 = NSMakePoint(endPoint.x - threshold, endPoint.y)
+        let p1 = NSMakePoint(inputPoint.x + threshold, inputPoint.y)
+        let p2 = NSMakePoint(outputPoint.x - threshold, outputPoint.y)
 
         let path          = NSBezierPath()
         path.lineCapStyle = .round
         path.lineWidth    = 5
 
-        path.move(to: startPoint)
-        path.curve(to: endPoint, controlPoint1: p1, controlPoint2: p2)
+        path.move(to: inputPoint)
+        path.curve(to: outputPoint, controlPoint1: p1, controlPoint2: p2)
         color.set()
         path.stroke()
 
         if ProcessInfo.processInfo.environment["debugDraw"] != nil {
-            drawControlPoints([p1, p2], ofPoints: [startPoint, endPoint])
+            drawControlPoints([p1, p2], ofPoints: [inputPoint, outputPoint])
         }
     }
 

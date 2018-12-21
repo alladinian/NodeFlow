@@ -148,7 +148,6 @@ class NodeView: NSView {
         let horizontalStack = NSStackView(views: isInput ? [connection, control] : [control, connection])
         horizontalStack.distribution = .fill
         horizontalStack.spacing      = 8
-
         return horizontalStack
     }
 
