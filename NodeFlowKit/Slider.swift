@@ -10,12 +10,27 @@ import Cocoa
 
 class Slider: NSControl, NSTextFieldDelegate {
 
+    var name: String = "" {
+        didSet {
+            nameField.stringValue = name
+        }
+    }
+
+    let nameField: NSTextField = {
+        let field = NSTextField(labelWithString: "")
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.font = NSFont.systemFont(ofSize: 10)
+        return field
+    }()
+
     let textField: NSTextField = {
         let field = NSTextField(string: "")
         field.translatesAutoresizingMaskIntoConstraints = false
         field.drawsBackground = false
         field.isBordered = false
         field.alignment = NSTextAlignment.right
+        field.font = NSFont.systemFont(ofSize: 10)
+
         let f = NumberFormatter()
         f.numberStyle = .decimal
         f.maximumFractionDigits = 3
@@ -25,7 +40,7 @@ class Slider: NSControl, NSTextFieldDelegate {
         return field
     }()
 
-    let color = NSColor.controlAccentColor
+    let color = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1)
 
     fileprivate var value: Double = 0
 
@@ -53,11 +68,18 @@ class Slider: NSControl, NSTextFieldDelegate {
     func commonInit() {
         isContinuous = true
         addSubview(textField)
+        addSubview(nameField)
+
+        let stackView = NSStackView(views: [nameField, textField])
+        stackView.distribution = .equalSpacing
+        addSubview(stackView)
+
         NSLayoutConstraint.activate([
-            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            textField.firstBaselineAnchor.constraint(equalTo: centerYAnchor, constant: 5)
-            ])
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+
         textField.isEditable = false
         textField.isSelectable = false
         textField.focusRingType = .none
@@ -104,23 +126,21 @@ class Slider: NSControl, NSTextFieldDelegate {
     }
 
     var bgPath: NSBezierPath {
-        let lineWidth: CGFloat = 2
+        let lineWidth: CGFloat = 1
         let path = NSBezierPath(roundedRect: bounds.insetBy(dx: lineWidth/2, dy: lineWidth/2), xRadius: 6, yRadius: 6)
         path.lineWidth = lineWidth
         return path
     }
 
     func drawBackground() {
-        color.setStroke()
-        color.withAlphaComponent(0.4).setFill()
-        //bgPath.fill()
+        color.withAlphaComponent(0.4).setStroke()
         bgPath.stroke()
     }
 
     func drawFillTrack() {
         let clipPath = bgPath
         let path = NSBezierPath(rect: NSRect(x: 0, y: 0, width: max(10, min(CGFloat(doubleValue), bounds.width)), height: bounds.height))
-        NSColor.controlAccentColor.setFill()
+        color.withAlphaComponent(0.4).setFill()
         clipPath.setClip()
         path.fill()
         path.addClip()
@@ -154,7 +174,7 @@ class Slider: NSControl, NSTextFieldDelegate {
     }
 
     override var intrinsicContentSize: NSSize {
-        return NSSize(width: 200, height: 30)
+        return NSSize(width: 100, height: 20)
     }
 
 }

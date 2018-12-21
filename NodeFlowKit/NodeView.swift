@@ -145,12 +145,15 @@ class NodeView: NSView {
         connection.isInput = isInput
         connections.append(connection)
 
+        let slider  = Slider(frame: .zero)
+        slider.name = property.name
+
         let label       = NSTextField(labelWithString: property.name)
         label.font      = NSFont.systemFont(ofSize: 14)
         label.textColor = NSColor.textColor
         label.alignment = isInput ? .left : .right
 
-        let horizontalStack = NSStackView(views: isInput ? [connection, label] : [label, connection])
+        let horizontalStack = NSStackView(views: isInput ? [connection, slider] : [slider, connection])
         horizontalStack.distribution = .fill
         horizontalStack.spacing      = 8
 
@@ -167,7 +170,7 @@ class NodeView: NSView {
     public override func updateLayer() {
         super.updateLayer()
         headerColor        = NSColor.textBackgroundColor
-        color              = NSColor.underPageBackgroundColor.withAlphaComponent(0.7)
+        color              = NSColor.underPageBackgroundColor.withAlphaComponent(0.95)
         layer?.borderColor = isSelected ? NSColor.selectedControlColor.cgColor : NSColor.clear.cgColor
     }
 }
