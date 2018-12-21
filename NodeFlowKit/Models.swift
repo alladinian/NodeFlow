@@ -8,14 +8,11 @@
 
 import Foundation
 
+
 /*----------------------------------------------------------------------------*/
 
-public class Connection: Equatable {
-    public static func == (lhs: Connection, rhs: Connection) -> Bool {
-        return lhs.input === rhs.input && lhs.output === rhs.output && lhs.output === rhs.output
-    }
-
-    weak var graph: Graph?
+public class Connection {
+    weak var graph: Graph? // Inverse relationship
     var input: Property?
     var output: Property?
 
@@ -25,10 +22,16 @@ public class Connection: Equatable {
     }
 }
 
+extension Connection: Equatable {
+    public static func == (lhs: Connection, rhs: Connection) -> Bool {
+        return lhs.input === rhs.input && lhs.output === rhs.output && lhs.output === rhs.output
+    }
+}
+
 /*----------------------------------------------------------------------------*/
 
 public class Node {
-    weak var graph: Graph?
+    weak var graph: Graph? // Inverse relationship
     var inputs: [Property]
     var outputs: [Property]
     var evaluationFunction: ((Property) -> Void)

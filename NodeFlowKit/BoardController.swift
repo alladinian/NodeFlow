@@ -10,8 +10,10 @@ import Cocoa
 
 class TestProperty: Property {
     var name: String
-    init(name: String) {
+    var value: Any?
+    init(name: String, value: CGFloat) {
         self.name = name
+        self.value = value
     }
 }
 
@@ -23,8 +25,8 @@ class BoardController: NSViewController, BoardViewDelegate {
     var graph: Graph = {
         var nodes: [Node] = []
         for _ in 1...4 {
-            let inputs = [TestProperty(name: "InputProperty"), TestProperty(name: "OtherInputProperty")]
-            let outputs = [TestProperty(name: "Output")]
+            let inputs = [TestProperty(name: "InputProperty", value: 0), TestProperty(name: "OtherInputProperty", value: 1)]
+            let outputs = [TestProperty(name: "Output", value: 0)]
             let node = Node(inputs: inputs, outputs: outputs, evaluationFunction: {_ in })
             nodes.append(node)
         }
