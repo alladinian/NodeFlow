@@ -144,20 +144,32 @@ class NodeView: NSView {
         let connection  = ConnectionView(property: property)
         connection.isInput = isInput
         connections.append(connection)
-
-        let slider  = Slider(frame: .zero)
-        slider.name = property.name
-
-        let label       = NSTextField(labelWithString: property.name)
-        label.font      = NSFont.systemFont(ofSize: 14)
-        label.textColor = NSColor.textColor
-        label.alignment = isInput ? .left : .right
-
-        let horizontalStack = NSStackView(views: isInput ? [connection, slider] : [slider, connection])
+        let control = controlViewForProperty(property, isInput: isInput)
+        let horizontalStack = NSStackView(views: isInput ? [connection, control] : [control, connection])
         horizontalStack.distribution = .fill
         horizontalStack.spacing      = 8
 
         return horizontalStack
+    }
+
+    fileprivate func controlViewForProperty(_ property: Property, isInput: Bool) -> NSView {
+        if !isInput {
+            let label       = NSTextField(labelWithString: property.name)
+            label.font      = NSFont.systemFont(ofSize: 14)
+            label.textColor = NSColor.textColor
+            label.alignment = isInput ? .left : .right
+            return label
+        }
+
+        if let value = property.value as? Double {
+            let slider  = Slider(frame: .zero)
+            slider.doubleValue = value
+            slider.name = property.name
+            return slider
+        }
+
+        #warning("Should handle this")
+        return NSView(frame: .zero)
     }
 
     fileprivate func constraintHorizontalEdgesOf(_ a: NSView, to b: NSView) {

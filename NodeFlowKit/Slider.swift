@@ -40,7 +40,7 @@ class Slider: NSControl, NSTextFieldDelegate {
         return field
     }()
 
-    let color = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1)
+    let color = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1).withAlphaComponent(0.4)
 
     fileprivate var value: Double = 0
 
@@ -133,14 +133,14 @@ class Slider: NSControl, NSTextFieldDelegate {
     }
 
     func drawBackground() {
-        color.withAlphaComponent(0.4).setStroke()
+        color.setStroke()
         bgPath.stroke()
     }
 
     func drawFillTrack() {
         let clipPath = bgPath
         let path = NSBezierPath(rect: NSRect(x: 0, y: 0, width: max(10, min(CGFloat(doubleValue), bounds.width)), height: bounds.height))
-        color.withAlphaComponent(0.4).setFill()
+        color.setFill()
         clipPath.setClip()
         path.fill()
         path.addClip()
