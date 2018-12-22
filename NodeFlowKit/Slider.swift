@@ -128,7 +128,7 @@ class Slider: NSControl, NSTextFieldDelegate {
 
     var bgPath: NSBezierPath {
         let lineWidth: CGFloat = 1
-        let path = NSBezierPath(roundedRect: bounds.insetBy(dx: lineWidth/2, dy: lineWidth/2), xRadius: 6, yRadius: 6)
+        let path = NSBezierPath(roundedRect: bounds.insetBy(dx: lineWidth/2, dy: lineWidth/2), xRadius: 0, yRadius: 0)
         path.lineWidth = lineWidth
         return path
     }

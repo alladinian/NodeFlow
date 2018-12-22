@@ -155,7 +155,7 @@ class NodeView: NSView {
         if !isInput {
             let label       = NSTextField(labelWithString: property.name)
             label.font      = NSFont.systemFont(ofSize: 14)
-            label.textColor = NSColor.textColor
+            label.textColor = ThemeColor.text
             label.alignment = isInput ? .left : .right
             return label
         }
@@ -180,9 +180,9 @@ class NodeView: NSView {
 
     public override func updateLayer() {
         super.updateLayer()
-        headerColor        = NSColor.textBackgroundColor
-        color              = NSColor.underPageBackgroundColor.withAlphaComponent(0.95)
-        layer?.borderColor = isSelected ? NSColor.selectedControlColor.cgColor : NSColor.clear.cgColor
+        headerColor        = ThemeColor.nodeHeader
+        color              = ThemeColor.nodeBackground.withAlphaComponent(0.95)
+        layer?.borderColor = isSelected ? ThemeColor.nodeSelection.cgColor : NSColor.clear.cgColor
     }
 }
 

@@ -14,21 +14,10 @@ public protocol BoardViewDelegate: class {
 
 public class BoardView: NSView {
 
-    var gridBaseColor: NSColor = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1)
     var gridSpacing: Int       = 10
-    var bgColor: NSColor       = NSColor.windowBackgroundColor
-    var selectionColor         = #colorLiteral(red: 0.4, green: 0.8509803922, blue: 0.937254902, alpha: 1)
 
     // Selection variables
     fileprivate var startPoint: NSPoint!
-    fileprivate var selectionLayer:  CAShapeLayer = {
-        let selectionLayer = CAShapeLayer()
-        selectionLayer.lineWidth   = 1.0
-        selectionLayer.fillColor   = #colorLiteral(red: 0.4, green: 0.8509803922, blue: 0.937254902, alpha: 1).withAlphaComponent(0.4).cgColor
-        selectionLayer.strokeColor = #colorLiteral(red: 0.4, green: 0.8509803922, blue: 0.937254902, alpha: 1)
-        return selectionLayer
-    }()
-
     fileprivate var isSelectingWithRectangle = false
 
 
@@ -68,7 +57,7 @@ public class BoardView: NSView {
         let context = NSGraphicsContext.current?.cgContext
 
         // BG drawing
-        bgColor.setFill()
+        ThemeColor.background.setFill()
         context?.fill(rect)
 
         // Grid drawing
@@ -114,7 +103,7 @@ extension BoardView {
         func colorForStep(_ step: Int) -> NSColor {
             let stops: [(n: Int, a: CGFloat)] = [(10, 0.3), (5, 0.2)]
             let alpha: CGFloat = stops.lazy.first(where : { step.isMultipleOf($0.n) })?.a ?? 0.1
-            return gridBaseColor.withAlphaComponent(alpha)
+            return ThemeColor.grid.withAlphaComponent(alpha)
         }
 
         func pointsForStep(_ step: Int, isVertical: Bool) -> (start: CGPoint, end: CGPoint) {
@@ -198,7 +187,7 @@ extension BoardView {
     }
 
     func drawLink(from startPoint: NSPoint, to endPoint: NSPoint) {
-        let color = gridBaseColor
+        let color = ThemeColor.line
         // Shadow vars & Swap depending on direction
         var inputPoint = startPoint
         var outputPoint = endPoint

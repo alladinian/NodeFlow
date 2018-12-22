@@ -54,12 +54,12 @@ public class ConnectionView: NSView {
 
         ring.frame        = bounds
         ring.cornerRadius = ring.bounds.midY
-        ring.borderColor  = NSColor.controlAccentColor.cgColor
+        ring.borderColor  = ThemeColor.connectionBorder.cgColor
         ring.borderWidth  = 2
         layer?.addSublayer(ring)
 
         circle.frame           = bounds.insetBy(dx: 4, dy: 4)
-        circle.backgroundColor = NSColor.controlAccentColor.cgColor
+        circle.backgroundColor = ThemeColor.connection.cgColor
         circle.cornerRadius    = circle.bounds.midY
         layer?.addSublayer(circle)
 
