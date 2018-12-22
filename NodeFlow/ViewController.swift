@@ -7,8 +7,9 @@
 //
 
 import Cocoa
+import NodeFlowKit
 
-class ViewController: NSViewController {
+class ViewController: BoardController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

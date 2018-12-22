@@ -17,7 +17,7 @@ class TestProperty: Property {
     }
 }
 
-class BoardController: NSViewController, BoardViewDelegate {
+open class BoardController: NSViewController, BoardViewDelegate {
 
     fileprivate var boardView: BoardView!
 
@@ -34,7 +34,7 @@ class BoardController: NSViewController, BoardViewDelegate {
         return Graph(nodes: nodes, connections: [])
     }()
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         boardView = BoardView(frame: view.bounds)
         boardView.graph = graph
@@ -45,18 +45,18 @@ class BoardController: NSViewController, BoardViewDelegate {
         nviews.forEach({ boardView.addSubview($0) })
     }
 
-    override func viewDidLayout() {
+    override open func viewDidLayout() {
         super.viewDidLayout()
         boardView.frame = view.bounds
     }
 
-    override var representedObject: Any? {
+    override open var representedObject: Any? {
         didSet {
 
         }
     }
 
-    func didConnect(_ input: ConnectionView, to output: ConnectionView) {
+    public func didConnect(_ input: ConnectionView, to output: ConnectionView) {
         let connection = Connection(input: input.property, output: output.property)
         input.isConnected = true
         output.isConnected = true
