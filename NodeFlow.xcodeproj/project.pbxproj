@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5A2727DE21CEAC050024A749 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2727DD21CEAC050024A749 /* Colors.swift */; };
-		5AE1CBEF21C7029F006769C5 /* BoardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1CBEE21C7029F006769C5 /* BoardController.swift */; };
+		5AE1CBEF21C7029F006769C5 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */; };
 		7D1E02F021BEA32C00032E50 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E02EF21BEA32C00032E50 /* AppDelegate.swift */; };
 		7D1E02F221BEA32C00032E50 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E02F121BEA32C00032E50 /* ViewController.swift */; };
 		7D1E02F421BEA32E00032E50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D1E02F321BEA32E00032E50 /* Assets.xcassets */; };
@@ -52,7 +52,7 @@
 
 /* Begin PBXFileReference section */
 		5A2727DD21CEAC050024A749 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		5AE1CBEE21C7029F006769C5 /* BoardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardController.swift; sourceTree = "<group>"; };
+		5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
 		7D1E02EC21BEA32C00032E50 /* NodeFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NodeFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D1E02EF21BEA32C00032E50 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7D1E02F121BEA32C00032E50 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -128,7 +128,7 @@
 			children = (
 				7D1E030621BEA3A800032E50 /* NodeFlowKit.h */,
 				7D1E030721BEA3A800032E50 /* Info.plist */,
-				5AE1CBEE21C7029F006769C5 /* BoardController.swift */,
+				5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */,
 				7D1E031121BEA3DB00032E50 /* NodeView.swift */,
 				7D1E031321BEA3FF00032E50 /* ConnectionView.swift */,
 				7D1E031521BEA42800032E50 /* BoardView.swift */,
@@ -268,7 +268,7 @@
 				5A2727DE21CEAC050024A749 /* Colors.swift in Sources */,
 				7D1E031421BEA3FF00032E50 /* ConnectionView.swift in Sources */,
 				7D379AF321CBCB1900F1BAD8 /* DraggableView.swift in Sources */,
-				5AE1CBEF21C7029F006769C5 /* BoardController.swift in Sources */,
+				5AE1CBEF21C7029F006769C5 /* BoardViewController.swift in Sources */,
 				7D8D1DDC21CD21FF006D097A /* Slider.swift in Sources */,
 				7D1E031C21BEA5D700032E50 /* Protocols.swift in Sources */,
 				7D1E031621BEA42800032E50 /* BoardView.swift in Sources */,

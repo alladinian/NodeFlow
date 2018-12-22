@@ -17,7 +17,7 @@ class TestProperty: Property {
     }
 }
 
-open class BoardController: NSViewController, BoardViewDelegate {
+open class BoardViewController: NSViewController, BoardViewDelegate {
 
     fileprivate var boardView: BoardView!
 
