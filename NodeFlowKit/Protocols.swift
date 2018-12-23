@@ -8,17 +8,9 @@
 
 import Foundation
 
-public protocol PropertyValue {
-
-}
-
 public protocol Property: class {
     var name: String { get set }
     var value: Any? { get set }
 }
 
-extension NSColor: PropertyValue {}
 
-extension NSImage: PropertyValue {}
-
-extension CGFloat: PropertyValue {}

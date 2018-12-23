@@ -11,57 +11,30 @@ import Foundation
 
 /*----------------------------------------------------------------------------*/
 
-public class Connection {
-    weak var graph: Graph? // Inverse relationship
-    var input: Property?
-    var output: Property?
+public protocol Connection {
+    var input: Property? { get }
+    var output: Property? { get }
 
-    init(input: Property, output: Property) {
-        self.input  = input
-        self.output = output
-    }
-}
-
-extension Connection: Equatable {
-    public static func == (lhs: Connection, rhs: Connection) -> Bool {
-        return lhs.input === rhs.input && lhs.output === rhs.output && lhs.output === rhs.output
-    }
+    init(input: Property, output: Property)
 }
 
 /*----------------------------------------------------------------------------*/
 
-public class Node {
-    weak var graph: Graph? // Inverse relationship
-    var inputs: [Property]
-    var outputs: [Property]
-    var evaluationFunction: ((Property) -> Void)
+public protocol Node {
+    var inputs: [Property] { get }
+    var outputs: [Property] { get }
+    var evaluationFunction: (Property) -> Void { get set }
 
-    init(inputs: [Property], outputs: [Property], evaluationFunction: @escaping ((Property) -> Void)) {
-        self.inputs             = inputs
-        self.outputs            = outputs
-        self.evaluationFunction = evaluationFunction
-    }
+    init(inputs: [Property], outputs: [Property], evaluationFunction: @escaping ((Property) -> Void))
 }
 
 /*----------------------------------------------------------------------------*/
 
-public class Graph {
-    var nodes: [Node]
-    var connections: [Connection]
+public protocol Graph {
+    var nodes: [Node] { get }
+    var connections: [Connection] { get set }
 
-    init(nodes: [Node], connections: [Connection] = []) {
-        self.nodes       = nodes
-        self.connections = connections
-        self.nodes.forEach({ $0.graph = self })
-        self.connections.forEach({ $0.graph = self })
-    }
+    init(nodes: [Node], connections: [Connection])
 
-    func addConnection(_ connection: Connection) {
-        guard !connections.contains(connection) else { return }
-        connections.append(connection)
-    }
-
-    func evaluate() {
-
-    }
+    func evaluate()
 }

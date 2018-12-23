@@ -19,20 +19,18 @@ class TestProperty: Property {
 
 open class BoardViewController: NSViewController, BoardViewDelegate {
 
+    typealias Conn = Connection
+
     fileprivate var boardView: BoardView!
 
-    #warning("Test graph")
-    var graph: Graph = {
-        var nodes: [Node] = []
-        for _ in 1...4 {
-            let inputs = [TestProperty(name: "InputProperty", value: 0.0), TestProperty(name: "OtherInputProperty", value: 1.0)]
-            let outputs = [TestProperty(name: "Output", value: 0)]
-            let node = Node(inputs: inputs, outputs: outputs, evaluationFunction: {_ in })
-            nodes.append(node)
+    var graph: Graph! {
+        didSet {
+            boardView.graph = graph
+            let nviews = graph.nodes.map(NodeView.init)
+            nviews.forEach({ boardView.addSubview($0) })
+            boardView.needsDisplay = true
         }
-
-        return Graph(nodes: nodes, connections: [])
-    }()
+    }
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -40,9 +38,6 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         boardView.graph = graph
         boardView.delegate = self
         view.addSubview(boardView)
-
-        let nviews = graph.nodes.map(NodeView.init)
-        nviews.forEach({ boardView.addSubview($0) })
     }
 
     override open func viewDidLayout() {
@@ -56,11 +51,8 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         }
     }
 
-    public func didConnect(_ input: ConnectionView, to output: ConnectionView) {
-        let connection = Connection(input: input.property, output: output.property)
-        input.isConnected = true
-        output.isConnected = true
-        graph.addConnection(connection)
+    public func didConnect(output: Property, toInput: Property) {
+        // User is responsible to add the connection to the graph
     }
 
 }

@@ -9,12 +9,12 @@
 import Cocoa
 
 public protocol BoardViewDelegate: class {
-    func didConnect(_ input: ConnectionView, to output: ConnectionView)
+    func didConnect(output: Property, toInput: Property)
 }
 
 public class BoardView: NSView {
 
-    var gridSpacing: Int       = 10
+    var gridSpacing: Int = 10
 
     // Selection variables
     fileprivate var startPoint: NSPoint!
@@ -182,7 +182,9 @@ extension BoardView {
         if let c1 = c1, let c2 = c2, c1.isInput != c2.isInput {
             let input = c1.isInput ? c1 : c2
             let output = !c1.isInput ? c1 : c2
-            delegate?.didConnect(input, to: output)
+            input.isConnected = true
+            output.isConnected = true
+            delegate?.didConnect(output: output.property, toInput: input.property)
         }
     }
 

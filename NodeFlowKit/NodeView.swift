@@ -16,7 +16,7 @@ class NodeView: NSView {
         }
     }
 
-    weak var node: Node!
+    var node: Node!
     var connections = [ConnectionView]()
 
     init(node: Node) {
