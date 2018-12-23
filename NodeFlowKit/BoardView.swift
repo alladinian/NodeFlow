@@ -14,7 +14,7 @@ public protocol BoardViewDelegate: class {
 
 public class BoardView: NSView {
 
-    var gridSpacing: Int       = 10
+    var gridSpacing = 10
 
     // Selection variables
     fileprivate var startPoint: NSPoint!
@@ -61,7 +61,8 @@ public class BoardView: NSView {
         context?.fill(rect)
 
         // Grid drawing
-        drawGrid()
+        //drawGrid()
+        drawGridPattern(context: context!)
 
         // Interactive line drawing
         if isDrawingLine {
@@ -128,6 +129,65 @@ extension BoardView {
             let points = pointsForStep(step, isVertical: false)
             NSBezierPath.strokeLine(from: points.start, to: points.end)
         }
+    }
+
+    // Alt method
+    fileprivate func drawGridPattern(context: CGContext) {
+
+        var tileBounds = NSRect(x: 0, y: 0, width: 100, height: 100)
+
+        let drawPattern: CGPatternDrawPatternCallback = { (info, context) in
+
+            func colorForStep(_ step: Int) -> NSColor {
+                let stops: [(n: Int, a: CGFloat)] = [(10, 0.3), (5, 0.2)]
+                let alpha: CGFloat = stops.lazy.first(where : { step.isMultipleOf($0.n) })?.a ?? 0.1
+                return ThemeColor.grid.withAlphaComponent(alpha)
+            }
+
+            func pointsForStep(_ step: Int, isVertical: Bool) -> (start: CGPoint, end: CGPoint) {
+                let position = CGFloat(step) * 10 - 0.5
+                let start    = CGPoint(x: isVertical ? 0 : position, y: isVertical ? position : 0)
+                let end      = CGPoint(x: isVertical ? 100 : position, y: isVertical ? position : 100)
+                return (start, end)
+            }
+
+            context.saveGState()
+
+            // Vertical Steps ↓
+            for step in 1...10 {
+                context.setStrokeColor(colorForStep(step).cgColor)
+                let points = pointsForStep(step, isVertical: true)
+                context.move(to: points.start)
+                context.addLine(to: points.end)
+                context.strokePath()
+            }
+
+            // Horizontal Steps →
+            for step in 1...10 {
+                context.setStrokeColor(colorForStep(step).cgColor)
+                let points = pointsForStep(step, isVertical: false)
+                context.move(to: points.start)
+                context.addLine(to: points.end)
+                context.strokePath()
+            }
+
+            context.restoreGState()
+        }
+
+        var callbacks = CGPatternCallbacks(version: 0, drawPattern: drawPattern, releaseInfo: nil)
+        let pattern = CGPattern(info: nil,
+                                bounds: tileBounds,
+                                matrix: .identity,
+                                xStep: tileBounds.width,
+                                yStep: tileBounds.height,
+                                tiling: .constantSpacing,
+                                isColored: true,
+                                callbacks: &callbacks)
+        let patternSpace = CGColorSpace(patternBaseSpace: nil)
+        context.setFillColorSpace(patternSpace!)
+        var alpha: CGFloat = 1.0
+        context.setFillPattern(pattern!, colorComponents: &alpha)
+        context.fill(bounds)
     }
 
 }
