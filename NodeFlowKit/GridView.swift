@@ -10,7 +10,10 @@ import Cocoa
 
 class GridView: NSView {
     var gridSpacing = 10
-    static var tileBounds = NSRect(x: 0, y: 0, width: 100, height: 100)
+    override var isFlipped: Bool {
+        return true
+    }
+    static let tileBounds = NSRect(x: 0, y: 0, width: 100, height: 100)
     static var callbacks = CGPatternCallbacks(version: 0, drawPattern: drawPattern, releaseInfo: nil)
     static let pattern = CGPattern(info: nil,
                                    bounds: tileBounds,
@@ -21,7 +24,6 @@ class GridView: NSView {
                                    isColored: true,
                                    callbacks: &callbacks)
     static let patternSpace = CGColorSpace(patternBaseSpace: nil)
-
     static let drawPattern: CGPatternDrawPatternCallback = { (info, context) in
 
         func colorForStep(_ step: Int) -> NSColor {
@@ -67,8 +69,10 @@ class GridView: NSView {
 
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
+        #warning("Could be improved by redrawing only portions of the view (?)")
         let context = NSGraphicsContext.current!.cgContext
         drawGridPattern(context: context)
+        //drawGrid()
     }
 }
 
