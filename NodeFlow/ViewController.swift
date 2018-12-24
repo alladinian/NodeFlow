@@ -8,18 +8,21 @@
 
 import Cocoa
 import NodeFlowKit
+import SceneKit
 
 class ViewController: BoardViewController {
+
+    let material = SCNMaterial()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+
     }
 
     override var representedObject: Any? {
         didSet {
-        // Update the view, if already loaded.
+        
         }
     }
 

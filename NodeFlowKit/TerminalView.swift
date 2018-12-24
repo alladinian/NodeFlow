@@ -8,7 +8,7 @@
 
 import Cocoa
 
-public class ConnectionView: NSView {
+public class TerminalView: NSView {
 
     let ring   = CALayer()
     let circle = CALayer()

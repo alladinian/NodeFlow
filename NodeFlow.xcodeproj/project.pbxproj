@@ -18,7 +18,7 @@
 		7D1E030B21BEA3A800032E50 /* NodeFlowKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D1E030421BEA3A800032E50 /* NodeFlowKit.framework */; };
 		7D1E030C21BEA3A800032E50 /* NodeFlowKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D1E030421BEA3A800032E50 /* NodeFlowKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7D1E031221BEA3DB00032E50 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031121BEA3DB00032E50 /* NodeView.swift */; };
-		7D1E031421BEA3FF00032E50 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031321BEA3FF00032E50 /* ConnectionView.swift */; };
+		7D1E031421BEA3FF00032E50 /* TerminalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031321BEA3FF00032E50 /* TerminalView.swift */; };
 		7D1E031621BEA42800032E50 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031521BEA42800032E50 /* BoardView.swift */; };
 		7D1E031A21BEA44C00032E50 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031921BEA44C00032E50 /* Extensions.swift */; };
 		7D1E031C21BEA5D700032E50 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031B21BEA5D700032E50 /* Protocols.swift */; };
@@ -66,7 +66,7 @@
 		7D1E030621BEA3A800032E50 /* NodeFlowKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeFlowKit.h; sourceTree = "<group>"; };
 		7D1E030721BEA3A800032E50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7D1E031121BEA3DB00032E50 /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
-		7D1E031321BEA3FF00032E50 /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
+		7D1E031321BEA3FF00032E50 /* TerminalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalView.swift; sourceTree = "<group>"; };
 		7D1E031521BEA42800032E50 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		7D1E031921BEA44C00032E50 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7D1E031B21BEA5D700032E50 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -132,7 +132,7 @@
 				7D1E030721BEA3A800032E50 /* Info.plist */,
 				5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */,
 				7D1E031121BEA3DB00032E50 /* NodeView.swift */,
-				7D1E031321BEA3FF00032E50 /* ConnectionView.swift */,
+				7D1E031321BEA3FF00032E50 /* TerminalView.swift */,
 				7D1E031521BEA42800032E50 /* BoardView.swift */,
 				5AB08FE221D1598E007DA7CA /* GridView.swift */,
 				7D1E031921BEA44C00032E50 /* Extensions.swift */,
@@ -269,7 +269,7 @@
 			files = (
 				7D1E031A21BEA44C00032E50 /* Extensions.swift in Sources */,
 				5A2727DE21CEAC050024A749 /* Colors.swift in Sources */,
-				7D1E031421BEA3FF00032E50 /* ConnectionView.swift in Sources */,
+				7D1E031421BEA3FF00032E50 /* TerminalView.swift in Sources */,
 				5AB08FE321D1598E007DA7CA /* GridView.swift in Sources */,
 				7D379AF321CBCB1900F1BAD8 /* DraggableView.swift in Sources */,
 				5AE1CBEF21C7029F006769C5 /* BoardViewController.swift in Sources */,

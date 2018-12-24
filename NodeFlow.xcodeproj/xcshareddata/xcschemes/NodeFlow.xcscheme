@@ -65,7 +65,7 @@
          <EnvironmentVariable
             key = "debugDraw"
             value = ""
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>

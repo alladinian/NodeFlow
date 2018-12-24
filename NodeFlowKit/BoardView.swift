@@ -9,7 +9,7 @@
 import Cocoa
 
 public protocol BoardViewDelegate: class {
-    func didConnect(_ input: ConnectionView, to output: ConnectionView)
+    func didConnect(_ input: TerminalView, to output: TerminalView)
 }
 
 public class BoardView: NSView {
@@ -28,8 +28,8 @@ public class BoardView: NSView {
         return subviews.compactMap({ $0 as? NodeView })
     }
 
-    var connectionViews: [ConnectionView] {
-        return nodeViews.flatMap({ $0.connections })
+    var terminalViews: [TerminalView] {
+        return nodeViews.flatMap({ $0.terminals })
     }
 
     public override var isFlipped: Bool { return true }
@@ -85,7 +85,7 @@ public class BoardView: NSView {
         for connection in graph?.connections ?? [] {
             let input = connection.input
             let output = connection.output
-            if let inputView = connectionViews.lazy.first(where: { $0.property === input }), let outputView = connectionViews.lazy.first(where: { $0.property === output }) {
+            if let inputView = terminalViews.lazy.first(where: { $0.property === input }), let outputView = terminalViews.lazy.first(where: { $0.property === output }) {
                 let c1f = convert(inputView.frame, from: inputView.superview)
                 let c2f = convert(outputView.frame, from: outputView.superview)
                 drawLink(from: CGPoint(x: c1f.midX, y: c1f.midY), to: CGPoint(x: c2f.midX, y: c2f.midY))
@@ -99,14 +99,22 @@ public class BoardView: NSView {
 // MARK: - Event Handling
 extension BoardView {
 
+    public override func rightMouseDown(with event: NSEvent) {
+        // Show a contextual menu
+        //        var theMenu = NSMenu(title: "Contextual Menu")
+        //        theMenu.insertItem(withTitle: "Beep", action: nil, keyEquivalent: "", at: 0)
+        //        theMenu.insertItem(withTitle: "Honk", action: nil, keyEquivalent: "", at: 1)
+        //        NSMenu.popUpContextMenu(theMenu, with: event, for: self)
+    }
+
     public override func mouseDown(with event: NSEvent) {
         window?.makeFirstResponder(self)
         initialMousePoint = convert(event.locationInWindow, from: nil)
         lastMousePoint    = initialMousePoint
 
         // If we're on top of a connectionView start drawing a line
-        for connection in connectionViews {
-            if convert(connection.frame, from: connection.superview).contains(initialMousePoint) {
+        for terminal in terminalViews {
+            if convert(terminal.frame, from: terminal.superview).contains(initialMousePoint) {
                 isDrawingLine  = true
                 break
             }
@@ -130,16 +138,16 @@ extension BoardView {
         isSelectingWithRectangle = false
         needsDisplay  = true
 
-        var c1: ConnectionView?
-        var c2: ConnectionView?
+        var c1: TerminalView?
+        var c2: TerminalView?
 
-        for connection in connectionViews {
-            if convert(connection.frame, from: connection.superview).contains(initialMousePoint) {
-                c1 = connection
+        for terminal in terminalViews {
+            if convert(terminal.frame, from: terminal.superview).contains(initialMousePoint) {
+                c1 = terminal
             }
 
-            if convert(connection.frame, from: connection.superview).contains(lastMousePoint) {
-                c2 = connection
+            if convert(terminal.frame, from: terminal.superview).contains(lastMousePoint) {
+                c2 = terminal
             }
         }
 

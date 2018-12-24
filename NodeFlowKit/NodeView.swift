@@ -17,7 +17,7 @@ class NodeView: NSView {
     }
 
     weak var node: Node!
-    var connections = [ConnectionView]()
+    var terminals = [TerminalView]()
 
     init(node: Node) {
         super.init(frame: .zero)
@@ -141,11 +141,11 @@ class NodeView: NSView {
     }
 
     fileprivate func connectionRowForProperty(_ property: Property, isInput: Bool) -> NSView {
-        let connection  = ConnectionView(property: property)
-        connection.isInput = isInput
-        connections.append(connection)
+        let terminal  = TerminalView(property: property)
+        terminal.isInput = isInput
+        terminals.append(terminal)
         let control = controlViewForProperty(property, isInput: isInput)
-        let horizontalStack = NSStackView(views: isInput ? [connection, control] : [control, connection])
+        let horizontalStack = NSStackView(views: isInput ? [terminal, control] : [control, terminal])
         horizontalStack.distribution = .fill
         horizontalStack.spacing      = 8
         return horizontalStack
@@ -189,7 +189,7 @@ class NodeView: NSView {
 extension NodeView {
 
     var isMouseOverConnection: Bool {
-        return connections.lazy.first(where: { $0.isHighlighted }) != nil
+        return terminals.lazy.first(where: { $0.isHighlighted }) != nil
     }
 
     public override func becomeFirstResponder() -> Bool {

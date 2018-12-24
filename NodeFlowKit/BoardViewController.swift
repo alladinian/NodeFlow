@@ -56,7 +56,7 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         }
     }
 
-    public func didConnect(_ input: ConnectionView, to output: ConnectionView) {
+    public func didConnect(_ input: TerminalView, to output: TerminalView) {
         let connection = Connection(input: input.property, output: output.property)
         input.isConnected = true
         output.isConnected = true
