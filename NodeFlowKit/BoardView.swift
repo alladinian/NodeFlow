@@ -138,22 +138,22 @@ extension BoardView {
         isSelectingWithRectangle = false
         needsDisplay  = true
 
-        var c1: TerminalView?
-        var c2: TerminalView?
+        var terminal1: TerminalView?
+        var terminal2: TerminalView?
 
         for terminal in terminalViews {
             if convert(terminal.frame, from: terminal.superview).contains(initialMousePoint) {
-                c1 = terminal
+                terminal1 = terminal
             }
 
             if convert(terminal.frame, from: terminal.superview).contains(lastMousePoint) {
-                c2 = terminal
+                terminal2 = terminal
             }
         }
 
-        if let c1 = c1, let c2 = c2, c1.isInput != c2.isInput {
-            let input = c1.isInput ? c1 : c2
-            let output = !c1.isInput ? c1 : c2
+        if let t1 = terminal1, let t2 = terminal2, t1.isInput != t2.isInput {
+            let input = t1.isInput ? t1 : t2
+            let output = !t1.isInput ? t1 : t2
             delegate?.didConnect(input, to: output)
         }
     }
