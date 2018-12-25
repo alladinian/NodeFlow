@@ -8,11 +8,14 @@
 
 import Foundation
 
+public protocol Property: class {
+    var name: String { get set }
+    var value: Any? { get set }
+}
 
 /*----------------------------------------------------------------------------*/
 
 public class Connection {
-    weak var graph: Graph? // Inverse relationship
     var input: Property?
     var output: Property?
 
@@ -24,19 +27,20 @@ public class Connection {
 
 extension Connection: Equatable {
     public static func == (lhs: Connection, rhs: Connection) -> Bool {
-        return lhs.input === rhs.input && lhs.output === rhs.output && lhs.output === rhs.output
+        return lhs.input === rhs.input && lhs.output === rhs.output
     }
 }
 
 /*----------------------------------------------------------------------------*/
 
 public class Node {
-    weak var graph: Graph? // Inverse relationship
-    var inputs: [Property]
-    var outputs: [Property]
-    var evaluationFunction: ((Property) -> Void)
+    public var name: String
+    public var inputs: [Property]
+    public var outputs: [Property]
+    public var evaluationFunction: ((Node) -> Void)
 
-    init(inputs: [Property], outputs: [Property], evaluationFunction: @escaping ((Property) -> Void)) {
+    public init(name: String, inputs: [Property], outputs: [Property], evaluationFunction: @escaping ((Node) -> Void)) {
+        self.name               = name
         self.inputs             = inputs
         self.outputs            = outputs
         self.evaluationFunction = evaluationFunction
@@ -46,22 +50,24 @@ public class Node {
 /*----------------------------------------------------------------------------*/
 
 public class Graph {
-    var nodes: [Node]
-    var connections: [Connection]
+    public var nodes: [Node]
+    public var connections: [Connection]
 
-    init(nodes: [Node], connections: [Connection] = []) {
+    public init(nodes: [Node], connections: [Connection] = []) {
         self.nodes       = nodes
         self.connections = connections
-        self.nodes.forEach({ $0.graph = self })
-        self.connections.forEach({ $0.graph = self })
     }
 
-    func addConnection(_ connection: Connection) {
+    public func addConnection(_ connection: Connection) {
         guard !connections.contains(connection) else { return }
         connections.append(connection)
     }
 
-    func evaluate() {
+    public func removeConnection(_ connection: Connection) {
+        connections.removeAll(where: { $0 === connection })
+    }
+
+    public func evaluate() {
 
     }
 }

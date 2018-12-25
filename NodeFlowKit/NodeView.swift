@@ -94,7 +94,7 @@ class NodeView: NSView {
         setupHeader()
         setupShadow()
 
-        title = "Node"
+        title = node.name
         titleLabel.heightAnchor.constraint(equalToConstant: kHeaderHeight).isActive = true
         stackView.addArrangedSubview(titleLabel)
 
@@ -152,13 +152,6 @@ class NodeView: NSView {
     }
 
     fileprivate func controlViewForProperty(_ property: Property, isInput: Bool) -> NSView {
-        if !isInput {
-            let label       = NSTextField(labelWithString: property.name)
-            label.font      = NSFont.systemFont(ofSize: 14)
-            label.textColor = ThemeColor.text
-            label.alignment = isInput ? .left : .right
-            return label
-        }
 
         if let value = property.value as? Double {
             let slider  = Slider(frame: .zero)
@@ -166,6 +159,12 @@ class NodeView: NSView {
             slider.name = property.name
             return slider
         }
+
+        let label       = NSTextField(labelWithString: property.name)
+        label.font      = NSFont.systemFont(ofSize: 14)
+        label.textColor = ThemeColor.text
+        label.alignment = isInput ? .left : .right
+        return label
 
         #warning("Should handle this")
         return NSView(frame: .zero)

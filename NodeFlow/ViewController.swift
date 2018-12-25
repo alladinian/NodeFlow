@@ -10,14 +10,20 @@ import Cocoa
 import NodeFlowKit
 import SceneKit
 
-class ViewController: BoardViewController {
+class TestProperty: Property {
+    var name: String
+    var value: Any?
+    init(name: String, value: Double) {
+        self.name = name
+        self.value = value
+    }
+}
 
-    let material = SCNMaterial()
+class ViewController: BoardViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
+        graph = Graph(nodes: [Node.mathNode(), Node.mathNode(), Node.mathNode()], connections: [])
     }
 
     override var representedObject: Any? {

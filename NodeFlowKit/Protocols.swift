@@ -8,17 +8,16 @@
 
 import Foundation
 
-public protocol PropertyValue {
-
+protocol BoardViewDatasource: class {
+    func numberOfNodeViews() -> Int
+    func numberOfConnections() -> Int
+    func nodeViewForIndex(_ index: Int) -> NodeView
+    func terminalViewsForNode(_ node: Node) -> [TerminalView]
+    func terminalViewsForConnectionAtIndex(_ index: Int) -> (a: TerminalView, b: TerminalView)
 }
 
-public protocol Property: class {
-    var name: String { get set }
-    var value: Any? { get set }
+protocol BoardViewDelegate: class {
+    func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView)
+    func didConnect(_ terminal: TerminalView, to otherTerminal: TerminalView)
+    func didDisconnect(_ terminal: TerminalView, from otherTerminal: TerminalView)
 }
-
-extension NSColor: PropertyValue {}
-
-extension NSImage: PropertyValue {}
-
-extension CGFloat: PropertyValue {}

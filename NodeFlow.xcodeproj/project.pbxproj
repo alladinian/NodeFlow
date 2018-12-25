@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5A2727DE21CEAC050024A749 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2727DD21CEAC050024A749 /* Colors.swift */; };
 		5AB08FE321D1598E007DA7CA /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB08FE221D1598E007DA7CA /* GridView.swift */; };
+		5ACCFBC221D2BEDF002A6DFC /* SampleNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACCFBC121D2BEDF002A6DFC /* SampleNodes.swift */; };
 		5AE1CBEF21C7029F006769C5 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */; };
 		7D1E02F021BEA32C00032E50 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E02EF21BEA32C00032E50 /* AppDelegate.swift */; };
 		7D1E02F221BEA32C00032E50 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E02F121BEA32C00032E50 /* ViewController.swift */; };
@@ -54,6 +55,7 @@
 /* Begin PBXFileReference section */
 		5A2727DD21CEAC050024A749 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		5AB08FE221D1598E007DA7CA /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
+		5ACCFBC121D2BEDF002A6DFC /* SampleNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleNodes.swift; sourceTree = "<group>"; };
 		5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
 		7D1E02EC21BEA32C00032E50 /* NodeFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NodeFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D1E02EF21BEA32C00032E50 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				7D1E02F521BEA32E00032E50 /* Main.storyboard */,
 				7D1E02F821BEA32E00032E50 /* Info.plist */,
 				7D1E02F921BEA32E00032E50 /* NodeFlow.entitlements */,
+				5ACCFBC121D2BEDF002A6DFC /* SampleNodes.swift */,
 			);
 			path = NodeFlow;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D1E02F221BEA32C00032E50 /* ViewController.swift in Sources */,
+				5ACCFBC221D2BEDF002A6DFC /* SampleNodes.swift in Sources */,
 				7D1E02F021BEA32C00032E50 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

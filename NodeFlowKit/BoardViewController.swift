@@ -8,41 +8,23 @@
 
 import Cocoa
 
-class TestProperty: Property {
-    var name: String
-    var value: Any?
-    init(name: String, value: Double) {
-        self.name = name
-        self.value = value
-    }
-}
-
 open class BoardViewController: NSViewController, BoardViewDelegate {
 
     fileprivate var boardView: BoardView!
 
-    #warning("Test graph")
-    var graph: Graph = {
-        var nodes: [Node] = []
-        for _ in 1...4 {
-            let inputs = [TestProperty(name: "InputProperty", value: 0.0), TestProperty(name: "OtherInputProperty", value: 1.0)]
-            let outputs = [TestProperty(name: "Output", value: 0)]
-            let node = Node(inputs: inputs, outputs: outputs, evaluationFunction: {_ in })
-            nodes.append(node)
+    public var graph: Graph! {
+        didSet {
+            boardView.reloadData()
         }
-
-        return Graph(nodes: nodes, connections: [])
-    }()
+    }
 
     override open func viewDidLoad() {
         super.viewDidLoad()
         boardView = BoardView(frame: view.bounds)
-        boardView.graph = graph
+        boardView.datasource = self
         boardView.delegate = self
         view.addSubview(boardView)
-
-        let nviews = graph.nodes.map(NodeView.init)
-        nviews.forEach({ boardView.addSubview($0) })
+        boardView.reloadData()
     }
 
     override open func viewDidLayout() {
@@ -56,12 +38,42 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         }
     }
 
-    public func didConnect(_ input: TerminalView, to output: TerminalView) {
-        let connection = Connection(input: input.property, output: output.property)
-        input.isConnected = true
-        output.isConnected = true
+
+
+    public func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) {
+        
+    }
+
+    public func didConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) {
+        let connection = Connection(input: terminal.property, output: otherTerminal.property)
         graph.addConnection(connection)
+    }
+
+    public func didDisconnect(_ terminal: TerminalView, from otherTerminal: TerminalView) {
+
     }
 
 }
 
+extension BoardViewController: BoardViewDatasource {
+    func numberOfNodeViews() -> Int {
+        return graph?.nodes.count ?? 0
+    }
+
+    func numberOfConnections() -> Int {
+        return graph?.connections.count ?? 0
+    }
+
+    func nodeViewForIndex(_ index: Int) -> NodeView {
+        let node = graph.nodes[index]
+        return NodeView(node: node)
+    }
+
+    func terminalViewsForNode(_ node: Node) -> [TerminalView] {
+        return []
+    }
+
+    func terminalViewsForConnectionAtIndex(_ index: Int) -> (a: TerminalView, b: TerminalView) {
+        fatalError()
+    }
+}

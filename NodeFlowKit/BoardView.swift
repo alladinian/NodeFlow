@@ -8,9 +8,7 @@
 
 import Cocoa
 
-public protocol BoardViewDelegate: class {
-    func didConnect(_ input: TerminalView, to output: TerminalView)
-}
+
 
 public class BoardView: NSView {
 
@@ -20,9 +18,8 @@ public class BoardView: NSView {
     fileprivate var startPoint: NSPoint!
     fileprivate var isSelectingWithRectangle = false
 
+    weak var datasource: BoardViewDatasource?
     weak var delegate: BoardViewDelegate?
-
-    var graph: Graph?
 
     var nodeViews: [NodeView] {
         return subviews.compactMap({ $0 as? NodeView })
@@ -62,6 +59,22 @@ public class BoardView: NSView {
         }
     }
 
+    public override func viewDidMoveToSuperview() {
+        reloadData()
+    }
+
+    public func reloadData() {
+        needsDisplay = true
+        if let datasource = datasource {
+            for index in 0..<datasource.numberOfNodeViews() {
+                let nodeView = datasource.nodeViewForIndex(index)
+                if !nodeViews.contains(nodeView) {
+                    addSubview(nodeView)
+                }
+            }
+        }
+    }
+
     public override func draw(_ rect: NSRect) {
         super.draw(rect)
 
@@ -82,15 +95,16 @@ public class BoardView: NSView {
         }
 
         // Permament lines drawing
-        for connection in graph?.connections ?? [] {
-            let input = connection.input
-            let output = connection.output
-            if let inputView = terminalViews.lazy.first(where: { $0.property === input }), let outputView = terminalViews.lazy.first(where: { $0.property === output }) {
-                let c1f = convert(inputView.frame, from: inputView.superview)
-                let c2f = convert(outputView.frame, from: outputView.superview)
-                drawLink(from: CGPoint(x: c1f.midX, y: c1f.midY), to: CGPoint(x: c2f.midX, y: c2f.midY))
+        if let datasource = datasource {
+            for index in 0..<datasource.numberOfConnections() {
+                let (t1, t2) = datasource.terminalViewsForConnectionAtIndex(index)
+                let a = convert(t1.frame, from: t1.superview)
+                let b = convert(t2.frame, from: t2.superview)
+                drawLink(from: CGPoint(x: a.midX, y: a.midY),
+                         to: CGPoint(x: b.midX, y: b.midY))
             }
         }
+
 
     }
 
@@ -154,6 +168,8 @@ extension BoardView {
         if let t1 = terminal1, let t2 = terminal2, t1.isInput != t2.isInput {
             let input = t1.isInput ? t1 : t2
             let output = !t1.isInput ? t1 : t2
+            input.isConnected = true
+            output.isConnected = true
             delegate?.didConnect(input, to: output)
         }
     }
@@ -188,8 +204,8 @@ extension BoardView {
     }
 
     func drawSelection(from startPoint: NSPoint, to endPoint: NSPoint) {
-        let fillColor   = NSColor.controlAccentColor.withAlphaComponent(0.1)
-        let strokeColor = NSColor.controlAccentColor
+        let fillColor   = ThemeColor.selection.withAlphaComponent(0.1)
+        let strokeColor = ThemeColor.selection
         // Draw the selection box
         let rect = NSMakeRect(min(startPoint.x, endPoint.x),
                               min(startPoint.y, endPoint.y),
