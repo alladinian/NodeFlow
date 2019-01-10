@@ -8,18 +8,22 @@
 
 import Cocoa
 
+@IBDesignable
 class Slider: NSControl, NSTextFieldDelegate {
 
-    var name: String = "" {
+    @IBInspectable var name: String = "" {
         didSet {
             nameField.stringValue = name
         }
     }
 
+    @IBInspectable var minimum: CGFloat = 0
+    @IBInspectable var maximum: CGFloat = 1
+
     let nameField: NSTextField = {
         let field = NSTextField(labelWithString: "")
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.font = NSFont.systemFont(ofSize: 10)
+        field.font = NSFont.boldSystemFont(ofSize: 10)
         return field
     }()
 
@@ -40,7 +44,17 @@ class Slider: NSControl, NSTextFieldDelegate {
         return field
     }()
 
-    let color = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1).withAlphaComponent(0.4)
+    @IBInspectable var color: NSColor = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1).withAlphaComponent(0.4)
+    @IBInspectable var borderWidth: CGFloat = 1 {
+        didSet {
+            needsDisplay = true
+        }
+    }
+    @IBInspectable var cornerRadius: CGFloat = 0 {
+        didSet {
+            needsDisplay = true
+        }
+    }
 
     fileprivate var value: Double = 0
 
@@ -127,9 +141,8 @@ class Slider: NSControl, NSTextFieldDelegate {
     }
 
     var bgPath: NSBezierPath {
-        let lineWidth: CGFloat = 1
-        let path = NSBezierPath(roundedRect: bounds.insetBy(dx: lineWidth/2, dy: lineWidth/2), xRadius: 0, yRadius: 0)
-        path.lineWidth = lineWidth
+        let path = NSBezierPath(roundedRect: bounds.insetBy(dx: borderWidth/2, dy: borderWidth/2), xRadius: cornerRadius, yRadius: cornerRadius)
+        path.lineWidth = borderWidth
         return path
     }
 
@@ -140,7 +153,7 @@ class Slider: NSControl, NSTextFieldDelegate {
 
     func drawFillTrack() {
         let clipPath = bgPath
-        let path = NSBezierPath(rect: NSRect(x: 0, y: 0, width: max(10, min(CGFloat(doubleValue), bounds.width)), height: bounds.height))
+        let path = NSBezierPath(rect: NSRect(x: 0, y: 0, width: CGFloat(doubleValue) / maximum * bounds.width, height: bounds.height))
         color.setFill()
         clipPath.setClip()
         path.fill()
@@ -167,7 +180,7 @@ class Slider: NSControl, NSTextFieldDelegate {
         isDragging = true
         lastMouseLocation = NSEvent.mouseLocation
         let delta = lastMouseLocation.x - initialMouseLocation.x
-        doubleValue = initialValue + Double(delta)
+        doubleValue = Double(min(max(CGFloat(initialValue) + (delta / bounds.width), minimum), maximum))
     }
 
     override func mouseUp(with event: NSEvent) {

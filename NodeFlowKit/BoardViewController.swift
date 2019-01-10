@@ -69,7 +69,7 @@ extension BoardViewController: BoardViewDatasource {
         return NodeView(node: node)
     }
 
-    func terminalViewsForNode(_ node: Node) -> [TerminalView] {
+    func terminalViewsForNodeAtIndex(_ index: Int) -> [TerminalView] {
         return []
     }
 

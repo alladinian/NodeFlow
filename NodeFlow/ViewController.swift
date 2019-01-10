@@ -10,15 +10,6 @@ import Cocoa
 import NodeFlowKit
 import SceneKit
 
-class TestProperty: Property {
-    var name: String
-    var value: Any?
-    init(name: String, value: Double) {
-        self.name = name
-        self.value = value
-    }
-}
-
 class ViewController: BoardViewController {
 
     override func viewDidLoad() {
