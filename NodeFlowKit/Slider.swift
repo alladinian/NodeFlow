@@ -17,8 +17,8 @@ class Slider: NSControl, NSTextFieldDelegate {
         }
     }
 
-    @IBInspectable var minimum: CGFloat = 0
-    @IBInspectable var maximum: CGFloat = 1
+    @IBInspectable var minimum: Double = 0
+    @IBInspectable var maximum: Double = 1
 
     let nameField: NSTextField = {
         let field = NSTextField(labelWithString: "")
@@ -45,6 +45,7 @@ class Slider: NSControl, NSTextFieldDelegate {
     }()
 
     @IBInspectable var color: NSColor = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1).withAlphaComponent(0.4)
+    let inactiveColor: NSColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.2470588235)
     @IBInspectable var borderWidth: CGFloat = 1 {
         didSet {
             needsDisplay = true
@@ -58,7 +59,7 @@ class Slider: NSControl, NSTextFieldDelegate {
 
     fileprivate var value: Double = 0
 
-    override var doubleValue: Double {
+    @IBInspectable override var doubleValue: Double {
         set {
             value = newValue
             needsDisplay = true
@@ -81,6 +82,8 @@ class Slider: NSControl, NSTextFieldDelegate {
 
     func commonInit() {
         isContinuous = true
+        translatesAutoresizingMaskIntoConstraints = false
+
         addSubview(textField)
         addSubview(nameField)
 
@@ -110,6 +113,7 @@ class Slider: NSControl, NSTextFieldDelegate {
     }
 
     @objc func editValue() {
+        isEditing = true
         textField.isEditable = true
         textField.becomeFirstResponder()
     }
@@ -117,6 +121,7 @@ class Slider: NSControl, NSTextFieldDelegate {
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         if (commandSelector == #selector(NSResponder.insertNewline(_:))) {
             // Do something against ENTER key
+            doubleValue = textField.doubleValue.clamped(to: (minimum...maximum))
             textField.isEditable = false
             window?.makeFirstResponder(nil)
             return true
@@ -132,12 +137,31 @@ class Slider: NSControl, NSTextFieldDelegate {
         } else if (commandSelector == #selector(NSResponder.cancelOperation(_:))) {
             // Do something against ESCAPE key
             textField.isEditable = false
+            textField.doubleValue = doubleValue
             window?.makeFirstResponder(nil)
             return true
         }
 
         // return true if the action was handled; otherwise false
         return false
+    }
+
+    var isEditing = false {
+        didSet {
+            needsDisplay = true
+        }
+    }
+
+    func controlTextDidBeginEditing(_ obj: Notification) {
+    }
+
+    func controlTextDidEndEditing(_ obj: Notification) {
+        textField.doubleValue = doubleValue
+        isEditing = false
+    }
+
+    func controlTextDidChange(_ obj: Notification) {
+
     }
 
     var bgPath: NSBezierPath {
@@ -147,14 +171,14 @@ class Slider: NSControl, NSTextFieldDelegate {
     }
 
     func drawBackground() {
-        color.setStroke()
+        (isEditing ? inactiveColor : color).setStroke()
         bgPath.stroke()
     }
 
     func drawFillTrack() {
         let clipPath = bgPath
-        let path = NSBezierPath(rect: NSRect(x: 0, y: 0, width: CGFloat(doubleValue) / maximum * bounds.width, height: bounds.height))
-        color.setFill()
+        let path = NSBezierPath(rect: NSRect(x: 0, y: 0, width: CGFloat(doubleValue / maximum * Double(bounds.width)), height: bounds.height))
+        (isEditing ? inactiveColor : color).setFill()
         clipPath.setClip()
         path.fill()
         path.addClip()
@@ -180,7 +204,8 @@ class Slider: NSControl, NSTextFieldDelegate {
         isDragging = true
         lastMouseLocation = NSEvent.mouseLocation
         let delta = lastMouseLocation.x - initialMouseLocation.x
-        doubleValue = Double(min(max(CGFloat(initialValue) + (delta / bounds.width), minimum), maximum))
+        let percentage = Double(delta) / Double(bounds.width) * maximum
+        doubleValue = (initialValue + percentage).clamped(to: (minimum...maximum))
     }
 
     override func mouseUp(with event: NSEvent) {
@@ -188,7 +213,24 @@ class Slider: NSControl, NSTextFieldDelegate {
     }
 
     override var intrinsicContentSize: NSSize {
-        return NSSize(width: 100, height: 20)
+        return NSSize(width: 150, height: 24)
     }
+}
 
+extension Comparable {
+    func clamped(to limits: ClosedRange<Self>) -> Self {
+        return min(max(self, limits.lowerBound), limits.upperBound)
+    }
+}
+
+extension Strideable where Stride: SignedInteger {
+    func clamped(to limits: CountableClosedRange<Self>) -> Self {
+        return min(max(self, limits.lowerBound), limits.upperBound)
+    }
+}
+
+extension Slider {
+    override func prepareForInterfaceBuilder() {
+
+    }
 }

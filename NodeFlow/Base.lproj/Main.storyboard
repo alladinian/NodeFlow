@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="K67-n8-80S">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -757,26 +758,60 @@
                         <rect key="frame" x="0.0" y="0.0" width="741" height="465"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="S1w-dF-Bov" customClass="Slider" customModule="NodeFlowKit">
+                            <customView placeholderIntrinsicWidth="180" placeholderIntrinsicHeight="24" translatesAutoresizingMaskIntoConstraints="NO" id="S1w-dF-Bov" customClass="Slider" customModule="NodeFlowKit">
                                 <rect key="frame" x="20" y="421" width="180" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="7JV-D3-YSY"/>
-                                    <constraint firstAttribute="width" constant="180" id="Gcb-wm-c0z"/>
-                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="name" value="Opacity"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="4"/>
+                                        <real key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                         <real key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="doubleValue">
+                                        <real key="value" value="0.40000000000000002"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="minimum">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="maximum">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                        <color key="value" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </customView>
+                            <customView placeholderIntrinsicWidth="180" placeholderIntrinsicHeight="24" translatesAutoresizingMaskIntoConstraints="NO" id="21C-JQ-48l" customClass="Slider" customModule="NodeFlowKit">
+                                <rect key="frame" x="20" y="389" width="180" height="24"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="name" value="Transmission"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="doubleValue">
+                                        <real key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="minimum">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="maximum">
+                                        <real key="value" value="100"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                        <color key="value" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="21C-JQ-48l" firstAttribute="leading" secondItem="DYg-dR-bmU" secondAttribute="leading" constant="20" id="dCM-JZ-Zln"/>
                             <constraint firstItem="S1w-dF-Bov" firstAttribute="leading" secondItem="DYg-dR-bmU" secondAttribute="leading" constant="20" id="hLc-qo-x3u"/>
                             <constraint firstItem="S1w-dF-Bov" firstAttribute="top" secondItem="DYg-dR-bmU" secondAttribute="top" constant="20" id="lGX-Ou-le5"/>
+                            <constraint firstItem="21C-JQ-48l" firstAttribute="top" secondItem="S1w-dF-Bov" secondAttribute="bottom" constant="8" id="qQD-R2-AhJ"/>
                         </constraints>
                     </view>
                 </viewController>
