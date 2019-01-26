@@ -8,8 +8,6 @@
 
 import Cocoa
 
-
-
 public class BoardView: NSView {
 
     fileprivate let gridView = GridView(frame: .zero)
@@ -65,13 +63,13 @@ public class BoardView: NSView {
 
     public func reloadData() {
         needsDisplay = true
-        if let datasource = datasource {
-            for index in 0..<datasource.numberOfNodeViews() {
-                let nodeView = datasource.nodeViewForIndex(index)
-                if !nodeViews.contains(nodeView) {
-                    addSubview(nodeView)
-                }
-            }
+        guard let datasource = datasource else { return }
+
+        nodeViews.forEach({ $0.removeFromSuperview() })
+
+        for index in 0..<datasource.numberOfNodeViews() {
+            let nodeView = datasource.nodeViewForIndex(index)
+            addSubview(nodeView)
         }
     }
 
@@ -82,6 +80,7 @@ public class BoardView: NSView {
 
         // BG drawing
         ThemeColor.background.setFill()
+
         context?.fill(rect)
 
         // Interactive line drawing
@@ -100,11 +99,9 @@ public class BoardView: NSView {
                 let (t1, t2) = datasource.terminalViewsForConnectionAtIndex(index)
                 let a = convert(t1.frame, from: t1.superview)
                 let b = convert(t2.frame, from: t2.superview)
-                drawLink(from: CGPoint(x: a.midX, y: a.midY),
-                         to: CGPoint(x: b.midX, y: b.midY))
+                drawLink(from: CGPoint(x: a.midX, y: a.midY), to: CGPoint(x: b.midX, y: b.midY))
             }
         }
-
 
     }
 
@@ -123,7 +120,7 @@ extension BoardView {
 
     public override func mouseDown(with event: NSEvent) {
         window?.makeFirstResponder(self)
-        initialMousePoint = convert(event.locationInWindow, from: nil)
+        initialMousePoint = event.locationConvertedFor(self)
         lastMousePoint    = initialMousePoint
 
         // If we're on top of a connectionView start drawing a line
@@ -140,7 +137,7 @@ extension BoardView {
     }
 
     public override func mouseDragged(with event: NSEvent) {
-        lastMousePoint = convert(event.locationInWindow, from: nil)
+        lastMousePoint = event.locationConvertedFor(self)
         if initialMousePoint == nil {
             initialMousePoint = lastMousePoint
         }
@@ -148,9 +145,9 @@ extension BoardView {
     }
 
     public override func mouseUp(with event: NSEvent) {
-        isDrawingLine = false
+        isDrawingLine            = false
         isSelectingWithRectangle = false
-        needsDisplay  = true
+        needsDisplay             = true
 
         var terminal1: TerminalView?
         var terminal2: TerminalView?

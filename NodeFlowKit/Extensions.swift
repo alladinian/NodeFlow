@@ -14,3 +14,8 @@ extension Int {
         return self % n == 0
     }
 }
+
+// Events
+extension NSEvent {
+    func locationConvertedFor(_ view: NSView) -> NSPoint { return view.convert(locationInWindow, from: nil) }
+}

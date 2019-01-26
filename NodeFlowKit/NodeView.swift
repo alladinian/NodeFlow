@@ -125,7 +125,7 @@ class NodeView: NSView {
     fileprivate func setupOutputs() {
         guard !node.outputs.isEmpty else { return }
         for output in node.outputs {
-            let row = connectionRowForProperty(output, isInput: false)
+            let row = connectionRowForProperty(output)
             stackView.addArrangedSubview(row)
             constraintHorizontalEdgesOf(row, to: stackView)
         }
@@ -134,40 +134,22 @@ class NodeView: NSView {
 
     fileprivate func setupInputs() {
         for input in node.inputs {
-            let row = connectionRowForProperty(input, isInput: true)
+            let row = connectionRowForProperty(input)
             stackView.addArrangedSubview(row)
             constraintHorizontalEdgesOf(row, to: stackView)
         }
     }
 
-    fileprivate func connectionRowForProperty(_ property: Property, isInput: Bool) -> NSView {
+    fileprivate func connectionRowForProperty(_ property: NodeProperty) -> NSView {
         let terminal  = TerminalView(property: property)
+        let isInput = property.isInput
         terminal.isInput = isInput
         terminals.append(terminal)
-        let control = controlViewForProperty(property, isInput: isInput)
+        let control = property.controlView
         let horizontalStack = NSStackView(views: isInput ? [terminal, control] : [control, terminal])
         horizontalStack.distribution = .fill
         horizontalStack.spacing      = 8
         return horizontalStack
-    }
-
-    fileprivate func controlViewForProperty(_ property: Property, isInput: Bool) -> NSView {
-
-        if let value = property.value as? Double {
-            let slider  = Slider(frame: .zero)
-            slider.doubleValue = value
-            slider.name = property.name
-            return slider
-        }
-
-        let label       = NSTextField(labelWithString: property.name)
-        label.font      = NSFont.systemFont(ofSize: 14)
-        label.textColor = ThemeColor.text
-        label.alignment = isInput ? .left : .right
-        return label
-
-        #warning("Should handle this")
-        return NSView(frame: .zero)
     }
 
     fileprivate func constraintHorizontalEdgesOf(_ a: NSView, to b: NSView) {
@@ -217,7 +199,7 @@ extension NodeView {
     }
 
     override public func mouseDown(with event: NSEvent) {
-        lastMousePoint = NSEvent.mouseLocation
+        lastMousePoint = event.locationInWindow
         window?.makeFirstResponder(self)
         discardCursorRects()
         NSCursor.closedHand.push()
@@ -227,14 +209,21 @@ extension NodeView {
         guard lastMousePoint != nil else {
             return
         }
-        let newPoint = NSEvent.mouseLocation
+
+        let newPoint = event.locationInWindow
         var origin   = frame.origin
         origin.x += newPoint.x - lastMousePoint.x
         origin.y += (newPoint.y - lastMousePoint.y) * (isFlipped ? -1 : 1)
-        setFrameOrigin(origin)
-        lastMousePoint = newPoint
 
+        // Move the view
+        setFrameOrigin(origin)
+
+        // Redraw superview to update any connection lines
+        #warning("Switch this on when refresh for connection lines is also ready")
+        //superview?.setNeedsDisplay(frame)
         superview?.needsDisplay = true
+
+        lastMousePoint = newPoint
     }
 
     override public func mouseUp(with event: NSEvent) {

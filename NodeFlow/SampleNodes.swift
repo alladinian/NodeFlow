@@ -9,7 +9,7 @@
 import Foundation
 import NodeFlowKit
 
-class NumProperty: Property {
+public class NumProperty: NodeProperty {
     var name: String = "Number"
     var value: Any? = nil
     init(name: String) {
@@ -17,8 +17,8 @@ class NumProperty: Property {
     }
 }
 
-extension Node {
-    static func mathNode() -> Node {
+public extension Node {
+    public static func mathNode() -> Node {
         return Node(name: "Sum",
              inputs: [NumProperty(name: "Number"), NumProperty(name: "Number")],
              outputs: [NumProperty(name: "Result")],

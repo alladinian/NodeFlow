@@ -27,13 +27,13 @@ public class TerminalView: NSView {
 
     var isInput: Bool!
 
-    weak var property: Property!
+    weak var property: NodeProperty!
 
     public override var wantsUpdateLayer: Bool {
         return true
     }
 
-    init(property: Property) {
+    init(property: NodeProperty) {
         super.init(frame: NSRect(x: 0, y: 0, width: 14, height: 14))
         self.property = property
         commonInit()

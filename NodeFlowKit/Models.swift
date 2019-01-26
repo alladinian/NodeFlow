@@ -8,20 +8,26 @@
 
 import Foundation
 
-public protocol Property: class {
+public protocol NodeProperty: class {
     var name: String { get set }
     var value: Any? { get set }
+    var controlView: NSView { get set }
+    var isInput: Bool { get set }
 }
 
 /*----------------------------------------------------------------------------*/
 
 public class Connection {
-    var input: Property?
-    var output: Property?
+    var input: NodeProperty
+    var inputTerminal: TerminalView
+    var output: NodeProperty
+    var outputTerminal: TerminalView
 
-    init(input: Property, output: Property) {
+    init(input: NodeProperty, inputTerminal: TerminalView, output: NodeProperty, outputTerminal: TerminalView) {
         self.input  = input
+        self.inputTerminal = inputTerminal
         self.output = output
+        self.outputTerminal = outputTerminal
     }
 }
 
@@ -33,13 +39,13 @@ extension Connection: Equatable {
 
 /*----------------------------------------------------------------------------*/
 
-public class Node {
+open class Node {
     public var name: String
-    public var inputs: [Property]
-    public var outputs: [Property]
+    public var inputs: [NodeProperty]
+    public var outputs: [NodeProperty]
     public var evaluationFunction: ((Node) -> Void)
 
-    public init(name: String, inputs: [Property], outputs: [Property], evaluationFunction: @escaping ((Node) -> Void)) {
+    public init(name: String, inputs: [NodeProperty], outputs: [NodeProperty], evaluationFunction: @escaping ((Node) -> Void)) {
         self.name               = name
         self.inputs             = inputs
         self.outputs            = outputs

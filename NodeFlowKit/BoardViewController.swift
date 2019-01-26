@@ -8,13 +8,13 @@
 
 import Cocoa
 
-open class BoardViewController: NSViewController, BoardViewDelegate {
+open class BoardViewController: NSViewController {
 
     fileprivate var boardView: BoardView!
 
     public var graph: Graph! {
         didSet {
-            boardView.reloadData()
+            boardView?.reloadData()
         }
     }
 
@@ -38,21 +38,21 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         }
     }
 
+}
 
-
+extension BoardViewController: BoardViewDelegate {
     public func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) {
-        
+
     }
 
     public func didConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) {
-        let connection = Connection(input: terminal.property, output: otherTerminal.property)
+        let connection = Connection(input: terminal.property, inputTerminal: terminal, output: otherTerminal.property, outputTerminal: otherTerminal)
         graph.addConnection(connection)
     }
 
     public func didDisconnect(_ terminal: TerminalView, from otherTerminal: TerminalView) {
 
     }
-
 }
 
 extension BoardViewController: BoardViewDatasource {
@@ -70,10 +70,11 @@ extension BoardViewController: BoardViewDatasource {
     }
 
     func terminalViewsForNodeAtIndex(_ index: Int) -> [TerminalView] {
-        return []
+        return boardView.nodeViews[index].terminals
     }
 
     func terminalViewsForConnectionAtIndex(_ index: Int) -> (a: TerminalView, b: TerminalView) {
-        fatalError()
+        let connection = graph.connections[index]
+        return (connection.inputTerminal, connection.outputTerminal)
     }
 }
