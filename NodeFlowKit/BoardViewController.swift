@@ -8,7 +8,7 @@
 
 import Cocoa
 
-open class BoardViewController: NSViewController {
+open class BoardViewController: NSViewController, BoardViewDelegate {
 
     fileprivate var boardView: BoardView!
 
@@ -38,21 +38,19 @@ open class BoardViewController: NSViewController {
         }
     }
 
-}
-
-extension BoardViewController: BoardViewDelegate {
-    public func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) {
-
+    @objc open func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) -> Bool {
+        return true
     }
 
-    public func didConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) {
+    @objc open func didConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) {
         let connection = Connection(input: terminal.property, inputTerminal: terminal, output: otherTerminal.property, outputTerminal: otherTerminal)
         graph.addConnection(connection)
     }
 
-    public func didDisconnect(_ terminal: TerminalView, from otherTerminal: TerminalView) {
+    @objc open func didDisconnect(_ terminal: TerminalView, from otherTerminal: TerminalView) {
 
     }
+
 }
 
 extension BoardViewController: BoardViewDatasource {

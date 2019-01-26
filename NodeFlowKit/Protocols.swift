@@ -17,7 +17,7 @@ protocol BoardViewDatasource: class {
 }
 
 protocol BoardViewDelegate: class {
-    func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView)
+    func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) -> Bool
     func didConnect(_ terminal: TerminalView, to otherTerminal: TerminalView)
     func didDisconnect(_ terminal: TerminalView, from otherTerminal: TerminalView)
 }
