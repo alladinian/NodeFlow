@@ -48,7 +48,7 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
     }
 
     @objc open func didDisconnect(_ terminal: TerminalView, from otherTerminal: TerminalView) {
-
+        #warning("Implement this")
     }
 
 }

@@ -127,6 +127,7 @@ extension BoardView {
         for terminal in terminalViews {
             if convert(terminal.frame, from: terminal.superview).contains(initialMousePoint) {
                 isDrawingLine  = true
+                terminal.isConnected = true
                 break
             }
         }
@@ -153,6 +154,8 @@ extension BoardView {
         var terminal2: TerminalView?
 
         for terminal in terminalViews {
+            terminal.isConnected = false
+            
             if convert(terminal.frame, from: terminal.superview).contains(initialMousePoint) {
                 terminal1 = terminal
             }
