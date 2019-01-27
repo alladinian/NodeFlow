@@ -84,8 +84,11 @@ public class BoardView: NSView {
         context?.fill(rect)
 
         // Interactive line drawing
+        var initiatingTerminal: TerminalView?
         if isDrawingLine {
             drawLink(from: initialMousePoint, to: lastMousePoint)
+            initiatingTerminal = terminalViews.first(where: { convert($0.frame, from: $0.superview).contains(initialMousePoint) })
+            initiatingTerminal?.isConnected = true
         }
 
         // Selection drawing
@@ -94,12 +97,15 @@ public class BoardView: NSView {
         }
 
         // Permament lines drawing
+        terminalViews.filter({ $0 !== initiatingTerminal }).forEach({ $0.isConnected = false })
         if let datasource = datasource {
             for index in 0..<datasource.numberOfConnections() {
                 let (t1, t2) = datasource.terminalViewsForConnectionAtIndex(index)
                 let a = convert(t1.frame, from: t1.superview)
                 let b = convert(t2.frame, from: t2.superview)
                 drawLink(from: CGPoint(x: a.midX, y: a.midY), to: CGPoint(x: b.midX, y: b.midY))
+                t1.isConnected = true
+                t2.isConnected = true
             }
         }
 
@@ -127,7 +133,6 @@ extension BoardView {
         for terminal in terminalViews {
             if convert(terminal.frame, from: terminal.superview).contains(initialMousePoint) {
                 isDrawingLine  = true
-                terminal.isConnected = true
                 break
             }
         }
@@ -154,8 +159,6 @@ extension BoardView {
         var terminal2: TerminalView?
 
         for terminal in terminalViews {
-            terminal.isConnected = false
-            
             if convert(terminal.frame, from: terminal.superview).contains(initialMousePoint) {
                 terminal1 = terminal
             }
@@ -168,8 +171,6 @@ extension BoardView {
         if let t1 = terminal1, let t2 = terminal2, t1.isInput != t2.isInput {
             let input = t1.isInput ? t1 : t2
             let output = !t1.isInput ? t1 : t2
-            input.isConnected = true
-            output.isConnected = true
             delegate?.didConnect(input, to: output)
         }
     }

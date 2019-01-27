@@ -54,7 +54,7 @@ public class TerminalView: NSView {
 
         ring.frame        = bounds
         ring.cornerRadius = ring.bounds.midY
-        ring.borderColor  = ThemeColor.connectionBorder.cgColor
+        ring.borderColor  = property.type.color.cgColor //ThemeColor.connectionBorder.cgColor
         ring.borderWidth  = 2
         layer?.addSublayer(ring)
 

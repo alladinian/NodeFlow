@@ -8,11 +8,31 @@
 
 import Foundation
 
+public enum NodePropertyType {
+    case color
+    case number
+    case image
+    case normal
+    case multi
+
+    var color: NSColor {
+        switch self {
+        case .color: return NSColor.systemYellow
+        case .number: return NSColor.systemBlue
+        case .image: return NSColor.systemRed
+        case .normal: return NSColor.systemPink
+        case .multi: return NSColor.systemGreen
+        }
+    }
+}
+
+
 public protocol NodeProperty: class {
     var name: String { get set }
     var value: Any? { get set }
     var controlView: NSView { get set }
-    var isInput: Bool { get set }
+    var isInput: Bool { get }
+    var type: NodePropertyType { get }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +43,7 @@ public class Connection {
     var output: NodeProperty
     var outputTerminal: TerminalView
 
-    init(input: NodeProperty, inputTerminal: TerminalView, output: NodeProperty, outputTerminal: TerminalView) {
+    public init(input: NodeProperty, inputTerminal: TerminalView, output: NodeProperty, outputTerminal: TerminalView) {
         self.input  = input
         self.inputTerminal = inputTerminal
         self.output = output
