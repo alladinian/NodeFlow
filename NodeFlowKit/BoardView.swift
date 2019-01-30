@@ -70,6 +70,10 @@ public class BoardView: NSView {
         for index in 0..<datasource.numberOfNodeViews() {
             let nodeView = datasource.nodeViewForIndex(index)
             addSubview(nodeView)
+            let y = bounds.midY + nodeView.bounds.midY
+            let x = bounds.midX - nodeView.bounds.midX - (CGFloat(index) * nodeView.bounds.width * 2)
+            nodeView.frame.origin = CGPoint(x: CGFloat(index) * 200, y: 100)
+            #warning("Fixme")
         }
     }
 
@@ -171,7 +175,9 @@ extension BoardView {
         if let t1 = terminal1, let t2 = terminal2, t1.isInput != t2.isInput {
             let input = t1.isInput ? t1 : t2
             let output = !t1.isInput ? t1 : t2
-            delegate?.didConnect(input, to: output)
+            if delegate?.shouldConnect(input, to: output) == true {
+                delegate?.didConnect(input, to: output)
+            }
         }
     }
 

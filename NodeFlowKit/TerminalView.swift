@@ -27,7 +27,7 @@ public class TerminalView: NSView {
 
     var isInput: Bool!
 
-    weak var property: NodeProperty!
+    public weak var property: NodeProperty!
 
     public override var wantsUpdateLayer: Bool {
         return true

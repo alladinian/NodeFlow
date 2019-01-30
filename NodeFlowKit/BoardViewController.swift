@@ -39,11 +39,11 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
     }
 
     @objc open func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) -> Bool {
-        return true
+        return Connection.isProperty(terminal.property, compatibleWith: otherTerminal.property)
     }
 
     @objc open func didConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) {
-        let connection = Connection(input: terminal.property, inputTerminal: terminal, output: otherTerminal.property, outputTerminal: otherTerminal)
+        let connection = Connection(inputTerminal: terminal, outputTerminal: otherTerminal)
         graph.addConnection(connection)
     }
 
