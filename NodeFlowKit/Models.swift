@@ -104,12 +104,12 @@ extension Node: Equatable {
 
 /*----------------------------------------------------------------------------*/
 
-public struct Node {
+public class Node {
     private let id: String
-    public var name: String
-    public var inputs: [NodeProperty]
-    public var outputs: [NodeProperty]
-    public var evaluationFunction: ((Node) -> Void)
+    public let name: String
+    public private(set) var inputs: [NodeProperty]
+    public private(set) var outputs: [NodeProperty]
+    public let evaluationFunction: ((Node) -> Void)
 
     public init(name: String, inputs: [NodeProperty], outputs: [NodeProperty], evaluationFunction: @escaping ((Node) -> Void)) {
         self.id                 = NSUUID().uuidString
@@ -117,6 +117,12 @@ public struct Node {
         self.inputs             = inputs
         self.outputs            = outputs
         self.evaluationFunction = evaluationFunction
+        for (i, _) in self.inputs.enumerated() {
+            self.inputs[i].node = self
+        }
+        for (i, _) in self.outputs.enumerated() {
+            self.inputs[i].node = self
+        }
     }
 }
 
