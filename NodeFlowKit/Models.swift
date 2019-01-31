@@ -28,67 +28,52 @@ protocol Option: RawRepresentable, Hashable, CaseIterable {}
 extension Set where Element: Option {
     var rawValue: Int {
         var rawValue = 0
-        for (index, element) in Element.allCases.enumerated() {
-            if self.contains(element) {
-                rawValue |= (1 << index)
-            }
+        for (index, element) in Element.allCases.enumerated() where self.contains(element) {
+            rawValue |= (1 << index)
         }
         return rawValue
     }
 }
 
-enum ContentType: String, Option {
-    case color, number, image, string, url, video, calayer, texture, scene, cubeMap
+public enum ContentType: String, Option {
+    case color, number, vector, image, string, url, video, calayer, texture, scene, cubeMap
 }
 
-typealias SupportedTypes = Set<ContentType>
+public typealias SupportedTypes = Set<ContentType>
 
-public enum NodePropertyType: String, Option {
-    case color
-    case number
-    case image
-    case normal
-    case multi
-
-    var color: NSColor {
-        switch self {
-        case .color: return NSColor.systemYellow
-        case .number: return NSColor.systemBlue
-        case .image: return NSColor.systemRed
-        case .normal: return NSColor.systemPink
-        case .multi: return NSColor.systemGreen
-        }
+extension Set where Element == ContentType {
+    static var materialContent: SupportedTypes {
+        return [.color, .number, .image, .string, .url, .video, .calayer, .texture, .scene, .cubeMap]
     }
-
-    var supportedTypes: SupportedTypes {
-        switch self {
-        case .color: return [.color]
-        case .number: return [.number]
-        case .image: return [.image]
-        case .normal: return [.image]
-        case .multi: return Set(ContentType.allCases)
-        }
-    }
-}
-
-
-public protocol NodeProperty: NSObjectProtocol {
-    var name: String { get set }
-    var value: Any? { get set }
-    var controlView: NSView { get set }
-    var isInput: Bool { get }
-    var type: NodePropertyType { get }
-    var node: Node! { get set }
 }
 
 /*----------------------------------------------------------------------------*/
 
-public class Connection {
+public protocol NodeProperty {
+    var name: String { get set }
+    var value: Any? { get set }
+    var controlView: NSView { get set }
+    var isInput: Bool { get }
+    var type: SupportedTypes { get }
+    var node: Node! { get set }
+}
+
+extension NodeProperty {
+    var terminalColor: NSColor {
+        if type == [.color] { return NSColor.systemYellow }
+        if type == [.vector] { return NSColor.systemPurple }
+        return NSColor.systemGray
+    }
+}
+
+/*----------------------------------------------------------------------------*/
+
+public struct Connection {
     private let id: String
-    public var input: NodeProperty { return inputTerminal.property }
     public var inputTerminal: TerminalView
-    public var output: NodeProperty { return outputTerminal.property }
     public var outputTerminal: TerminalView
+    public var input: NodeProperty { return inputTerminal.property }
+    public var output: NodeProperty { return outputTerminal.property }
 
     public init(inputTerminal: TerminalView, outputTerminal: TerminalView) {
         self.id             = NSUUID().uuidString
@@ -99,9 +84,11 @@ public class Connection {
     public static func isProperty(_ property: NodeProperty, compatibleWith otherProperty: NodeProperty) -> Bool {
         let input = property.isInput ? property : otherProperty
         let output = !property.isInput ? property : otherProperty
-        return input.type.supportedTypes.isSuperset(of: output.type.supportedTypes)
+        return input.type.isSuperset(of: output.type)
     }
 }
+
+/*----------------------------------------------------------------------------*/
 
 extension Connection: Equatable {
     public static func == (lhs: Connection, rhs: Connection) -> Bool {
@@ -109,9 +96,15 @@ extension Connection: Equatable {
     }
 }
 
+extension Node: Equatable {
+    public static func == (lhs: Node, rhs: Node) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
 /*----------------------------------------------------------------------------*/
 
-open class Node: NSObject {
+public struct Node {
     private let id: String
     public var name: String
     public var inputs: [NodeProperty]

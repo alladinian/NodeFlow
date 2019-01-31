@@ -39,7 +39,7 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
     }
 
     @objc open func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) -> Bool {
-        return Connection.isProperty(terminal.property, compatibleWith: otherTerminal.property)
+        return terminal.isInput != otherTerminal.isInput && Connection.isProperty(terminal.property, compatibleWith: otherTerminal.property)
     }
 
     @objc open func didConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) {
@@ -48,7 +48,11 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
     }
 
     @objc open func didDisconnect(_ terminal: TerminalView, from otherTerminal: TerminalView) {
-        #warning("Implement this")
+        guard let connection = graph.connections.first(where: { $0.inputTerminal == terminal && $0.outputTerminal == otherTerminal }) else {
+            print("Connection not found")
+            return
+        }
+        graph.removeConnection(connection)
     }
 
 }

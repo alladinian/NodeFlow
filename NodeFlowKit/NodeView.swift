@@ -16,7 +16,7 @@ class NodeView: NSView {
         }
     }
 
-    weak var node: Node!
+    var node: Node!
     var terminals = [TerminalView]()
 
     init(node: Node) {

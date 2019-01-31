@@ -27,7 +27,7 @@ public class TerminalView: NSView {
 
     var isInput: Bool!
 
-    public weak var property: NodeProperty!
+    public var property: NodeProperty!
 
     public override var wantsUpdateLayer: Bool {
         return true
@@ -54,7 +54,7 @@ public class TerminalView: NSView {
 
         ring.frame        = bounds
         ring.cornerRadius = ring.bounds.midY
-        ring.borderColor  = property.type.color.cgColor //ThemeColor.connectionBorder.cgColor
+        ring.borderColor  = property.terminalColor.cgColor
         ring.borderWidth  = 2
         layer?.addSublayer(ring)
 
