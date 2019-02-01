@@ -60,9 +60,9 @@ public protocol NodeProperty {
 
 extension NodeProperty {
     var terminalColor: NSColor {
-        if type == [.color] { return NSColor.systemYellow }
+        if type == [.number] { return NSColor.systemGray }
         if type == [.vector] { return NSColor.systemPurple }
-        return NSColor.systemGray
+        return NSColor.systemYellow
     }
 }
 
