@@ -96,7 +96,7 @@ public class BoardView: NSView {
             drawSelection(from: initialMousePoint, to: lastMousePoint)
         }
 
-        // Permament lines drawing
+        // Permanent lines drawing
         terminalViews.filter({ $0 !== initiatingTerminal }).forEach({ $0.isConnected = false })
         if let datasource = datasource {
             for index in 0..<datasource.numberOfConnections() {
@@ -116,12 +116,16 @@ public class BoardView: NSView {
 // MARK: - Event Handling
 extension BoardView {
 
+    fileprivate func terminalForPoint(_ point: CGPoint) -> TerminalView? {
+        return terminalViews.first(where: { convert($0.frame, from: $0.superview).contains(point) })
+    }
+
     public override func rightMouseDown(with event: NSEvent) {
         // Show a contextual menu
-        //        var theMenu = NSMenu(title: "Contextual Menu")
-        //        theMenu.insertItem(withTitle: "Beep", action: nil, keyEquivalent: "", at: 0)
-        //        theMenu.insertItem(withTitle: "Honk", action: nil, keyEquivalent: "", at: 1)
-        //        NSMenu.popUpContextMenu(theMenu, with: event, for: self)
+//        var theMenu = NSMenu(title: "Contextual Menu")
+//        theMenu.insertItem(withTitle: "Beep", action: nil, keyEquivalent: "", at: 0)
+//        theMenu.insertItem(withTitle: "Honk", action: nil, keyEquivalent: "", at: 1)
+//        NSMenu.popUpContextMenu(theMenu, with: event, for: self)
     }
 
     public override func mouseDown(with event: NSEvent) {
@@ -130,11 +134,8 @@ extension BoardView {
         lastMousePoint    = initialMousePoint
 
         // If we're on top of a connectionView start drawing a line
-        for terminal in terminalViews {
-            if convert(terminal.frame, from: terminal.superview).contains(initialMousePoint) {
-                isDrawingLine  = true
-                break
-            }
+        if terminalForPoint(initialMousePoint) != nil {
+            isDrawingLine = true
         }
 
         if !isDrawingLine {
@@ -155,18 +156,8 @@ extension BoardView {
         isSelectingWithRectangle = false
         needsDisplay             = true
 
-        var terminal1: TerminalView?
-        var terminal2: TerminalView?
-
-        for terminal in terminalViews {
-            if convert(terminal.frame, from: terminal.superview).contains(initialMousePoint) {
-                terminal1 = terminal
-            }
-
-            if convert(terminal.frame, from: terminal.superview).contains(lastMousePoint) {
-                terminal2 = terminal
-            }
-        }
+        let terminal1 = terminalForPoint(initialMousePoint)
+        let terminal2 = terminalForPoint(lastMousePoint)
 
         if let t1 = terminal1, let t2 = terminal2, t1.isInput != t2.isInput {
             let input = t1.isInput ? t1 : t2
