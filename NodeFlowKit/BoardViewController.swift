@@ -93,6 +93,11 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         graph.removeConnection(connection)
     }
 
+    public func addNode(_ node: Node, at point: CGPoint) {
+        graph.addNode(node)
+        boardView.addNodeAtIndex(graph.nodes.endIndex - 1, at: point)
+    }
+
 }
 
 extension BoardViewController: BoardViewDatasource {

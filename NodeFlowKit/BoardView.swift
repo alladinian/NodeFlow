@@ -73,6 +73,12 @@ public class BoardView: NSView {
         }
     }
 
+    public func addNodeAtIndex(_ index: Int, at point: CGPoint) {
+        guard let nodeView = datasource?.nodeViewForIndex(index) else { return }
+        addSubview(nodeView)
+        nodeView.setFrameOrigin(convert(point, from: nil))
+    }
+
     public override func draw(_ rect: NSRect) {
         super.draw(rect)
 
@@ -171,14 +177,6 @@ extension BoardView {
                 delegate?.didConnect(input, to: output)
             }
         }
-    }
-
-    public override func rightMouseDown(with event: NSEvent) {
-        // Show a contextual menu
-        //        var theMenu = NSMenu(title: "Contextual Menu")
-        //        theMenu.insertItem(withTitle: "Beep", action: nil, keyEquivalent: "", at: 0)
-        //        theMenu.insertItem(withTitle: "Honk", action: nil, keyEquivalent: "", at: 1)
-        //        NSMenu.popUpContextMenu(theMenu, with: event, for: self)
     }
 
     // Middle button scrolling
