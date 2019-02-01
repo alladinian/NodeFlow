@@ -17,7 +17,7 @@ class ColorGridView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         let theContext = NSGraphicsContext.current
         theContext?.saveGraphicsState()
-        NSGraphicsContext.current?.patternPhase = NSMakePoint(0, frame.size.height)
+        theContext?.patternPhase = NSMakePoint(0, frame.size.height)
         ColorGridView.color.set()
         bounds.fill()
         theContext?.restoreGraphicsState()
