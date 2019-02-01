@@ -69,6 +69,8 @@ class NodeView: NSView {
     fileprivate let kTitleMargin: CGFloat        = 10
     fileprivate let kTitleVerticalInset: CGFloat = 4
 
+    fileprivate var closeButton: NSButton!
+
     func commonInit() {
 
         translatesAutoresizingMaskIntoConstraints = false
@@ -101,12 +103,25 @@ class NodeView: NSView {
         setupOutputs()
         setupInputs()
 
+        setupCloseButton()
+
         needsDisplay = true
     }
 
     public override func layout() {
         super.layout()
         headerLayer.frame = CGRect(x: 0, y: 0, width: bounds.width, height: kHeaderHeight)
+    }
+
+    func setupCloseButton() {
+        closeButton = NSButton(image: NSImage(named: NSImage.statusUnavailableName)!, target: self, action: #selector(close))
+        closeButton.isBordered = false
+        addSubview(closeButton)
+    }
+
+    @objc func close() {
+        nextResponder?.tryToPerform(#selector(BoardViewController.removeNodeWithID), with: node.id)
+        removeFromSuperview()
     }
 
     func setupHeader() {
@@ -201,8 +216,10 @@ extension NodeView {
     override public func mouseDown(with event: NSEvent) {
         lastMousePoint = event.locationInWindow
         window?.makeFirstResponder(self)
+        /*
         discardCursorRects()
         NSCursor.closedHand.push()
+        */
     }
 
     override public func mouseDragged(with event: NSEvent) {
@@ -228,13 +245,18 @@ extension NodeView {
 
     override public func mouseUp(with event: NSEvent) {
         lastMousePoint = nil
+        /*
         NSCursor.pop()
         window?.invalidateCursorRects(for: self)
+        */
     }
 
+    /*
     override func resetCursorRects() {
         discardCursorRects()
         addCursorRect(headerLayer.bounds, cursor: NSCursor.openHand)
+        addCursorRect(closeButton.bounds, cursor: NSCursor.arrow)
     }
+    */
 
 }

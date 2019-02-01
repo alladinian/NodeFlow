@@ -73,7 +73,7 @@ public class BoardView: NSView {
         }
     }
 
-    public func addNodeAtIndex(_ index: Int, at point: CGPoint) {
+    @objc public func addNodeAtIndex(_ index: Int, at point: CGPoint) {
         guard let nodeView = datasource?.nodeViewForIndex(index) else { return }
         addSubview(nodeView)
         nodeView.setFrameOrigin(convert(point, from: nil))

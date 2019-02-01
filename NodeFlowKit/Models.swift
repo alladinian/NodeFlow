@@ -105,7 +105,7 @@ extension Node: Equatable {
 /*----------------------------------------------------------------------------*/
 
 open class Node {
-    private let id: String
+    let id: String
     public let name: String
     public private(set) var inputs: [NodeProperty]
     public private(set) var outputs: [NodeProperty]
@@ -151,7 +151,6 @@ public class Graph {
     }
 
     public func removeNode(_ node: Node) {
-        guard !nodes.contains(node) else { return }
         nodes.removeAll(where: { $0 == node })
     }
 
