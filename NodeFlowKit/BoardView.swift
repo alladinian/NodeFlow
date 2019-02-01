@@ -68,9 +68,7 @@ public class BoardView: NSView {
         for index in 0..<datasource.numberOfNodeViews() {
             let nodeView = datasource.nodeViewForIndex(index)
             addSubview(nodeView)
-            let y = bounds.midY + nodeView.bounds.midY
-            let x = bounds.midX - nodeView.bounds.midX - (CGFloat(index) * nodeView.bounds.width * 2)
-            nodeView.frame.origin = CGPoint(x: CGFloat(index) * 200, y: 100)
+            nodeView.frame.origin = CGPoint(x: CGFloat(index) * 200 + 20, y: 20)
             #warning("Fixme")
         }
     }
@@ -86,8 +84,22 @@ public class BoardView: NSView {
         // Interactive line drawing
         var initiatingTerminal: TerminalView?
         if isDrawingLine {
+
+            initiatingTerminal = terminalForPoint(initialMousePoint)
+
+            for index in 0..<(datasource?.numberOfConnections() ?? 0) {
+                if let (t1, t2) = datasource?.terminalViewsForConnectionAtIndex(index) {
+                    if let match = [t1, t2].first(where: { $0 === initiatingTerminal }) as? TerminalView, match.isInput == true {
+                        initiatingTerminal = (t1 === initiatingTerminal) ? t2 : t1
+                        let origin = CGPoint(x: initiatingTerminal?.frame.midX ?? 0, y: initiatingTerminal?.frame.midY ?? 0)
+                        initialMousePoint = convert(origin, from: initiatingTerminal?.superview)
+                        delegate?.didDisconnect(t1, from: t2)
+                    }
+                }
+            }
+
             drawLink(from: initialMousePoint, to: lastMousePoint)
-            initiatingTerminal = terminalViews.first(where: { convert($0.frame, from: $0.superview).contains(initialMousePoint) })
+
             initiatingTerminal?.isConnected = true
         }
 
@@ -116,7 +128,8 @@ public class BoardView: NSView {
 // MARK: - Event Handling
 extension BoardView {
 
-    fileprivate func terminalForPoint(_ point: CGPoint) -> TerminalView? {
+    fileprivate func terminalForPoint(_ point: CGPoint?) -> TerminalView? {
+        guard let point = point else { return nil }
         return terminalViews.first(where: { convert($0.frame, from: $0.superview).contains(point) })
     }
 
