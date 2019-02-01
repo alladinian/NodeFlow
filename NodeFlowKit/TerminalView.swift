@@ -26,6 +26,10 @@ public class TerminalView: NSView {
     }
 
     var isInput: Bool!
+    var isOutput: Bool {
+        get { return !isInput }
+        set { isInput = !newValue }
+    }
 
     public var property: NodeProperty!
 

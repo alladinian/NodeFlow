@@ -89,7 +89,7 @@ public class BoardView: NSView {
 
             for index in 0..<(datasource?.numberOfConnections() ?? 0) {
                 if let (t1, t2) = datasource?.terminalViewsForConnectionAtIndex(index) {
-                    if let match = [t1, t2].first(where: { $0 === initiatingTerminal }) as? TerminalView, match.isInput == true {
+                    if let match = [t1, t2].first(where: { $0 === initiatingTerminal }) as? TerminalView, match.isInput {
                         initiatingTerminal = (t1 === initiatingTerminal) ? t2 : t1
                         let origin = CGPoint(x: initiatingTerminal?.frame.midX ?? 0, y: initiatingTerminal?.frame.midY ?? 0)
                         initialMousePoint = convert(origin, from: initiatingTerminal?.superview)
@@ -133,14 +133,6 @@ extension BoardView {
         return terminalViews.first(where: { convert($0.frame, from: $0.superview).contains(point) })
     }
 
-    public override func rightMouseDown(with event: NSEvent) {
-        // Show a contextual menu
-//        var theMenu = NSMenu(title: "Contextual Menu")
-//        theMenu.insertItem(withTitle: "Beep", action: nil, keyEquivalent: "", at: 0)
-//        theMenu.insertItem(withTitle: "Honk", action: nil, keyEquivalent: "", at: 1)
-//        NSMenu.popUpContextMenu(theMenu, with: event, for: self)
-    }
-
     public override func mouseDown(with event: NSEvent) {
         window?.makeFirstResponder(self)
         initialMousePoint = event.locationConvertedFor(self)
@@ -179,6 +171,34 @@ extension BoardView {
                 delegate?.didConnect(input, to: output)
             }
         }
+    }
+
+    public override func rightMouseDown(with event: NSEvent) {
+        // Show a contextual menu
+        //        var theMenu = NSMenu(title: "Contextual Menu")
+        //        theMenu.insertItem(withTitle: "Beep", action: nil, keyEquivalent: "", at: 0)
+        //        theMenu.insertItem(withTitle: "Honk", action: nil, keyEquivalent: "", at: 1)
+        //        NSMenu.popUpContextMenu(theMenu, with: event, for: self)
+    }
+
+    // Middle button scrolling
+    public override func otherMouseDown(with event: NSEvent) {
+        window?.makeFirstResponder(self)
+        initialMousePoint = event.locationInWindow
+        initialMousePoint.x += visibleRect.origin.x
+        initialMousePoint.y -= visibleRect.origin.y
+        lastMousePoint    = initialMousePoint
+    }
+
+    public override func otherMouseDragged(with event: NSEvent) {
+        lastMousePoint = event.locationInWindow
+        if initialMousePoint == nil {
+            initialMousePoint = lastMousePoint
+        }
+        let deltaX = initialMousePoint.x - lastMousePoint.x
+        let deltaY = initialMousePoint.y - lastMousePoint.y
+
+        scroll(CGPoint(x: deltaX, y: deltaY * -1))
     }
 
     func drawLink(from startPoint: NSPoint, to endPoint: NSPoint) {
