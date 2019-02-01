@@ -103,7 +103,7 @@ class NodeView: NSView {
         setupOutputs()
         setupInputs()
 
-        setupCloseButton()
+        //setupCloseButton()
 
         needsDisplay = true
     }
@@ -117,6 +117,12 @@ class NodeView: NSView {
         closeButton = NSButton(image: NSImage(named: NSImage.statusUnavailableName)!, target: self, action: #selector(close))
         closeButton.isBordered = false
         addSubview(closeButton)
+    }
+
+    override func rightMouseDown(with event: NSEvent) {
+        let menu = NSMenu(title: "")
+        menu.addItem(withTitle: "Remove", action: #selector(close), keyEquivalent: "")
+        NSMenu.popUpContextMenu(menu, with: event, for: self)
     }
 
     @objc func close() {
@@ -156,7 +162,7 @@ class NodeView: NSView {
     }
 
     fileprivate func connectionRowForProperty(_ property: NodeProperty) -> NSView {
-        let terminal  = TerminalView(property: property)
+        let terminal = TerminalView(property: property)
         let isInput = property.isInput
         terminal.isInput = isInput
         terminals.append(terminal)
