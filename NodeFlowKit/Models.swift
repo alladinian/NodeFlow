@@ -41,7 +41,7 @@ public enum ContentType: String, Option {
 
 public typealias SupportedTypes = Set<ContentType>
 
-extension Set where Element == ContentType {
+public extension Set where Element == ContentType {
     static var materialContent: SupportedTypes {
         return [.color, .number, .image, .string, .url, .video, .calayer, .texture, .scene, .cubeMap]
     }
@@ -104,7 +104,7 @@ extension Node: Equatable {
 
 /*----------------------------------------------------------------------------*/
 
-public class Node {
+open class Node {
     private let id: String
     public let name: String
     public private(set) var inputs: [NodeProperty]
@@ -121,7 +121,7 @@ public class Node {
             self.inputs[i].node = self
         }
         for (i, _) in self.outputs.enumerated() {
-            self.inputs[i].node = self
+            self.outputs[i].node = self
         }
     }
 }

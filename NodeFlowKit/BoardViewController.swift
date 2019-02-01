@@ -77,13 +77,13 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
             && terminal.property.node != otherTerminal.property.node
     }
 
-    @objc open func didConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) {
-        let connection = Connection(inputTerminal: terminal, outputTerminal: otherTerminal)
+    @objc open func didConnect(_ inputTerminal: TerminalView, to outputTerminal: TerminalView) {
+        let connection = Connection(inputTerminal: inputTerminal, outputTerminal: outputTerminal)
         graph.addConnection(connection)
     }
 
-    @objc open func didDisconnect(_ terminal: TerminalView, from otherTerminal: TerminalView) {
-        guard let connection = graph.connections.first(where: { $0.inputTerminal == terminal && $0.outputTerminal == otherTerminal }) else {
+    @objc open func didDisconnect(_ inputTerminal: TerminalView, from outputTerminal: TerminalView) {
+        guard let connection = graph.connections.first(where: { $0.inputTerminal == inputTerminal && $0.outputTerminal == outputTerminal }) else {
             print("Connection not found")
             return
         }
