@@ -10,8 +10,6 @@ import Cocoa
 
 public class BoardView: NSView {
 
-    fileprivate let gridView = GridView(frame: .zero)
-
     // Selection variables
     fileprivate var startPoint: NSPoint!
     fileprivate var isSelectingWithRectangle = false
@@ -30,7 +28,7 @@ public class BoardView: NSView {
     public override var isFlipped: Bool { return true }
     public override var acceptsFirstResponder: Bool { return true }
     public override var wantsUpdateLayer: Bool { return false }
-    public override var isOpaque: Bool { return true }
+    public override var isOpaque: Bool { return false }
 
     // Lines
     fileprivate var initialMousePoint: CGPoint!
@@ -48,12 +46,12 @@ public class BoardView: NSView {
     }
 
     func commonInit() {
-        addSubview(gridView)
+
     }
 
     public override var frame: NSRect {
         didSet {
-            gridView.frame = bounds
+
         }
     }
 
@@ -80,12 +78,10 @@ public class BoardView: NSView {
     public override func draw(_ rect: NSRect) {
         super.draw(rect)
 
-        let context = NSGraphicsContext.current?.cgContext
-
         // BG drawing
-        ThemeColor.background.setFill()
-
-        context?.fill(rect)
+        //ThemeColor.background.setFill()
+        NSColor.clear.set()
+        rect.fill(using: .sourceOver)
 
         // Interactive line drawing
         var initiatingTerminal: TerminalView?

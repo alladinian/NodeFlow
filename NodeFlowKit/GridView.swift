@@ -74,6 +74,12 @@ class GridView: NSView {
         drawGridPattern(context: context)
         //drawGrid()
     }
+
+    func image() -> NSImage {
+        let imageRepresentation = bitmapImageRepForCachingDisplay(in: bounds)!
+        cacheDisplay(in: bounds, to: imageRepresentation)
+        return NSImage(cgImage: imageRepresentation.cgImage!, size: bounds.size)
+    }
 }
 
 // MARK: - Grid drawing (non pattern)

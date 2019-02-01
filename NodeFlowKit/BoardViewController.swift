@@ -8,28 +8,61 @@
 
 import Cocoa
 
+class FlippedScrollView: NSScrollView {
+    override var isFlipped: Bool { return true }
+}
+
+class ColorGridView: NSView {
+    static let color = NSColor(patternImage: GridView(frame: CGRect(x: 0, y: 0, width: 100, height: 100)).image())
+    override func draw(_ dirtyRect: NSRect) {
+        let theContext = NSGraphicsContext.current
+        theContext?.saveGraphicsState()
+        NSGraphicsContext.current?.patternPhase = NSMakePoint(0, frame.size.height)
+        ColorGridView.color.set()
+        bounds.fill()
+        theContext?.restoreGraphicsState()
+    }
+}
+
 open class BoardViewController: NSViewController, BoardViewDelegate {
 
-    fileprivate var boardView: BoardView!
+    fileprivate var scrollView = FlippedScrollView(frame: .zero)
+    fileprivate var boardView = BoardView(frame: CGRect(x: 0, y: 0, width: 5000, height: 5000))
 
     public var graph: Graph! {
         didSet {
-            boardView?.reloadData()
+            boardView.reloadData()
         }
+    }
+
+    required public init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+
+    func commonInit() {
+        view = ColorGridView()
     }
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-        boardView = BoardView(frame: view.bounds)
-        boardView.datasource = self
-        boardView.delegate = self
-        view.addSubview(boardView)
+        scrollView.drawsBackground       = false
+        scrollView.hasHorizontalScroller = true
+        scrollView.hasVerticalScroller   = true
+        scrollView.allowsMagnification   = true
+
+        boardView.translatesAutoresizingMaskIntoConstraints = false
+        boardView.datasource                                = self
+        boardView.delegate                                  = self
+
+        scrollView.documentView = boardView
+        view.addSubview(scrollView)
         boardView.reloadData()
     }
 
     override open func viewDidLayout() {
         super.viewDidLayout()
-        boardView.frame = view.bounds
+        scrollView.frame = view.bounds
     }
 
     override open var representedObject: Any? {
