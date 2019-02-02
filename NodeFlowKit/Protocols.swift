@@ -13,7 +13,7 @@ protocol BoardViewDatasource: class {
     func numberOfConnections() -> Int
     func nodeViewForIndex(_ index: Int) -> NodeView
     func terminalViewsForNodeAtIndex(_ index: Int) -> [TerminalView]
-    func terminalViewsForConnectionAtIndex(_ index: Int) -> (a: TerminalView, b: TerminalView)
+    func terminalViewsForConnectionAtIndex(_ index: Int) -> (a: TerminalView, b: TerminalView)?
 }
 
 protocol BoardViewDelegate: class {

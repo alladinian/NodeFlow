@@ -124,7 +124,8 @@ extension BoardViewController: BoardViewDatasource {
         return boardView.nodeViews[index].terminals
     }
 
-    func terminalViewsForConnectionAtIndex(_ index: Int) -> (a: TerminalView, b: TerminalView) {
+    func terminalViewsForConnectionAtIndex(_ index: Int) -> (a: TerminalView, b: TerminalView)? {
+        guard index < graph.connections.endIndex else { return nil }
         let connection = graph.connections[index]
         return (connection.inputTerminal, connection.outputTerminal)
     }

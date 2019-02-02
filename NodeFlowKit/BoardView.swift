@@ -118,7 +118,7 @@ public class BoardView: NSView {
         terminalViews.filter({ $0 !== initiatingTerminal }).forEach({ $0.isConnected = false })
         if let datasource = datasource {
             for index in 0..<datasource.numberOfConnections() {
-                let (t1, t2) = datasource.terminalViewsForConnectionAtIndex(index)
+                guard let (t1, t2) = datasource.terminalViewsForConnectionAtIndex(index) else { continue }
                 let a = convert(t1.frame, from: t1.superview)
                 let b = convert(t2.frame, from: t2.superview)
                 drawLink(from: CGPoint(x: a.midX, y: a.midY), to: CGPoint(x: b.midX, y: b.midY))
