@@ -287,9 +287,17 @@ extension BoardView {
         path.stroke()
 
         for nodeView in nodeViews {
-            nodeView.isSelected = rect.contains(nodeView.frame)
+            nodeView.isSelected = rect.intersects(nodeView.frame)
         }
+    }
 
+    @objc func moveSelectedNodesBy(_ value: NSValue) {
+        let delta = value.pointValue
+        for nodeView in nodeViews.filter({ $0.isSelected }) {
+            let newX = nodeView.frame.origin.x + delta.x
+            let newY = nodeView.frame.origin.y + delta.y
+            nodeView.setFrameOrigin(CGPoint(x: newX, y: newY))
+        }
     }
 
 }

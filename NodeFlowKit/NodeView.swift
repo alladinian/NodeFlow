@@ -235,11 +235,14 @@ extension NodeView {
 
         let newPoint = event.locationInWindow
         var origin   = frame.origin
-        origin.x += newPoint.x - lastMousePoint.x
-        origin.y += (newPoint.y - lastMousePoint.y) * (isFlipped ? -1 : 1)
+        let deltaX = newPoint.x - lastMousePoint.x
+        let deltaY = (newPoint.y - lastMousePoint.y) * (isFlipped ? -1 : 1)
+        origin.x += deltaX
+        origin.y += deltaY
 
         // Move the view
-        setFrameOrigin(origin)
+        //setFrameOrigin(origin)
+        nextResponder?.tryToPerform(#selector(BoardView.moveSelectedNodesBy(_:)), with: NSValue(point: CGPoint(x: deltaX, y: deltaY)))
 
         // Redraw superview to update any connection lines
         #warning("Switch this on when refresh for connection lines is also ready")
