@@ -10,6 +10,16 @@ import Cocoa
 
 class FlippedScrollView: NSScrollView {
     override var isFlipped: Bool { return true }
+
+    open override func scrollWheel(with event: NSEvent) {
+        guard event.modifierFlags.contains(.option) else { super.scrollWheel(with: event); return }
+        let pt = documentView?.convert(event.locationInWindow, from: nil)
+        var by: CGFloat = event.scrollingDeltaY * 0.001 // The smallest pinch-zoom amount seems to be about 0.002, but that was a bit too coarse.
+        if !event.hasPreciseScrollingDeltas {
+            by *= verticalLineScroll
+        }
+        setMagnification(magnification + by, centeredAt: pt ?? .zero)
+    }
 }
 
 class ColorGridView: NSView {

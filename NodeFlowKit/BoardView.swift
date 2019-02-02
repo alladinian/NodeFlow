@@ -207,6 +207,10 @@ extension BoardView {
         initialMousePoint.x += visibleRect.origin.x
         initialMousePoint.y -= visibleRect.origin.y
         lastMousePoint    = initialMousePoint
+
+        if event.clickCount == 2 {
+            nextResponder?.tryToPerform(#selector(setter: NSScrollView.magnification), with: NSNumber(value: 1.0))
+        }
     }
 
     public override func otherMouseDragged(with event: NSEvent) {
