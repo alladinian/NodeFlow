@@ -22,18 +22,6 @@ class FlippedScrollView: NSScrollView {
     }
 }
 
-class ColorGridView: NSView {
-    static let color = NSColor(patternImage: GridView(frame: CGRect(x: 0, y: 0, width: 100, height: 100)).image())
-    override func draw(_ dirtyRect: NSRect) {
-        let theContext = NSGraphicsContext.current
-        theContext?.saveGraphicsState()
-        theContext?.patternPhase = NSMakePoint(0, frame.size.height)
-        ColorGridView.color.set()
-        bounds.fill()
-        theContext?.restoreGraphicsState()
-    }
-}
-
 open class BoardViewController: NSViewController, BoardViewDelegate {
 
     fileprivate var scrollView = FlippedScrollView(frame: .zero)
@@ -51,12 +39,10 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
     }
 
     func commonInit() {
-        view = ColorGridView()
     }
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-        scrollView.drawsBackground       = false
         scrollView.hasHorizontalScroller = true
         scrollView.hasVerticalScroller   = true
         scrollView.allowsMagnification   = true

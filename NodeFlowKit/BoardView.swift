@@ -8,6 +8,19 @@
 
 import Cocoa
 
+class ColorGridView: NSView {
+    static let color = NSColor(patternImage: GridView(frame: CGRect(x: 0, y: 0, width: 100, height: 100)).image())
+    override func draw(_ dirtyRect: NSRect) {
+        let theContext = NSGraphicsContext.current
+        theContext?.saveGraphicsState()
+        theContext?.patternPhase = NSMakePoint(0, frame.size.height)
+        ColorGridView.color.set()
+        bounds.fill()
+        theContext?.restoreGraphicsState()
+    }
+}
+
+
 public class BoardView: NSView {
 
     // Selection variables
@@ -51,12 +64,10 @@ public class BoardView: NSView {
     }
 
     func commonInit() {
-
     }
 
     public override var frame: NSRect {
         didSet {
-
         }
     }
 
@@ -88,9 +99,16 @@ public class BoardView: NSView {
         super.draw(rect)
 
         // BG drawing
-        //ThemeColor.background.setFill()
-        NSColor.clear.set()
-        rect.fill(using: .sourceOver)
+        ThemeColor.background.setFill()
+        rect.fill()
+
+        // Grid drawing
+        let theContext = NSGraphicsContext.current
+        theContext?.saveGraphicsState()
+        theContext?.patternPhase = NSMakePoint(0, rect.size.height)
+        ColorGridView.color.set()
+        rect.fill()
+        theContext?.restoreGraphicsState()
 
         // Interactive line drawing
         var initiatingTerminal: TerminalView?
