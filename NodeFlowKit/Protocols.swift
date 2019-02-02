@@ -16,8 +16,10 @@ protocol BoardViewDatasource: class {
     func terminalViewsForConnectionAtIndex(_ index: Int) -> (a: TerminalView, b: TerminalView)?
 }
 
-protocol BoardViewDelegate: class {
+public protocol BoardViewDelegate: class {
     func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) -> Bool
     func didConnect(_ inputTerminal: TerminalView, to outputTerminal: TerminalView)
     func didDisconnect(_ inputTerminal: TerminalView, from outputTerminal: TerminalView)
+    func allowedDraggedTypes() -> [NSPasteboard.PasteboardType]
+    func didDropWithInfo(_ info: NSDraggingInfo)
 }

@@ -27,7 +27,7 @@ class ColorGridView: NSView {
 open class BoardViewController: NSViewController, BoardViewDelegate {
 
     fileprivate var scrollView = FlippedScrollView(frame: .zero)
-    fileprivate var boardView = BoardView(frame: CGRect(x: 0, y: 0, width: 5000, height: 5000))
+    public var boardView = BoardView(frame: CGRect(x: 0, y: 0, width: 5000, height: 5000))
 
     public var graph: Graph! {
         didSet {
@@ -103,6 +103,12 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         graph.removeNode(node)
         // Removes itself from the boardview
     }
+
+    open func allowedDraggedTypes() -> [NSPasteboard.PasteboardType] {
+        return []
+    }
+
+    open func didDropWithInfo(_ info: NSDraggingInfo) {}
 
 }
 

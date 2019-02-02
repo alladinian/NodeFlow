@@ -15,7 +15,12 @@ public class BoardView: NSView {
     fileprivate var isSelectingWithRectangle = false
 
     weak var datasource: BoardViewDatasource?
-    weak var delegate: BoardViewDelegate?
+    public weak var delegate: BoardViewDelegate? {
+        didSet {
+            guard let delegate = delegate else { return }
+            registerForDraggedTypes(delegate.allowedDraggedTypes())
+        }
+    }
 
     var nodeViews: [NodeView] {
         return subviews.compactMap({ $0 as? NodeView })
@@ -130,6 +135,22 @@ public class BoardView: NSView {
     }
 
 }
+
+/*--------------------------------------------------------------------------------*/
+
+// MARK: - Drag & Drop
+extension BoardView {
+    override public func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
+        return .generic
+    }
+
+    override public func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
+        delegate?.didDropWithInfo(sender)
+        return true
+    }
+}
+
+/*--------------------------------------------------------------------------------*/
 
 // MARK: - Event Handling
 extension BoardView {
