@@ -285,6 +285,11 @@ extension BoardView {
         strokeColor.setStroke()
         path.fill()
         path.stroke()
+
+        for nodeView in nodeViews {
+            nodeView.isSelected = rect.contains(nodeView.frame)
+        }
+
     }
 
 }

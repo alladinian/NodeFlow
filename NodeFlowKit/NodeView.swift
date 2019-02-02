@@ -10,7 +10,7 @@ import Cocoa
 
 class NodeView: NSView {
 
-    private(set) var isSelected: Bool = false {
+    public var isSelected: Bool = false {
         didSet {
             needsDisplay = true
         }
