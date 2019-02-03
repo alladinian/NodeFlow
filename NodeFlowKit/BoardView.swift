@@ -52,7 +52,7 @@ class LinkLayer: CAShapeLayer {
         lineCap     = .round
         strokeColor = ThemeColor.line.cgColor
         fillColor   = NSColor.clear.cgColor
-        zPosition   = -1
+        zPosition   = -1 // Behind nodeviews
     }
 }
 
@@ -92,7 +92,13 @@ public class BoardView: NSView {
 
     fileprivate let activeLinkLayer = LinkLayer()
     fileprivate var linkLayers = [LinkLayer]()
-    fileprivate let activeSelectionLayer = CAShapeLayer()
+    fileprivate let activeSelectionLayer: CAShapeLayer = {
+        let layer = CAShapeLayer()
+        layer.lineWidth = 1
+        layer.fillColor = ThemeColor.selection.withAlphaComponent(0.1).cgColor
+        layer.strokeColor = ThemeColor.selection.cgColor
+        return layer
+    }()
 
     public override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -108,8 +114,10 @@ public class BoardView: NSView {
         wantsLayer = true
         gridView.frame = self.bounds
         gridView.wantsLayer = true
-        gridView.layer?.zPosition = -2
+        gridView.layer?.zPosition = -2 // Behind everything
+        activeSelectionLayer.zPosition = 1 // Above nodeviews
         layer?.addSublayer(activeLinkLayer)
+        layer?.addSublayer(activeSelectionLayer)
         addSubview(gridView)
     }
 
@@ -188,6 +196,14 @@ public class BoardView: NSView {
             initiatingTerminal?.isConnected = true
         }
 
+        // Selection drawing
+        if isSelectingWithRectangle {
+            activeSelectionLayer.path = selectionPathBetween(point: initialMousePoint, and: lastMousePoint).cgPath
+            for nodeView in nodeViews {
+                nodeView.isSelected = rectBetween(point: initialMousePoint, and: lastMousePoint).intersects(nodeView.frame)
+            }
+        }
+
         // Permanent lines drawing
         terminalViews.filter({ $0 !== initiatingTerminal }).forEach({ $0.isConnected = false })
         for link in linkLayers {
@@ -198,55 +214,6 @@ public class BoardView: NSView {
             t1.isConnected = true
             t2.isConnected = true
         }
-    }
-
-    public override func draw(_ rect: NSRect) {
-        super.draw(rect)
-
-        // BG drawing
-        NSColor.clear.setFill()
-        rect.fill(using: .sourceOver)
-
-        // Interactive line drawing
-        var initiatingTerminal: TerminalView?
-        if isDrawingLine {
-
-            initiatingTerminal = terminalForPoint(initialMousePoint)
-
-            for index in 0..<(datasource?.numberOfConnections() ?? 0) {
-                if let (t1, t2) = datasource?.terminalViewsForConnectionAtIndex(index) {
-                    if let match = [t1, t2].first(where: { $0 === initiatingTerminal }) as? TerminalView, match.isInput {
-                        initiatingTerminal = (t1 === initiatingTerminal) ? t2 : t1
-                        let origin = CGPoint(x: initiatingTerminal?.frame.midX ?? 0, y: initiatingTerminal?.frame.midY ?? 0)
-                        initialMousePoint = convert(origin, from: initiatingTerminal?.superview)
-                        delegate?.didDisconnect(t1, from: t2)
-                    }
-                }
-            }
-
-            drawLink(from: initialMousePoint, to: lastMousePoint)
-
-            initiatingTerminal?.isConnected = true
-        }
-
-        // Selection drawing
-        if isSelectingWithRectangle {
-            drawSelection(from: initialMousePoint, to: lastMousePoint)
-        }
-
-        // Permanent lines drawing
-        terminalViews.filter({ $0 !== initiatingTerminal }).forEach({ $0.isConnected = false })
-        if let datasource = datasource {
-            for index in 0..<datasource.numberOfConnections() {
-                guard let (t1, t2) = datasource.terminalViewsForConnectionAtIndex(index) else { continue }
-                let a = convert(t1.frame, from: t1.superview)
-                let b = convert(t2.frame, from: t2.superview)
-                drawLink(from: CGPoint(x: a.midX, y: a.midY), to: CGPoint(x: b.midX, y: b.midY))
-                t1.isConnected = true
-                t2.isConnected = true
-            }
-        }
-
     }
 
 }
@@ -286,16 +253,20 @@ extension BoardView {
             isDrawingLine = true
         }
 
-        if !isDrawingLine {
-            isSelectingWithRectangle = true
-        }
+        nodeViews.forEach({ $0.isSelected = false })
     }
 
     public override func mouseDragged(with event: NSEvent) {
         lastMousePoint = event.locationConvertedFor(self)
+
         if initialMousePoint == nil {
             initialMousePoint = lastMousePoint
         }
+
+        if !isDrawingLine {
+            isSelectingWithRectangle = true
+        }
+
         needsDisplay = true
     }
 
@@ -372,28 +343,9 @@ extension BoardView {
         return path
     }
 
-    func drawLink(from startPoint: NSPoint, to endPoint: NSPoint) {
-        let color = ThemeColor.line
-        let path = linkPathBetween(point: startPoint, and: endPoint)
-        color.set()
-        path.stroke()
-    }
-
-    func drawSelection(from startPoint: NSPoint, to endPoint: NSPoint) {
-        let fillColor   = ThemeColor.selection.withAlphaComponent(0.1)
-        let strokeColor = ThemeColor.selection
-        // Draw the selection box
-        let rect = rectBetween(point: startPoint, and: endPoint)
-        let path = NSBezierPath(rect: rect)
-        path.lineWidth = 1.0
-        fillColor.setFill()
-        strokeColor.setStroke()
-        path.fill()
-        path.stroke()
-
-        for nodeView in nodeViews {
-            nodeView.isSelected = rect.intersects(nodeView.frame)
-        }
+    func selectionPathBetween(point p1: NSPoint, and p2: NSPoint) -> NSBezierPath {
+        let rect = rectBetween(point: p1, and: p2)
+        return NSBezierPath(rect: rect)
     }
 
     @objc func moveSelectedNodesBy(_ value: NSValue) {
