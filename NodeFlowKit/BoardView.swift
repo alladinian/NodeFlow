@@ -20,6 +20,7 @@ class ColorGridView: NSView {
     }
 }
 
+/*--------------------------------------------------------------------------------*/
 
 public class BoardView: NSView {
 
@@ -242,11 +243,10 @@ extension BoardView {
         scroll(CGPoint(x: deltaX, y: deltaY * -1))
     }
 
-    func drawLink(from startPoint: NSPoint, to endPoint: NSPoint) {
-        let color = ThemeColor.line
+    func pathBetween(point p1: NSPoint, and p2: NSPoint) -> NSBezierPath {
         // Shadow vars & Swap depending on direction
-        var inputPoint = startPoint
-        var outputPoint = endPoint
+        var inputPoint = p1
+        var outputPoint = p2
 
         if inputPoint.x > outputPoint.x {
             swap(&inputPoint, &outputPoint)
@@ -263,22 +263,26 @@ extension BoardView {
 
         path.move(to: inputPoint)
         path.curve(to: outputPoint, controlPoint1: p1, controlPoint2: p2)
-        color.set()
-        path.stroke()
 
         if ProcessInfo.processInfo.environment["debugDraw"] != nil {
             drawControlPoints([p1, p2], ofPoints: [inputPoint, outputPoint])
         }
+        
+        return path
+    }
+
+    func drawLink(from startPoint: NSPoint, to endPoint: NSPoint) {
+        let color = ThemeColor.line
+        let path = pathBetween(point: startPoint, and: endPoint)
+        color.set()
+        path.stroke()
     }
 
     func drawSelection(from startPoint: NSPoint, to endPoint: NSPoint) {
         let fillColor   = ThemeColor.selection.withAlphaComponent(0.1)
         let strokeColor = ThemeColor.selection
         // Draw the selection box
-        let rect = NSMakeRect(min(startPoint.x, endPoint.x),
-                              min(startPoint.y, endPoint.y),
-                              abs(startPoint.x - endPoint.x),
-                              abs(startPoint.y - endPoint.y))
+        let rect = rectBetween(point: startPoint, and: endPoint)
         let path = NSBezierPath(rect: rect)
         path.lineWidth = 1.0
         fillColor.setFill()
@@ -305,6 +309,9 @@ extension BoardView {
 // MARK: - DEBUG Visualizations
 extension BoardView {
     func drawControlPoints(_ controlPoints: [NSPoint], ofPoints points: [NSPoint]) {
+        let context = NSGraphicsContext.current
+        context?.saveGraphicsState()
+
         let color = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1).withAlphaComponent(0.4)
         color.set()
         color.setFill()
@@ -318,5 +325,7 @@ extension BoardView {
             line.line(to: p)
             line.stroke()
         }
+
+        context?.restoreGraphicsState()
     }
 }
