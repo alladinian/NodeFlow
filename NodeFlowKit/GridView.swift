@@ -68,8 +68,6 @@ class GridView: NSView {
     }
 
     override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-        #warning("Could be improved by redrawing only portions of the view (?)")
         let context = NSGraphicsContext.current!.cgContext
         drawGridPattern(context: context)
         //drawGrid()
