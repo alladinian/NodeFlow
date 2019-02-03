@@ -53,6 +53,9 @@ class LinkLayer: CAShapeLayer {
         strokeColor = ThemeColor.line.cgColor
         fillColor   = NSColor.clear.cgColor
         zPosition   = -1 // Behind nodeviews
+        shadowColor = NSColor.black.cgColor
+        shadowRadius = 4
+        shadowOpacity = 0.2
     }
 }
 
