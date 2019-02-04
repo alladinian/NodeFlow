@@ -10,6 +10,8 @@ import Foundation
 import NodeFlowKit
 
 struct NumProperty: NodeProperty {
+    var topAccessoryView: NSView?
+    var bottomAccessoryView: NSView?
     var type: SupportedTypes = [.number]
     var controlView: NSView
     var isInput: Bool
