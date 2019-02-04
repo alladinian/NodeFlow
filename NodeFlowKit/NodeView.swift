@@ -200,7 +200,6 @@ class NodeView: NSView {
     }
 
     public override func updateLayer() {
-        super.updateLayer()
         headerColor        = ThemeColor.nodeHeader
         color              = ThemeColor.nodeBackground.withAlphaComponent(0.95)
         layer?.borderColor = isSelected ? ThemeColor.nodeSelection.cgColor : NSColor.clear.cgColor
