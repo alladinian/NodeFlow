@@ -83,8 +83,8 @@ class NodeView: NSView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 50),
-            stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 50)
+            stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 100),
+            stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60)
         ]
 
         NSLayoutConstraint.activate(stackConstraints)
@@ -263,8 +263,6 @@ extension NodeView {
         nextResponder?.tryToPerform(#selector(BoardView.moveSelectedNodesBy(_:)), with: NSValue(point: CGPoint(x: deltaX, y: deltaY)))
 
         // Redraw superview to update any connection lines
-        #warning("Switch this on when refresh for connection lines is also ready")
-        //superview?.setNeedsDisplay(frame)
         superview?.needsDisplay = true
 
         lastMousePoint = newPoint
