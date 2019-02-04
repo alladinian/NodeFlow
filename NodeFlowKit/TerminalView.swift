@@ -10,7 +10,7 @@ import Cocoa
 
 public class TerminalView: NSView {
 
-    let ring   = CALayer()
+    var rings  = [CALayer]()
     let circle = CALayer()
 
     var isConnected: Bool = false {
@@ -56,11 +56,24 @@ public class TerminalView: NSView {
     func commonInit() {
         wantsLayer = true
 
-        ring.frame        = bounds
-        ring.cornerRadius = ring.bounds.midY
-        ring.borderColor  = property.terminalColor.cgColor
-        ring.borderWidth  = 2
-        layer?.addSublayer(ring)
+        let colors = Set(property.type.map({$0.associatedColor}))
+
+        for (index, color) in colors.enumerated() {
+            let ring = CAShapeLayer()
+            let rect = bounds.insetBy(dx: 2, dy: 2)
+            ring.path = CGPath(ellipseIn: rect, transform: nil)
+            ring.bounds = rect
+            ring.strokeColor = color.cgColor
+            ring.lineWidth = 2
+            ring.fillColor = NSColor.clear.cgColor
+            let step = 1.0 / CGFloat(colors.count)
+            ring.strokeStart = CGFloat(index) * step
+            ring.strokeEnd = ring.strokeStart + step
+            ring.transform = CATransform3DMakeRotation(CGFloat.pi/2, 0, 0, 1)
+            ring.position = CGPoint(x: bounds.midX, y: bounds.midY)
+            rings.append(ring)
+            layer?.addSublayer(ring)
+        }
 
         circle.frame           = bounds.insetBy(dx: 4, dy: 4)
         circle.backgroundColor = ThemeColor.connection.cgColor

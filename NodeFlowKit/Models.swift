@@ -37,13 +37,20 @@ extension Set where Element: Option {
 
 public enum ContentType: String, Option {
     case color, number, vector, vectorImage, image, string, url, video, calayer, texture, scene, cubeMap
+    var associatedColor: NSColor {
+        switch self {
+        case .vector, .vectorImage: return NSColor.systemPurple
+        case .number: return NSColor.systemGray
+        default: return NSColor.systemYellow
+        }
+    }
 }
 
 public typealias SupportedTypes = Set<ContentType>
 
 public extension Set where Element == ContentType {
     static var materialContent: SupportedTypes {
-        return [.color, .number, .vectorImage, .image, .string, .url, .video, .calayer, .texture, .scene, .cubeMap]
+        return [.color, .number, .image, .string, .url, .video, .calayer, .texture, .scene, .cubeMap]
     }
 }
 
@@ -58,14 +65,6 @@ public protocol NodeProperty {
     var node: Node! { get set }
 }
 
-extension NodeProperty {
-    var terminalColor: NSColor {
-        if type == [.number] { return NSColor.systemGray }
-        if type == [.vector] { return NSColor.systemPurple }
-        if type == [.vectorImage] { return NSColor.systemPurple }
-        return NSColor.systemYellow
-    }
-}
 
 /*----------------------------------------------------------------------------*/
 
