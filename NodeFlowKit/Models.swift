@@ -67,13 +67,20 @@ public protocol NodeProperty {
     var node: Node! { get set }
 }
 
+extension NodeProperty {
+    func isCompatibleWith(_ otherProperty: NodeProperty) -> Bool {
+        let input  = self.isInput ? self : otherProperty
+        let output = !self.isInput ? self : otherProperty
+        return input.type.isSuperset(of: output.type)
+    }
+}
 
 /*----------------------------------------------------------------------------*/
 
 public struct Connection {
     private let id: String
-    public var inputTerminal: TerminalView
-    public var outputTerminal: TerminalView
+    public weak var inputTerminal: TerminalView!
+    public weak var outputTerminal: TerminalView!
     public var input: NodeProperty { return inputTerminal.property }
     public var output: NodeProperty { return outputTerminal.property }
 
@@ -81,12 +88,6 @@ public struct Connection {
         self.id             = NSUUID().uuidString
         self.inputTerminal  = inputTerminal
         self.outputTerminal = outputTerminal
-    }
-
-    public static func isProperty(_ property: NodeProperty, compatibleWith otherProperty: NodeProperty) -> Bool {
-        let input = property.isInput ? property : otherProperty
-        let output = !property.isInput ? property : otherProperty
-        return input.type.isSuperset(of: output.type)
     }
 }
 

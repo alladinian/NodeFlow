@@ -197,7 +197,7 @@ public class BoardView: NSView {
                 #warning("Refactor")
                 for nodeView in nodeViews {
                     for property in nodeView.node.inputs {
-                        property.controlView.superview?.alphaValue = Connection.isProperty(property, compatibleWith: t1.property) ? 1 : 0.3
+                        property.controlView.superview?.alphaValue = property.isCompatibleWith(t1.property) ? 1 : 0.3
                     }
                 }
             }
