@@ -193,10 +193,24 @@ public class BoardView: NSView {
             if let t1 = initiatingTerminal {
                 let localFrame = convert(t1.frame, from: t1.superview)
                 initiatingPoint = CGPoint(x: localFrame.midX, y: localFrame.midY)
+
+                #warning("Refactor")
+                for nodeView in nodeViews {
+                    for property in nodeView.node.inputs {
+                        property.controlView.superview?.alphaValue = Connection.isProperty(property, compatibleWith: t1.property) ? 1 : 0.3
+                    }
+                }
             }
 
             activeLinkLayer.path = linkPathBetween(point: initiatingPoint, and: lastMousePoint).cgPath
             initiatingTerminal?.isConnected = true
+        } else {
+            #warning("Refactor")
+            for nodeView in nodeViews {
+                for property in nodeView.node.inputs {
+                    property.controlView.superview?.alphaValue = 1.0
+                }
+            }
         }
 
         // Selection drawing
