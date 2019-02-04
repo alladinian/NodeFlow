@@ -99,17 +99,11 @@ extension Connection: Equatable {
     }
 }
 
-extension Node: Equatable {
-    public static func == (lhs: Node, rhs: Node) -> Bool {
-        return lhs.id == rhs.id
-    }
-}
-
 /*----------------------------------------------------------------------------*/
 public protocol NodeRowRepresentable {}
 extension NSView: NodeRowRepresentable {}
 
-open class Node {
+open class Node: NSObject {
     let id: String
     public let name: String
     public private(set) var controlRows: [NodeRowRepresentable]
@@ -124,6 +118,7 @@ open class Node {
         self.inputs             = inputs
         self.outputs            = outputs
         self.evaluationFunction = evaluationFunction
+        super.init()
         for (i, _) in self.inputs.enumerated() {
             self.inputs[i].node = self
         }
