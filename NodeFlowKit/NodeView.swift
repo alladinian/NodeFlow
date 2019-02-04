@@ -112,8 +112,7 @@ class NodeView: NSView {
 
         constraintHorizontalEdgesOf(headerStackView, to: stackView)
 
-        setupOutputs()
-        setupInputs()
+        setupRows()
 
         needsDisplay = true
     }
@@ -156,21 +155,16 @@ class NodeView: NSView {
         self.shadow             = shadow
     }
 
-    fileprivate func setupOutputs() {
-        guard !node.outputs.isEmpty else { return }
-        for output in node.outputs {
-            let row = connectionRowForProperty(output)
-            stackView.addArrangedSubview(row)
-            constraintHorizontalEdgesOf(row, to: stackView)
-        }
-        stackView.setCustomSpacing(20, after: stackView.arrangedSubviews.last!)
-    }
-
-    fileprivate func setupInputs() {
-        for input in node.inputs {
-            let row = connectionRowForProperty(input)
-            stackView.addArrangedSubview(row)
-            constraintHorizontalEdgesOf(row, to: stackView)
+    fileprivate func setupRows() {
+        for row in node.controlRows {
+            if let view = row as? NSView {
+                stackView.addArrangedSubview(view)
+                constraintHorizontalEdgesOf(view, to: stackView)
+            } else if let property = row as? NodeProperty {
+                let control = connectionRowForProperty(property)
+                stackView.addArrangedSubview(control)
+                constraintHorizontalEdgesOf(control, to: stackView)
+            }
         }
     }
 

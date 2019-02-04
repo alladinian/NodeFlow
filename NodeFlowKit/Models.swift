@@ -56,7 +56,7 @@ public extension Set where Element == ContentType {
 
 /*----------------------------------------------------------------------------*/
 
-public protocol NodeProperty {
+public protocol NodeProperty: NodeRowRepresentable {
     var name: String { get set }
     var value: Any? { get set }
     var controlView: NSView { get set }
@@ -106,17 +106,21 @@ extension Node: Equatable {
 }
 
 /*----------------------------------------------------------------------------*/
+public protocol NodeRowRepresentable {}
+extension NSView: NodeRowRepresentable {}
 
 open class Node {
     let id: String
     public let name: String
+    public private(set) var controlRows: [NodeRowRepresentable]
     public private(set) var inputs: [NodeProperty]
     public private(set) var outputs: [NodeProperty]
     public let evaluationFunction: ((Node) -> Void)
 
-    public init(name: String, inputs: [NodeProperty], outputs: [NodeProperty], evaluationFunction: @escaping ((Node) -> Void)) {
+    public init(name: String, controlRows: [NodeRowRepresentable], inputs: [NodeProperty], outputs: [NodeProperty], evaluationFunction: @escaping ((Node) -> Void)) {
         self.id                 = NSUUID().uuidString
         self.name               = name
+        self.controlRows        = controlRows
         self.inputs             = inputs
         self.outputs            = outputs
         self.evaluationFunction = evaluationFunction
