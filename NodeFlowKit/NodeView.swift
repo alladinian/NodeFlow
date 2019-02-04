@@ -166,11 +166,30 @@ class NodeView: NSView {
         let isInput = property.isInput
         terminal.isInput = isInput
         terminals.append(terminal)
+
         let control = property.controlView
+
         let horizontalStack = NSStackView(views: isInput ? [terminal, control] : [control, terminal])
         horizontalStack.distribution = .fill
         horizontalStack.spacing      = 8
-        return horizontalStack
+
+        let verticalStack = NSStackView()
+        verticalStack.orientation = .vertical
+        verticalStack.distribution = .fill
+
+        if let accessory = property.topAccessoryView {
+            verticalStack.addArrangedSubview(accessory)
+        }
+
+        verticalStack.addArrangedSubview(horizontalStack)
+
+        constraintHorizontalEdgesOf(horizontalStack, to: verticalStack)
+
+        if let accessory = property.bottomAccessoryView {
+            verticalStack.addArrangedSubview(accessory)
+        }
+
+        return verticalStack
     }
 
     fileprivate func constraintHorizontalEdgesOf(_ a: NSView, to b: NSView) {

@@ -60,6 +60,8 @@ public protocol NodeProperty {
     var name: String { get set }
     var value: Any? { get set }
     var controlView: NSView { get set }
+    var topAccessoryView: NSView? { get set }
+    var bottomAccessoryView: NSView? { get set }
     var isInput: Bool { get }
     var type: SupportedTypes { get }
     var node: Node! { get set }
