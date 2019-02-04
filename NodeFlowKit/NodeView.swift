@@ -93,17 +93,27 @@ class NodeView: NSView {
         layer?.cornerRadius = kCornerRadius
         layer?.borderWidth  = 2
 
+        setupCloseButton()
         setupHeader()
         setupShadow()
 
         title = node.name
+
         titleLabel.heightAnchor.constraint(equalToConstant: kHeaderHeight).isActive = true
-        stackView.addArrangedSubview(titleLabel)
+
+        let headerStackView = NSStackView()
+        headerStackView.orientation  = .horizontal
+        headerStackView.distribution = .fill
+        headerStackView.alignment    = .centerY
+        //headerStackView.addArrangedSubview(closeButton)
+        headerStackView.addArrangedSubview(titleLabel)
+
+        stackView.addArrangedSubview(headerStackView)
+
+        constraintHorizontalEdgesOf(headerStackView, to: stackView)
 
         setupOutputs()
         setupInputs()
-
-        //setupCloseButton()
 
         needsDisplay = true
     }
@@ -115,8 +125,11 @@ class NodeView: NSView {
 
     func setupCloseButton() {
         closeButton = NSButton(image: NSImage(named: NSImage.statusUnavailableName)!, target: self, action: #selector(close))
-        closeButton.isBordered = false
-        addSubview(closeButton)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        //closeButton.isBordered = false
+        closeButton.bezelStyle = .smallSquare
+        //closeButton.heightAnchor.constraint(equalToConstant: kHeaderHeight).isActive = true
+        closeButton.widthAnchor.constraint(equalTo: closeButton.heightAnchor, multiplier: 1).isActive = true
     }
 
     override func rightMouseDown(with event: NSEvent) {
