@@ -30,7 +30,6 @@ public extension Node {
     public static func mathNode() -> Node {
         return Node(name: "Sum",
                     inputs: [NumProperty(name: "Number", isInput: true), NumProperty(name: "Number", isInput: true)],
-                    outputs: [NumProperty(name: "Result", isInput: false)],
-                    evaluationFunction: {_ in})
+                    outputs: [NumProperty(name: "Result", isInput: false)])
     }
 }

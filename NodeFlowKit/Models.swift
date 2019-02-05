@@ -109,9 +109,9 @@ open class Node: NSObject {
     public private(set) var controlRows: [NodeRowRepresentable]
     public private(set) var inputs: [NodeProperty]
     public private(set) var outputs: [NodeProperty]
-    public let evaluationFunction: ((Node) -> Void)
+    public let evaluationFunction: ((Node) -> Void)?
 
-    public init(name: String, controlRows: [NodeRowRepresentable], inputs: [NodeProperty], outputs: [NodeProperty], evaluationFunction: @escaping ((Node) -> Void)) {
+    public init(name: String, controlRows: [NodeRowRepresentable], inputs: [NodeProperty], outputs: [NodeProperty], evaluationFunction: ((Node) -> Void)? = nil) {
         self.id                 = NSUUID().uuidString
         self.name               = name
         self.controlRows        = controlRows
