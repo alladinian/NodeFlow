@@ -137,7 +137,7 @@ public class BoardView: NSView {
         for index in 0..<datasource.numberOfNodeViews() {
             let nodeView = datasource.nodeViewForIndex(index)
             addSubview(nodeView)
-            nodeView.frame.origin = CGPoint(x: CGFloat(index) * 200 + 20, y: 20)
+            nodeView.frame.origin = CGPoint(x: bounds.center.x + CGFloat(index) * 20, y: bounds.center.y)
             #warning("Fixme")
         }
     }

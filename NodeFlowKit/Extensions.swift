@@ -25,6 +25,12 @@ func rectBetween(point p1: NSPoint, and p2: NSPoint) -> CGRect {
     return CGRect(x: p1.x, y: p1.y, width: p2.x - p1.x, height: p2.y - p1.y).standardized
 }
 
+extension CGRect {
+    var center: CGPoint {
+        return CGPoint(x: midX, y: midY)
+    }
+}
+
 extension NSBezierPath {
 
     public var cgPath: CGPath {
