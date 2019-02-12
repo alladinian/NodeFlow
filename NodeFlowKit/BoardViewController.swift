@@ -137,6 +137,7 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         guard let id = id, let node = graph.nodes.first(where: { $0.id == id }) else { return }
         graph.removeNode(node)
         // Removes itself from the boardview
+        boardView.needsDisplay = true // To remove the connection link
     }
 
     open func allowedDraggedTypes() -> [NSPasteboard.PasteboardType] {
@@ -169,5 +170,9 @@ extension BoardViewController: BoardViewDatasource {
         guard index < graph.connections.endIndex else { return nil }
         let connection = graph.connections[index]
         return (connection.inputTerminal, connection.outputTerminal)
+    }
+
+    func linkForConnectionAtIndex(_ index: Int) -> LinkLayer? {
+        return graph.connections[index].link
     }
 }

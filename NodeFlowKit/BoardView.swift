@@ -222,9 +222,14 @@ public class BoardView: NSView {
         }
 
         // Permanent lines drawing
+        #warning("Refactor")
         terminalViews.filter({ $0 !== initiatingTerminal }).forEach({ $0.isConnected = false })
-        for link in linkLayers {
-            guard let t1 = link.terminals?.a, let t2 = link.terminals?.b else { continue }
+        linkLayers.forEach({removeLinkLayer($0)})
+        for index in 0..<(datasource?.numberOfConnections() ?? 0) {
+            // Ensure that we got a valid connection
+            guard let (t1, t2) = datasource?.terminalViewsForConnectionAtIndex(index) else { continue }
+            guard let link = datasource?.linkForConnectionAtIndex(index) else { continue }
+            addLinkLayer(link)
             let a = convert(t1.frame, from: t1.superview)
             let b = convert(t2.frame, from: t2.superview)
             link.path = linkPathBetween(point: CGPoint(x: a.midX, y: a.midY), and: CGPoint(x: b.midX, y: b.midY)).cgPath

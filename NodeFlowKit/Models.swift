@@ -108,11 +108,13 @@ public struct Connection {
     public weak var outputTerminal: TerminalView!
     public var input: NodeProperty { return inputTerminal.property }
     public var output: NodeProperty { return outputTerminal.property }
+    let link: LinkLayer
 
     public init(inputTerminal: TerminalView, outputTerminal: TerminalView) {
         self.id             = NSUUID().uuidString
         self.inputTerminal  = inputTerminal
         self.outputTerminal = outputTerminal
+        link = LinkLayer(terminals: (inputTerminal, outputTerminal))
     }
 }
 
@@ -178,6 +180,9 @@ public class Graph {
     }
 
     public func removeNode(_ node: Node) {
+        for connection in connections where (connection.input.node === node) || (connection.output.node === node) {
+            removeConnection(connection)
+        }
         nodes.removeAll(where: { $0 == node })
     }
 

@@ -14,6 +14,7 @@ protocol BoardViewDatasource: class {
     func nodeViewForIndex(_ index: Int) -> NodeView
     func terminalViewsForNodeAtIndex(_ index: Int) -> [TerminalView]
     func terminalViewsForConnectionAtIndex(_ index: Int) -> (a: TerminalView, b: TerminalView)?
+    func linkForConnectionAtIndex(_ index: Int) -> LinkLayer?
 }
 
 public protocol BoardViewDelegate: class {
