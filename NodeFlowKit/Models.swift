@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Cocoa
 
 /*
  You can set a value for this property using any of the following types:
@@ -22,35 +23,59 @@ import Foundation
  - A specially formatted image or array of six images, specifying the faces of a cube map
 */
 
-// https://nshipster.com/optionset/
-protocol Option: RawRepresentable, Hashable, CaseIterable {}
-
-extension Set where Element: Option {
-    var rawValue: Int {
-        var rawValue = 0
-        for (index, element) in Element.allCases.enumerated() where self.contains(element) {
-            rawValue |= (1 << index)
-        }
-        return rawValue
-    }
-}
-
-public enum ContentType: String, Option {
-    case color, number, vector, vectorImage, image, string, url, video, calayer, texture, scene, cubeMap
-    var associatedColor: NSColor {
-        switch self {
-        case .vector, .vectorImage: return NSColor.systemPurple
-        case .number: return NSColor.systemGray
-        default: return NSColor.systemYellow
+public extension OptionSet where RawValue: FixedWidthInteger {
+    func elements() -> AnySequence<Self> {
+        var remainingBits = rawValue
+        var bitMask: RawValue = 1
+        return AnySequence {
+            return AnyIterator {
+                while remainingBits != 0 {
+                    defer { bitMask = bitMask &* 2 }
+                    if remainingBits & bitMask != 0 {
+                        remainingBits = remainingBits & ~bitMask
+                        return Self(rawValue: bitMask)
+                    }
+                }
+                return nil
+            }
         }
     }
 }
 
-public typealias SupportedTypes = Set<ContentType>
+public struct ContentType: OptionSet {
+    public let rawValue: Int
 
-public extension Set where Element == ContentType {
-    static var materialContent: SupportedTypes {
+    public static let color       = ContentType(rawValue: 1<<0)
+    public static let number      = ContentType(rawValue: 1<<1)
+    public static let vector      = ContentType(rawValue: 1<<2)
+    public static let vectorImage = ContentType(rawValue: 1<<3)
+    public static let image       = ContentType(rawValue: 1<<4)
+    public static let string      = ContentType(rawValue: 1<<5)
+    public static let url         = ContentType(rawValue: 1<<6)
+    public static let video       = ContentType(rawValue: 1<<7)
+    public static let calayer     = ContentType(rawValue: 1<<8)
+    public static let texture     = ContentType(rawValue: 1<<9)
+    public static let scene       = ContentType(rawValue: 1<<10)
+    public static let cubeMap     = ContentType(rawValue: 1<<11)
+
+    public static var materialContent: ContentType {
         return [.color, .number, .image, .string, .url, .video, .calayer, .texture, .scene, .cubeMap]
+    }
+
+    public var associatedColors: [NSColor] {
+        var temp = [NSColor]()
+        for element in self.elements() {
+            switch element {
+            case .vector, .vectorImage: temp.append(NSColor.systemPurple)
+            case .number: temp.append(NSColor.systemGray)
+            default: temp.append(NSColor.systemYellow)
+            }
+        }
+        return temp
+    }
+
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
     }
 }
 
@@ -63,7 +88,7 @@ public protocol NodeProperty: NodeRowRepresentable {
     var topAccessoryView: NSView? { get set }
     var bottomAccessoryView: NSView? { get set }
     var isInput: Bool { get }
-    var type: SupportedTypes { get }
+    var type: ContentType { get }
     var node: Node! { get set }
 }
 

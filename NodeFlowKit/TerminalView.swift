@@ -56,7 +56,7 @@ public class TerminalView: NSView {
     func commonInit() {
         wantsLayer = true
 
-        let colors = Set(property.type.map({$0.associatedColor}))
+        let colors = Set(property.type.associatedColors)
 
         for (index, color) in colors.enumerated() {
             let ring = CAShapeLayer()

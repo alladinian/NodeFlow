@@ -12,7 +12,7 @@ import NodeFlowKit
 struct NumProperty: NodeProperty {
     var topAccessoryView: NSView?
     var bottomAccessoryView: NSView?
-    var type: SupportedTypes = [.number]
+    var type: ContentType = .number
     var controlView: NSView
     var isInput: Bool
     weak var node: Node!
@@ -28,7 +28,7 @@ struct NumProperty: NodeProperty {
 
 public extension Node {
     public static func mathNode() -> Node {
-        return Node(name: "Sum",
+        return Node(name: "Sum", controlRows: [],
                     inputs: [NumProperty(name: "Number", isInput: true), NumProperty(name: "Number", isInput: true)],
                     outputs: [NumProperty(name: "Result", isInput: false)])
     }
