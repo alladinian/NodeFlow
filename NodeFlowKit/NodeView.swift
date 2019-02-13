@@ -47,6 +47,8 @@ class NodeView: NSView {
         }
     }
 
+    public var rightAccessoryView: NSView? = nil
+
     // Private
     fileprivate let titleLabel = NSTextField(labelWithString: "")
     fileprivate let stackView: NSStackView = {
@@ -98,15 +100,20 @@ class NodeView: NSView {
         setupShadow()
 
         title = node.name
+        rightAccessoryView = node.rightAccessoryView
 
         titleLabel.heightAnchor.constraint(equalToConstant: kHeaderHeight).isActive = true
 
         let headerStackView = NSStackView()
         headerStackView.orientation  = .horizontal
         headerStackView.distribution = .fill
-        headerStackView.alignment    = .centerY
+        headerStackView.alignment    = .firstBaseline
         //headerStackView.addArrangedSubview(closeButton)
         headerStackView.addArrangedSubview(titleLabel)
+
+        if let rightView = rightAccessoryView {
+            headerStackView.addArrangedSubview(rightView)
+        }
 
         stackView.addArrangedSubview(headerStackView)
 

@@ -133,14 +133,16 @@ extension NSView: NodeRowRepresentable {}
 open class Node: NSObject {
     let id: String
     public let name: String
-    public private(set) var controlRows: [NodeRowRepresentable]
+    public let rightAccessoryView: NSView?
+    public let controlRows: [NodeRowRepresentable]
     public private(set) var inputs: [NodeProperty]
     public private(set) var outputs: [NodeProperty]
     public let evaluationFunction: ((Node) -> Void)?
 
-    public init(name: String, controlRows: [NodeRowRepresentable], inputs: [NodeProperty], outputs: [NodeProperty], evaluationFunction: ((Node) -> Void)? = nil) {
+    public init(name: String, rightAccessoryView: NSView? = nil, controlRows: [NodeRowRepresentable], inputs: [NodeProperty], outputs: [NodeProperty], evaluationFunction: ((Node) -> Void)? = nil) {
         self.id                 = NSUUID().uuidString
         self.name               = name
+        self.rightAccessoryView = rightAccessoryView
         self.controlRows        = controlRows
         self.inputs             = inputs
         self.outputs            = outputs
