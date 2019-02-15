@@ -8,6 +8,24 @@
 
 import Cocoa
 
+/*--------------------------------------------------------------------------------*/
+
+class ColorGridView: NSView {
+    static let color = NSColor(patternImage: GridView(frame: CGRect(x: 0, y: 0, width: 100, height: 100)).image())
+    override func draw(_ dirtyRect: NSRect) {
+        let theContext = NSGraphicsContext.current
+        theContext?.saveGraphicsState()
+        ThemeColor.background.setFill()
+        dirtyRect.fill()
+        theContext?.patternPhase = NSMakePoint(0, 100)
+        ColorGridView.color.set()
+        dirtyRect.fill()
+        theContext?.restoreGraphicsState()
+    }
+}
+
+/*--------------------------------------------------------------------------------*/
+
 class GridView: NSView {
     var gridSpacing = 10
     override var isFlipped: Bool {

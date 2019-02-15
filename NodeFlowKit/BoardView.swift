@@ -8,23 +8,9 @@
 
 import Cocoa
 
-class ColorGridView: NSView {
-    static let color = NSColor(patternImage: GridView(frame: CGRect(x: 0, y: 0, width: 100, height: 100)).image())
-    override func draw(_ dirtyRect: NSRect) {
-        let theContext = NSGraphicsContext.current
-        theContext?.saveGraphicsState()
-        ThemeColor.background.setFill()
-        dirtyRect.fill()
-        theContext?.patternPhase = NSMakePoint(0, 100)
-        ColorGridView.color.set()
-        dirtyRect.fill()
-        theContext?.restoreGraphicsState()
-    }
-}
-
 /*--------------------------------------------------------------------------------*/
 
-class LinkLayer: CAShapeLayer {
+public class LinkLayer: CAShapeLayer {
     var terminals: (a: TerminalView, b: TerminalView)? = nil
 
     var terminalList: [TerminalView] {
@@ -59,13 +45,20 @@ class LinkLayer: CAShapeLayer {
     }
 }
 
-public class BoardView: NSView {
+/*--------------------------------------------------------------------------------*/
+
+public class BoardView<T: GraphRepresenter>: NSView {
 
     // Selection variables
     fileprivate var startPoint: NSPoint!
     fileprivate var isSelectingWithRectangle = false
 
-    weak var datasource: BoardViewDatasource?
+    public var graph: T! {
+        didSet {
+            reloadData()
+        }
+    }
+
     public weak var delegate: BoardViewDelegate? {
         didSet {
             guard let delegate = delegate else { return }
@@ -133,12 +126,12 @@ public class BoardView: NSView {
 
     public func reloadData() {
         needsDisplay = true
-        guard let datasource = datasource else { return }
+        guard let graph = graph else { return }
 
         nodeViews.forEach({ $0.removeFromSuperview() })
 
-        for index in 0..<datasource.numberOfNodeViews() {
-            let nodeView = datasource.nodeViewForIndex(index)
+        for (index, node) in graph.nodes.enumerated() {
+            let nodeView = NodeView(node: node)
             addSubview(nodeView)
             nodeView.frame.origin = CGPoint(x: bounds.center.x + CGFloat(index) * 20, y: bounds.center.y)
             #warning("Fixme")
@@ -146,7 +139,8 @@ public class BoardView: NSView {
     }
 
     @objc public func addNodeAtIndex(_ index: Int, at point: CGPoint) {
-        guard let nodeView = datasource?.nodeViewForIndex(index) else { return }
+        let node = graph.nodes[index]
+        let nodeView = NodeView(node: node)
         addSubview(nodeView)
         nodeView.setFrameOrigin(convert(point, from: nil))
     }
@@ -163,6 +157,7 @@ public class BoardView: NSView {
     }
 
     public override func updateLayer() {
+        guard graph != nil else { return }
 
         // Make sure that interactive drawing layers are handled from a central exit point
         defer {
@@ -228,10 +223,10 @@ public class BoardView: NSView {
         #warning("Refactor")
         terminalViews.filter({ $0 !== initiatingTerminal }).forEach({ $0.isConnected = false })
         linkLayers.forEach({removeLinkLayer($0)})
-        for index in 0..<(datasource?.numberOfConnections() ?? 0) {
+        for connection in graph.connections {
             // Ensure that we got a valid connection
-            guard let (t1, t2) = datasource?.terminalViewsForConnectionAtIndex(index) else { continue }
-            guard let link = datasource?.linkForConnectionAtIndex(index) else { continue }
+            guard let t1 = connection.inputTerminal, let t2 = connection.outputTerminal else { continue }
+            let link = connection.link
             addLinkLayer(link)
             let a = convert(t1.frame, from: t1.superview)
             let b = convert(t2.frame, from: t2.superview)
@@ -241,12 +236,7 @@ public class BoardView: NSView {
         }
     }
 
-}
-
-/*--------------------------------------------------------------------------------*/
-
-// MARK: - Drag & Drop
-extension BoardView {
+    // Drag & Drop
     override public func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
         return .generic
     }
@@ -255,13 +245,8 @@ extension BoardView {
         delegate?.didDropWithInfo(sender)
         return true
     }
-}
 
-/*--------------------------------------------------------------------------------*/
-
-// MARK: - Event Handling
-extension BoardView {
-
+    // Event Handling
     fileprivate func terminalForPoint(_ point: CGPoint?) -> TerminalView? {
         guard let point = point else { return nil }
         return terminalViews.first(where: { convert($0.frame, from: $0.superview).contains(point) })

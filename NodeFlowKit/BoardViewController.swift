@@ -58,14 +58,14 @@ extension NSScrollView {
     }
 }
 
-open class BoardViewController: NSViewController, BoardViewDelegate {
+open class BoardViewController<G: GraphRepresenter>: NSViewController, BoardViewDelegate {
 
     fileprivate var scrollView = FlippedScrollView(frame: .zero)
-    public var boardView = BoardView(frame: CGRect(x: 0, y: 0, width: 5000, height: 5000))
+    public var boardView = BoardView<G>(frame: CGRect(x: 0, y: 0, width: 5000, height: 5000))
 
-    public var graph: Graph! {
+    public var graph: G! {
         didSet {
-            boardView.reloadData()
+            boardView.graph = graph
         }
     }
 
@@ -85,7 +85,6 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         scrollView.allowsMagnification   = true
 
         boardView.translatesAutoresizingMaskIntoConstraints = false
-        boardView.datasource                                = self
         boardView.delegate                                  = self
 
         scrollView.documentView = boardView
@@ -116,7 +115,7 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         if let existingConnection = graph.connections.first(where: { $0.inputTerminal === inputTerminal }) {
             didDisconnect(existingConnection.inputTerminal, from: existingConnection.outputTerminal)
         }
-        let connection = Connection(inputTerminal: inputTerminal, outputTerminal: outputTerminal)
+        let connection = Connection(inputTerminal: inputTerminal, outputTerminal: outputTerminal) as! G._Connection
         graph.addConnection(connection)
     }
 
@@ -128,7 +127,7 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         graph.removeConnection(connection)
     }
 
-    public func addNode(_ node: Node, at point: CGPoint) {
+    public func addNode(_ node: G._Node, at point: CGPoint) {
         graph.addNode(node)
         boardView.addNodeAtIndex(graph.nodes.endIndex - 1, at: point)
     }
@@ -146,33 +145,4 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
 
     open func didDropWithInfo(_ info: NSDraggingInfo) {}
 
-}
-
-extension BoardViewController: BoardViewDatasource {
-    func numberOfNodeViews() -> Int {
-        return graph?.nodes.count ?? 0
-    }
-
-    func numberOfConnections() -> Int {
-        return graph?.connections.count ?? 0
-    }
-
-    func nodeViewForIndex(_ index: Int) -> NodeView {
-        let node = graph.nodes[index]
-        return NodeView(node: node)
-    }
-
-    func terminalViewsForNodeAtIndex(_ index: Int) -> [TerminalView] {
-        return boardView.nodeViews[index].terminals
-    }
-
-    func terminalViewsForConnectionAtIndex(_ index: Int) -> (a: TerminalView, b: TerminalView)? {
-        guard index < graph.connections.endIndex else { return nil }
-        let connection = graph.connections[index]
-        return (connection.inputTerminal, connection.outputTerminal)
-    }
-
-    func linkForConnectionAtIndex(_ index: Int) -> LinkLayer? {
-        return graph.connections[index].link
-    }
 }

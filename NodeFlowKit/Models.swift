@@ -86,27 +86,21 @@ extension NodeProperty {
 }
 
 /*----------------------------------------------------------------------------*/
-protocol ConnectionRepresenter: Equatable {
-    associatedtype _TerminalView: NSView
-    associatedtype _LinkView: CALayer
-
-    var inputTerminal: _TerminalView! { get }
-    var outputTerminal: _TerminalView! { get }
+public protocol ConnectionRepresenter: Equatable {
+    var inputTerminal: TerminalView! { get }
+    var outputTerminal: TerminalView! { get }
     var input: NodeProperty { get }
     var output: NodeProperty { get }
-    var link: _LinkView { get }
+    var link: LinkLayer { get }
 }
 
 public struct Connection: ConnectionRepresenter {
-    typealias _TerminalView = TerminalView
-    typealias _LinkView = LinkLayer
-
     private let id: String
     public weak var inputTerminal: TerminalView!
     public weak var outputTerminal: TerminalView!
     public var input: NodeProperty { return inputTerminal.property }
     public var output: NodeProperty { return outputTerminal.property }
-    let link: LinkLayer
+    public let link: LinkLayer
 
     public init(inputTerminal: TerminalView, outputTerminal: TerminalView) {
         self.id             = NSUUID().uuidString
@@ -125,7 +119,7 @@ extension Connection: Equatable {
 }
 
 /*----------------------------------------------------------------------------*/
-protocol NodeRepresenter {
+public protocol NodeRepresenter {
     var id: String { get }
     var name: String { get }
     var rightAccessoryView: NSView? { get }
@@ -135,7 +129,7 @@ protocol NodeRepresenter {
 }
 
 open class Node: NSObject, NodeRepresenter {
-    let id: String
+    public let id: String
     public let name: String
     public let rightAccessoryView: NSView?
     public let controlRows: [NodeRowRepresentable]
@@ -161,7 +155,7 @@ open class Node: NSObject, NodeRepresenter {
 
 /*----------------------------------------------------------------------------*/
 
-protocol GraphRepresenter {
+public protocol GraphRepresenter {
     associatedtype _Connection: ConnectionRepresenter
     associatedtype _Node: NodeRepresenter
 
@@ -174,8 +168,8 @@ protocol GraphRepresenter {
 }
 
 public class Graph: GraphRepresenter {
-    typealias _Connection = Connection
-    typealias _Node = Node
+    public typealias _Connection = Connection
+    public typealias _Node = Node
 
     public fileprivate(set) var nodes: [Node]
     public fileprivate(set) var connections: [Connection]
