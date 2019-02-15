@@ -60,6 +60,8 @@ public struct ContentType: OptionSet {
 }
 
 /*----------------------------------------------------------------------------*/
+public protocol NodeRowRepresentable {}
+extension NSView: NodeRowRepresentable {}
 
 public protocol NodeProperty: NodeRowRepresentable {
     var name: String { get set }
@@ -84,8 +86,21 @@ extension NodeProperty {
 }
 
 /*----------------------------------------------------------------------------*/
+protocol ConnectionRepresenter: Equatable {
+    associatedtype _TerminalView: NSView
+    associatedtype _LinkView: CALayer
 
-public struct Connection {
+    var inputTerminal: _TerminalView! { get }
+    var outputTerminal: _TerminalView! { get }
+    var input: NodeProperty { get }
+    var output: NodeProperty { get }
+    var link: _LinkView { get }
+}
+
+public struct Connection: ConnectionRepresenter {
+    typealias _TerminalView = TerminalView
+    typealias _LinkView = LinkLayer
+
     private let id: String
     public weak var inputTerminal: TerminalView!
     public weak var outputTerminal: TerminalView!
@@ -110,10 +125,16 @@ extension Connection: Equatable {
 }
 
 /*----------------------------------------------------------------------------*/
-public protocol NodeRowRepresentable {}
-extension NSView: NodeRowRepresentable {}
+protocol NodeRepresenter {
+    var id: String { get }
+    var name: String { get }
+    var rightAccessoryView: NSView? { get }
+    var controlRows: [NodeRowRepresentable] { get }
+    var inputs: [NodeProperty] { get }
+    var outputs: [NodeProperty] { get }
+}
 
-open class Node: NSObject {
+open class Node: NSObject, NodeRepresenter {
     let id: String
     public let name: String
     public let rightAccessoryView: NSView?
@@ -140,7 +161,22 @@ open class Node: NSObject {
 
 /*----------------------------------------------------------------------------*/
 
-public class Graph {
+protocol GraphRepresenter {
+    associatedtype _Connection: ConnectionRepresenter
+    associatedtype _Node: NodeRepresenter
+
+    var nodes: [_Node] { get }
+    var connections: [_Connection] { get }
+    func addConnection(_ connection: _Connection)
+    func removeConnection(_ connection: _Connection)
+    func addNode(_ node: _Node)
+    func removeNode(_ node: _Node)
+}
+
+public class Graph: GraphRepresenter {
+    typealias _Connection = Connection
+    typealias _Node = Node
+
     public fileprivate(set) var nodes: [Node]
     public fileprivate(set) var connections: [Connection]
 

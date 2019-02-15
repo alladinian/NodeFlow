@@ -10,16 +10,12 @@ import Cocoa
 
 class NodeView: NSView {
 
-    public var isSelected: Bool = false {
-        didSet {
-            needsDisplay = true
-        }
-    }
+    // Single requirement
+    var node: NodeRepresenter!
 
-    var node: Node!
     var terminals = [TerminalView]()
 
-    init(node: Node) {
+    init(node: NodeRepresenter) {
         super.init(frame: .zero)
         self.node = node
         commonInit()
@@ -27,6 +23,12 @@ class NodeView: NSView {
 
     required init?(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    public var isSelected: Bool = false {
+        didSet {
+            needsDisplay = true
+        }
     }
 
     public var title: String! {
