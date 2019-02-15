@@ -92,10 +92,13 @@ public protocol NodeProperty: NodeRowRepresentable {
     var node: Node! { get set }
 }
 
+func asIO(_ a: NodeProperty, _ b: NodeProperty) -> (input: NodeProperty, output: NodeProperty) {
+    return ((a.isInput ? a : b), (!a.isInput ? a : b))
+}
+
 extension NodeProperty {
     func isCompatibleWith(_ otherProperty: NodeProperty) -> Bool {
-        let input  = self.isInput ? self : otherProperty
-        let output = !self.isInput ? self : otherProperty
+        let (input, output) = asIO(self, otherProperty)
         return input.type.isSuperset(of: output.type)
     }
 }
@@ -137,16 +140,14 @@ open class Node: NSObject {
     public let controlRows: [NodeRowRepresentable]
     public private(set) var inputs: [NodeProperty]
     public private(set) var outputs: [NodeProperty]
-    public let evaluationFunction: ((Node) -> Void)?
 
-    public init(name: String, rightAccessoryView: NSView? = nil, controlRows: [NodeRowRepresentable], inputs: [NodeProperty], outputs: [NodeProperty], evaluationFunction: ((Node) -> Void)? = nil) {
+    public init(name: String, rightAccessoryView: NSView? = nil, controlRows: [NodeRowRepresentable], inputs: [NodeProperty], outputs: [NodeProperty]) {
         self.id                 = NSUUID().uuidString
         self.name               = name
         self.rightAccessoryView = rightAccessoryView
         self.controlRows        = controlRows
         self.inputs             = inputs
         self.outputs            = outputs
-        self.evaluationFunction = evaluationFunction
         super.init()
         for (i, _) in self.inputs.enumerated() {
             self.inputs[i].node = self
@@ -186,9 +187,5 @@ public class Graph {
             removeConnection(connection)
         }
         nodes.removeAll(where: { $0 == node })
-    }
-
-    public func evaluate() {
-
     }
 }
