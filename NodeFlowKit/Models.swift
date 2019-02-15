@@ -156,20 +156,20 @@ open class Node: NSObject, NodeRepresenter {
 /*----------------------------------------------------------------------------*/
 
 public protocol GraphRepresenter {
-    associatedtype _Connection: ConnectionRepresenter
-    associatedtype _Node: NodeRepresenter
+    associatedtype C: ConnectionRepresenter
+    associatedtype N: NodeRepresenter
 
-    var nodes: [_Node] { get }
-    var connections: [_Connection] { get }
-    func addConnection(_ connection: _Connection)
-    func removeConnection(_ connection: _Connection)
-    func addNode(_ node: _Node)
-    func removeNode(_ node: _Node)
+    var nodes: [N] { get }
+    var connections: [C] { get }
+    func addConnection(_ connection: C)
+    func removeConnection(_ connection: C)
+    func addNode(_ node: N)
+    func removeNode(_ node: N)
 }
 
 public class Graph: GraphRepresenter {
-    public typealias _Connection = Connection
-    public typealias _Node = Node
+    public typealias C = Connection
+    public typealias N = Node
 
     public fileprivate(set) var nodes: [Node]
     public fileprivate(set) var connections: [Connection]

@@ -115,7 +115,7 @@ open class BoardViewController<G: GraphRepresenter>: NSViewController, BoardView
         if let existingConnection = graph.connections.first(where: { $0.inputTerminal === inputTerminal }) {
             didDisconnect(existingConnection.inputTerminal, from: existingConnection.outputTerminal)
         }
-        let connection = Connection(inputTerminal: inputTerminal, outputTerminal: outputTerminal) as! G._Connection
+        let connection = Connection(inputTerminal: inputTerminal, outputTerminal: outputTerminal) as! G.C
         graph.addConnection(connection)
     }
 
@@ -127,7 +127,7 @@ open class BoardViewController<G: GraphRepresenter>: NSViewController, BoardView
         graph.removeConnection(connection)
     }
 
-    public func addNode(_ node: G._Node, at point: CGPoint) {
+    public func addNode(_ node: G.N, at point: CGPoint) {
         graph.addNode(node)
         boardView.addNodeAtIndex(graph.nodes.endIndex - 1, at: point)
     }
