@@ -63,15 +63,13 @@ public struct ContentType: OptionSet {
     }
 
     public var associatedColors: [NSColor] {
-        var temp = [NSColor]()
-        for element in self.elements() {
+        return elements().map { element in
             switch element {
-            case .vector, .vectorImage: temp.append(NSColor.systemPurple)
-            case .number: temp.append(NSColor.systemGray)
-            default: temp.append(NSColor.systemYellow)
+            case .vector, .vectorImage: return NSColor.systemPurple
+            case .number: return NSColor.systemGray
+            default: return NSColor.systemYellow
             }
         }
-        return temp
     }
 
     public init(rawValue: Int) {
