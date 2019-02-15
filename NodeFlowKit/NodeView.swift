@@ -75,6 +75,10 @@ class NodeView: NSView {
 
     func commonInit() {
 
+        if wantsUpdateLayer {
+            layerContentsRedrawPolicy = .onSetNeedsDisplay
+        }
+
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(titleLabel)

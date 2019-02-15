@@ -56,6 +56,10 @@ public class TerminalView: NSView {
     func commonInit() {
         wantsLayer = true
 
+        if wantsUpdateLayer {
+            layerContentsRedrawPolicy = .onSetNeedsDisplay
+        }
+
         let colors = Set(property.type.associatedColors)
 
         for (index, color) in colors.enumerated() {

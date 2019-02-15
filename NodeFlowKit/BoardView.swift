@@ -115,6 +115,9 @@ public class BoardView: NSView {
 
     func commonInit() {
         wantsLayer = true
+        if wantsUpdateLayer {
+            layerContentsRedrawPolicy = .onSetNeedsDisplay
+        }
         gridView.frame = self.bounds
         gridView.wantsLayer = true
         gridView.layer?.zPosition = -2 // Behind everything
