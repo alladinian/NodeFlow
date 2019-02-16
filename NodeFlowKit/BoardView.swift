@@ -358,8 +358,7 @@ public class BoardView<T: GraphRepresenter>: NSView {
         return NSBezierPath(rect: rect)
     }
 
-    @objc func moveSelectedNodesBy(_ value: NSValue) {
-        let delta = value.pointValue
+    @objc func moveSelectedNodesBy(_ delta: CGPoint) {
         for nodeView in nodeViews.filter({ $0.isSelected }) {
             let newX = nodeView.frame.origin.x + delta.x
             let newY = nodeView.frame.origin.y + delta.y

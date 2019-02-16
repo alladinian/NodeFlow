@@ -280,7 +280,7 @@ extension NodeView {
 
         // Move the view
         //setFrameOrigin(origin)
-        nextResponder?.tryToPerform(#selector(BoardView<Graph>.moveSelectedNodesBy(_:)), with: NSValue(point: CGPoint(x: deltaX, y: deltaY)))
+        (superview as? BoardView<Graph>)?.moveSelectedNodesBy(CGPoint(x: deltaX, y: deltaY))
 
         // Redraw superview to update any connection lines
         superview?.needsDisplay = true
