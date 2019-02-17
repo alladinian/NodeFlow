@@ -60,39 +60,12 @@ public struct ContentType: OptionSet {
 }
 
 /*----------------------------------------------------------------------------*/
-public protocol NodeRowRepresentable {}
-extension NSView: NodeRowRepresentable {}
-
-public protocol NodeProperty: NodeRowRepresentable {
-    var name: String { get set }
-    var value: Any? { get set }
-    var controlView: NSView { get set }
-    var topAccessoryView: NSView? { get set }
-    var bottomAccessoryView: NSView? { get set }
-    var isInput: Bool { get }
-    var type: ContentType { get }
-    var node: Node! { get set }
-}
 
 func asIO(_ a: NodeProperty, _ b: NodeProperty) -> (input: NodeProperty, output: NodeProperty) {
     return ((a.isInput ? a : b), (!a.isInput ? a : b))
 }
 
-extension NodeProperty {
-    func isCompatibleWith(_ otherProperty: NodeProperty) -> Bool {
-        let (input, output) = asIO(self, otherProperty)
-        return input.type.isSuperset(of: output.type)
-    }
-}
-
 /*----------------------------------------------------------------------------*/
-public protocol ConnectionRepresenter: Equatable {
-    var inputTerminal: TerminalView! { get }
-    var outputTerminal: TerminalView! { get }
-    var input: NodeProperty { get }
-    var output: NodeProperty { get }
-    var link: LinkLayer { get }
-}
 
 public struct Connection: ConnectionRepresenter {
     private let id: String
@@ -119,14 +92,6 @@ extension Connection: Equatable {
 }
 
 /*----------------------------------------------------------------------------*/
-public protocol NodeRepresenter {
-    var id: String { get }
-    var name: String { get }
-    var rightAccessoryView: NSView? { get }
-    var controlRows: [NodeRowRepresentable] { get }
-    var inputs: [NodeProperty] { get }
-    var outputs: [NodeProperty] { get }
-}
 
 open class Node: NSObject, NodeRepresenter {
     public let id: String
@@ -154,18 +119,6 @@ open class Node: NSObject, NodeRepresenter {
 }
 
 /*----------------------------------------------------------------------------*/
-
-public protocol GraphRepresenter {
-    associatedtype C: ConnectionRepresenter
-    associatedtype N: NodeRepresenter
-
-    var nodes: [N] { get }
-    var connections: [C] { get }
-    func addConnection(_ connection: C)
-    func removeConnection(_ connection: C)
-    func addNode(_ node: N)
-    func removeNode(_ node: N)
-}
 
 public class Graph: GraphRepresenter {
     public typealias C = Connection
