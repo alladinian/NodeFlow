@@ -6,7 +6,7 @@
 //  Copyright © 2018 Vasilis Akoinoglou. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 //MARK: BoardView Delegate Protocol
 public protocol BoardViewDelegate: class {
@@ -23,11 +23,11 @@ extension NSView: NodeRowRepresentable {}
 
 //MARK: - NodeProperty Protocol
 public protocol NodeProperty: NodeRowRepresentable {
-    var name: String { get set }
+    var name: String { get }
     var value: Any? { get set }
-    var controlView: NSView { get set }
-    var topAccessoryView: NSView? { get set }
-    var bottomAccessoryView: NSView? { get set }
+    var controlView: NSView { get }
+    var topAccessoryView: NSView? { get }
+    var bottomAccessoryView: NSView? { get }
     var isInput: Bool { get }
     var type: ContentType { get }
     var node: NodeRepresenter! { get set }
