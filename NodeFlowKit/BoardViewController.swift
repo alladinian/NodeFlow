@@ -107,8 +107,8 @@ open class BoardViewController<G: GraphRepresenter>: NSViewController, BoardView
 
     @objc open func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) -> Bool {
         return terminal.isInput != otherTerminal.isInput
-            && terminal.property.isCompatibleWith(otherTerminal.property)
-            && terminal.property.node != otherTerminal.property.node
+            && arePropertiesCompatible(terminal.property, otherTerminal.property)
+            && terminal.property.node !== otherTerminal.property.node
     }
 
     @objc open func didConnect(_ inputTerminal: TerminalView, to outputTerminal: TerminalView) {

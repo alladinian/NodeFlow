@@ -23,7 +23,6 @@ import Cocoa
  - A specially formatted image or array of six images, specifying the faces of a cube map
 */
 
-
 public struct ContentType: OptionSet {
     public let rawValue: Int
 

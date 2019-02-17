@@ -30,18 +30,12 @@ public protocol NodeProperty: NodeRowRepresentable {
     var bottomAccessoryView: NSView? { get set }
     var isInput: Bool { get }
     var type: ContentType { get }
-    var node: Node! { get set }
+    var node: NodeRepresenter! { get set }
 }
 
-extension NodeProperty {
-    /// Check compatibility for properties
-    ///
-    /// - Parameter otherProperty: the property to check combatibily for
-    /// - Returns: Whether the properties are compatible
-    func isCompatibleWith(_ otherProperty: NodeProperty) -> Bool {
-        let (input, output) = asIO(self, otherProperty)
-        return input.type.isSuperset(of: output.type)
-    }
+public func arePropertiesCompatible(_ a: NodeProperty, _ b: NodeProperty) -> Bool {
+    let (input, output) = asIO(a, b)
+    return input.type.isSuperset(of: output.type)
 }
 
 //MARK: - Connection Protocol
@@ -54,7 +48,7 @@ public protocol ConnectionRepresenter: Equatable {
 }
 
 //MARK: - Node Protocol
-public protocol NodeRepresenter {
+public protocol NodeRepresenter: NSObjectProtocol {
     var id: String { get }
     var name: String { get }
     var rightAccessoryView: NSView? { get }
