@@ -66,7 +66,7 @@ func asIO(_ a: NodeProperty, _ b: NodeProperty) -> (input: NodeProperty, output:
 
 /*----------------------------------------------------------------------------*/
 
-public struct Connection: ConnectionRepresenter {
+public class Connection: NSObject, ConnectionRepresenter {
     private let id: String
     public weak var inputTerminal: TerminalView!
     public weak var outputTerminal: TerminalView!
@@ -79,14 +79,6 @@ public struct Connection: ConnectionRepresenter {
         self.inputTerminal  = inputTerminal
         self.outputTerminal = outputTerminal
         link = LinkLayer(terminals: (inputTerminal, outputTerminal))
-    }
-}
-
-/*----------------------------------------------------------------------------*/
-
-extension Connection: Equatable {
-    public static func == (lhs: Connection, rhs: Connection) -> Bool {
-        return lhs.id == rhs.id
     }
 }
 
@@ -120,34 +112,31 @@ open class Node: NSObject, NodeRepresenter {
 /*----------------------------------------------------------------------------*/
 
 public class Graph: GraphRepresenter {
-    public typealias C = Connection
-    public typealias N = Node
 
-    public fileprivate(set) var nodes: [Node]
-    public fileprivate(set) var connections: [Connection]
+    public fileprivate(set) var nodes: [NodeRepresenter]
+    public fileprivate(set) var connections: [ConnectionRepresenter]
 
     public init(nodes: [Node], connections: [Connection] = []) {
         self.nodes       = nodes
         self.connections = connections
     }
 
-    public func addConnection(_ connection: Connection) {
-        guard !connections.contains(connection) else { return }
+    public func addConnection(_ connection: ConnectionRepresenter) {
         connections.append(connection)
     }
 
-    public func removeConnection(_ connection: Connection) {
-        connections.removeAll(where: { $0 == connection })
+    public func removeConnection(_ connection: ConnectionRepresenter) {
+        connections.removeAll(where: { $0 === connection })
     }
 
-    public func addNode(_ node: Node) {
+    public func addNode(_ node: NodeRepresenter) {
         nodes.append(node)
     }
 
-    public func removeNode(_ node: Node) {
+    public func removeNode(_ node: NodeRepresenter) {
         for connection in connections where (connection.input.node === node) || (connection.output.node === node) {
             removeConnection(connection)
         }
-        nodes.removeAll(where: { $0 == node })
+        nodes.removeAll(where: { $0 === node })
     }
 }

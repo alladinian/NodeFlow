@@ -47,13 +47,13 @@ public class LinkLayer: CAShapeLayer {
 
 /*--------------------------------------------------------------------------------*/
 
-public class BoardView<T: GraphRepresenter>: NSView {
+public class BoardView: NSView {
 
     // Selection variables
     fileprivate var startPoint: NSPoint!
     fileprivate var isSelectingWithRectangle = false
 
-    public var graph: T! {
+    public var graph: GraphRepresenter! {
         didSet {
             reloadData()
         }

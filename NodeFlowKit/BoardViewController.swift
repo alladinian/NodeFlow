@@ -58,12 +58,12 @@ extension NSScrollView {
     }
 }
 
-open class BoardViewController<G: GraphRepresenter>: NSViewController, BoardViewDelegate {
+open class BoardViewController: NSViewController, BoardViewDelegate {
 
     fileprivate var scrollView = FlippedScrollView(frame: .zero)
-    public var boardView = BoardView<G>(frame: CGRect(x: 0, y: 0, width: 5000, height: 5000))
+    public var boardView = BoardView(frame: CGRect(x: 0, y: 0, width: 5000, height: 5000))
 
-    public var graph: G! {
+    public var graph: GraphRepresenter! {
         didSet {
             boardView.graph = graph
         }
@@ -115,7 +115,7 @@ open class BoardViewController<G: GraphRepresenter>: NSViewController, BoardView
         if let existingConnection = graph.connections.first(where: { $0.inputTerminal === inputTerminal }) {
             didDisconnect(existingConnection.inputTerminal, from: existingConnection.outputTerminal)
         }
-        let connection = Connection(inputTerminal: inputTerminal, outputTerminal: outputTerminal) as! G.C
+        let connection = Connection(inputTerminal: inputTerminal, outputTerminal: outputTerminal) as ConnectionRepresenter
         graph.addConnection(connection)
     }
 
@@ -127,7 +127,7 @@ open class BoardViewController<G: GraphRepresenter>: NSViewController, BoardView
         graph.removeConnection(connection)
     }
 
-    public func addNode(_ node: G.N, at point: CGPoint) {
+    public func addNode(_ node: NodeRepresenter, at point: CGPoint) {
         graph.addNode(node)
         boardView.addNodeAtIndex(graph.nodes.endIndex - 1, at: point)
     }

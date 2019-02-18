@@ -151,7 +151,7 @@ class NodeView: NSView {
     }
 
     @objc func close() {
-        nextResponder?.tryToPerform(#selector(BoardViewController<Graph>.removeNodeWithID), with: node.id)
+        nextResponder?.tryToPerform(#selector(BoardViewController.removeNodeWithID), with: node.id)
         removeFromSuperview()
     }
 
@@ -280,7 +280,7 @@ extension NodeView {
 
         // Move the view
         //setFrameOrigin(origin)
-        (superview as? BoardView<Graph>)?.moveSelectedNodesBy(CGPoint(x: deltaX, y: deltaY))
+        (superview as? BoardView)?.moveSelectedNodesBy(CGPoint(x: deltaX, y: deltaY))
 
         // Redraw superview to update any connection lines
         superview?.needsDisplay = true

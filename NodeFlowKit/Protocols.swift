@@ -39,7 +39,7 @@ public func arePropertiesCompatible(_ a: NodeProperty, _ b: NodeProperty) -> Boo
 }
 
 //MARK: - Connection Protocol
-public protocol ConnectionRepresenter: Equatable {
+public protocol ConnectionRepresenter: NSObjectProtocol {
     var inputTerminal: TerminalView! { get }
     var outputTerminal: TerminalView! { get }
     var input: NodeProperty { get }
@@ -59,13 +59,10 @@ public protocol NodeRepresenter: NSObjectProtocol {
 
 //MARK: - Graph Protocol
 public protocol GraphRepresenter {
-    associatedtype C: ConnectionRepresenter
-    associatedtype N: NodeRepresenter
-
-    var nodes: [N] { get }
-    var connections: [C] { get }
-    func addConnection(_ connection: C)
-    func removeConnection(_ connection: C)
-    func addNode(_ node: N)
-    func removeNode(_ node: N)
+    var nodes: [NodeRepresenter] { get }
+    var connections: [ConnectionRepresenter] { get }
+    func addConnection(_ connection: ConnectionRepresenter)
+    func removeConnection(_ connection: ConnectionRepresenter)
+    func addNode(_ node: NodeRepresenter)
+    func removeNode(_ node: NodeRepresenter)
 }
