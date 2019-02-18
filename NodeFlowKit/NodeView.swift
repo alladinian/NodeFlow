@@ -49,6 +49,12 @@ class NodeView: NSView {
         }
     }
 
+    override var frame: NSRect {
+        didSet {
+            node.origin = frame.origin
+        }
+    }
+
     public var rightAccessoryView: NSView? = nil
 
     // Private

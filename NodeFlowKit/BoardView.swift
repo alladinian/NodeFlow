@@ -133,8 +133,11 @@ public class BoardView: NSView {
         for (index, node) in graph.nodes.enumerated() {
             let nodeView = NodeView(node: node)
             addSubview(nodeView)
-            nodeView.frame.origin = CGPoint(x: bounds.center.x + CGFloat(index) * 20, y: bounds.center.y)
-            #warning("Fixme")
+            if let origin = node.origin {
+                nodeView.frame.origin = origin
+            } else {
+                nodeView.frame.origin = CGPoint(x: bounds.center.x + CGFloat(index) * 20, y: bounds.center.y)
+            }
         }
     }
 

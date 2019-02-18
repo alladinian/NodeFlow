@@ -54,6 +54,7 @@ public protocol NodeRepresenter: NSObjectProtocol {
     var controlRows: [NodeRowRepresentable] { get }
     var inputs: [NodeProperty] { get }
     var outputs: [NodeProperty] { get }
+    var origin: CGPoint? { get set }
 }
 
 //MARK: - Graph Protocol

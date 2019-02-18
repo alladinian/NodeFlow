@@ -83,7 +83,7 @@ public class Connection: NSObject, ConnectionRepresenter {
 /*----------------------------------------------------------------------------*/
 
 open class Node: NSObject, NodeRepresenter {
-    public let id: String
+    public var origin: CGPoint?
     public let name: String
     public let rightAccessoryView: NSView?
     public let controlRows: [NodeRowRepresentable]
@@ -91,12 +91,12 @@ open class Node: NSObject, NodeRepresenter {
     public private(set) var outputs: [NodeProperty]
 
     public init(name: String, rightAccessoryView: NSView? = nil, controlRows: [NodeRowRepresentable], inputs: [NodeProperty], outputs: [NodeProperty]) {
-        self.id                 = NSUUID().uuidString
         self.name               = name
         self.rightAccessoryView = rightAccessoryView
         self.controlRows        = controlRows
         self.inputs             = inputs
         self.outputs            = outputs
+        self.origin             = nil
         super.init()
         for (i, _) in self.inputs.enumerated() {
             self.inputs[i].node = self
