@@ -25,7 +25,7 @@ extension NSView: NodeRowRepresentable {}
 public protocol NodeProperty: NSObjectProtocol, NodeRowRepresentable {
     var name: String { get }
     var value: Any? { get set }
-    var controlView: NSView { get }
+    var controlView: NSView! { get }
     var topAccessoryView: NSView? { get }
     var bottomAccessoryView: NSView? { get }
     var isInput: Bool { get }

@@ -195,7 +195,7 @@ class NodeView: NSView {
 
         let control = property.controlView
 
-        let horizontalStack = NSStackView(views: isInput ? [terminal, control] : [control, terminal])
+        let horizontalStack = NSStackView(views: isInput ? [terminal, control!] : [control!, terminal])
         horizontalStack.distribution = .fill
         horizontalStack.spacing      = 8
 
