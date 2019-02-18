@@ -90,13 +90,16 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         scrollView.documentView = boardView
         view.addSubview(scrollView)
         boardView.reloadData()
-
-        scrollView.scrollToCenter()
     }
 
     override open func viewDidLayout() {
         super.viewDidLayout()
         scrollView.frame = view.bounds
+    }
+
+    open override func viewWillAppear() {
+        super.viewWillAppear()
+        scrollView.scrollToCenter()
     }
 
     override open var representedObject: Any? {
@@ -112,14 +115,16 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
     }
 
     @objc open func didConnect(_ inputTerminal: TerminalView, to outputTerminal: TerminalView) {
-        if let existingConnection = graph.connections.first(where: { $0.inputTerminal === inputTerminal }) {
-            didDisconnect(existingConnection.inputTerminal, from: existingConnection.outputTerminal)
+        if let existingConnection = graph.connections.first(where: { $0.input === inputTerminal.property }),
+            let input = boardView.terminalViewForProperty(existingConnection.input),
+            let output = boardView.terminalViewForProperty(existingConnection.output) {
+            didDisconnect(input, from: output)
         }
         graph.createConnection(inputTerminal: inputTerminal, outputTerminal: outputTerminal)
     }
 
     @objc open func didDisconnect(_ inputTerminal: TerminalView, from outputTerminal: TerminalView) {
-        guard let connection = graph.connections.first(where: { $0.inputTerminal == inputTerminal && $0.outputTerminal == outputTerminal }) else {
+        guard let connection = graph.connections.first(where: { $0.input === inputTerminal.property && $0.output === outputTerminal.property }) else {
             print("Connection not found")
             return
         }

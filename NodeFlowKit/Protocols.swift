@@ -22,7 +22,7 @@ public protocol NodeRowRepresentable {}
 extension NSView: NodeRowRepresentable {}
 
 //MARK: - NodeProperty Protocol
-public protocol NodeProperty: NodeRowRepresentable {
+public protocol NodeProperty: NSObjectProtocol, NodeRowRepresentable {
     var name: String { get }
     var value: Any? { get set }
     var controlView: NSView { get }
@@ -40,11 +40,8 @@ public func arePropertiesCompatible(_ a: NodeProperty, _ b: NodeProperty) -> Boo
 
 //MARK: - Connection Protocol
 public protocol ConnectionRepresenter: NSObjectProtocol {
-    var inputTerminal: TerminalView! { get }
-    var outputTerminal: TerminalView! { get }
     var input: NodeProperty { get }
     var output: NodeProperty { get }
-    var link: LinkLayer { get }
 }
 
 //MARK: - Node Protocol

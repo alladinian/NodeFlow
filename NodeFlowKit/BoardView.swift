@@ -125,27 +125,24 @@ public class BoardView: NSView {
     }
 
     public func reloadData() {
-        needsDisplay = true
         guard let graph = graph else { return }
-
         nodeViews.forEach({ $0.removeFromSuperview() })
-
         for (index, node) in graph.nodes.enumerated() {
-            let nodeView = NodeView(node: node)
-            addSubview(nodeView)
-            if let origin = node.origin {
-                nodeView.frame.origin = origin
-            } else {
-                nodeView.frame.origin = CGPoint(x: bounds.center.x + CGFloat(index) * 20, y: bounds.center.y)
-            }
+            let origin = node.origin ?? CGPoint(x: bounds.center.x + CGFloat(index) * 20, y: bounds.center.y)
+            addNode(node, at: origin, needsConversion: false)
         }
+        needsDisplay = true
     }
 
-    @objc public func addNode(_ node: AnyObject, at point: CGPoint) {
+    @objc public func addNode(_ node: AnyObject, at point: CGPoint, needsConversion: Bool = true) {
         guard let node = node as? NodeRepresenter else { return }
         let nodeView = NodeView(node: node)
         addSubview(nodeView)
-        nodeView.setFrameOrigin(convert(point, from: nil))
+        if needsConversion {
+            nodeView.setFrameOrigin(convert(point, from: nil))
+        } else {
+            nodeView.setFrameOrigin(point)
+        }
     }
 
     func addLinkLayer(_ link: LinkLayer) {
@@ -193,7 +190,7 @@ public class BoardView: NSView {
             var initiatingPoint: CGPoint! = initialMousePoint
             if let t1 = initiatingTerminal {
                 let localFrame = convert(t1.frame, from: t1.superview)
-                initiatingPoint = CGPoint(x: localFrame.midX, y: localFrame.midY)
+                initiatingPoint = localFrame.center
 
                 #warning("Refactor")
                 for nodeView in nodeViews {
@@ -228,12 +225,12 @@ public class BoardView: NSView {
         linkLayers.forEach({removeLinkLayer($0)})
         for connection in graph.connections {
             // Ensure that we got a valid connection
-            guard let t1 = connection.inputTerminal, let t2 = connection.outputTerminal else { continue }
-            let link = connection.link
+            guard let t1 = terminalViewForProperty(connection.input), let t2 = terminalViewForProperty(connection.output) else { continue }
+            let link = LinkLayer()
             addLinkLayer(link)
             let a = convert(t1.frame, from: t1.superview)
             let b = convert(t2.frame, from: t2.superview)
-            link.path = linkPathBetween(point: CGPoint(x: a.midX, y: a.midY), and: CGPoint(x: b.midX, y: b.midY)).cgPath
+            link.path = linkPathBetween(point: a.center, and: b.center).cgPath
             t1.isConnected = true
             t2.isConnected = true
         }
@@ -303,6 +300,10 @@ public class BoardView: NSView {
         }
 
         needsDisplay = true
+    }
+
+    func terminalViewForProperty(_ property: NodeProperty) -> TerminalView? {
+        return terminalViews.lazy.first(where: { $0.property === property })
     }
 
     // Middle button scrolling
