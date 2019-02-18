@@ -67,7 +67,6 @@ func asIO(_ a: NodeProperty, _ b: NodeProperty) -> (input: NodeProperty, output:
 /*----------------------------------------------------------------------------*/
 
 public class Connection: NSObject, ConnectionRepresenter {
-    private let id: String
     public weak var inputTerminal: TerminalView!
     public weak var outputTerminal: TerminalView!
     public var input: NodeProperty { return inputTerminal.property }
@@ -75,7 +74,6 @@ public class Connection: NSObject, ConnectionRepresenter {
     public let link: LinkLayer
 
     public init(inputTerminal: TerminalView, outputTerminal: TerminalView) {
-        self.id             = NSUUID().uuidString
         self.inputTerminal  = inputTerminal
         self.outputTerminal = outputTerminal
         link = LinkLayer(terminals: (inputTerminal, outputTerminal))

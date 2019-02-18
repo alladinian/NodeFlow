@@ -129,7 +129,7 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
 
     public func addNode(_ node: NodeRepresenter, at point: CGPoint) {
         graph.addNode(node)
-        boardView.addNodeAtIndex(graph.nodes.endIndex - 1, at: point)
+        boardView.addNode(node, at: point)
     }
 
     @objc public func removeNode(_ node: AnyObject?) {

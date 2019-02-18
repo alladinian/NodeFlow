@@ -11,24 +11,24 @@ import Cocoa
 /*--------------------------------------------------------------------------------*/
 
 public class LinkLayer: CAShapeLayer {
-    var terminals: (a: TerminalView, b: TerminalView)? = nil
+    public var terminals: (a: TerminalView, b: TerminalView)? = nil
 
     var terminalList: [TerminalView] {
         guard let terminals = terminals else { return [] }
         return [terminals.a, terminals.b]
     }
 
-    convenience init(terminals: (a: TerminalView, b: TerminalView)) {
+    public convenience init(terminals: (a: TerminalView, b: TerminalView)) {
         self.init()
         self.terminals = terminals
     }
 
-    override init() {
+    public override init() {
         super.init()
         commonInit()
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
@@ -138,8 +138,8 @@ public class BoardView: NSView {
         }
     }
 
-    @objc public func addNodeAtIndex(_ index: Int, at point: CGPoint) {
-        let node = graph.nodes[index]
+    @objc public func addNode(_ node: AnyObject, at point: CGPoint) {
+        guard let node = node as? NodeRepresenter else { return }
         let nodeView = NodeView(node: node)
         addSubview(nodeView)
         nodeView.setFrameOrigin(convert(point, from: nil))
