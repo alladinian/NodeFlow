@@ -151,7 +151,7 @@ class NodeView: NSView {
     }
 
     @objc func close() {
-        nextResponder?.tryToPerform(#selector(BoardViewController.removeNodeWithID), with: node.id)
+        nextResponder?.tryToPerform(#selector(BoardViewController.removeNode), with: node)
         removeFromSuperview()
     }
 

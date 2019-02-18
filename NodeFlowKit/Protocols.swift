@@ -49,7 +49,6 @@ public protocol ConnectionRepresenter: NSObjectProtocol {
 
 //MARK: - Node Protocol
 public protocol NodeRepresenter: NSObjectProtocol {
-    var id: String { get }
     var name: String { get }
     var rightAccessoryView: NSView? { get }
     var controlRows: [NodeRowRepresentable] { get }

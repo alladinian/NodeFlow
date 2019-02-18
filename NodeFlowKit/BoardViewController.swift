@@ -132,8 +132,8 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         boardView.addNodeAtIndex(graph.nodes.endIndex - 1, at: point)
     }
 
-    @objc public func removeNodeWithID(_ id: String?) {
-        guard let id = id, let node = graph.nodes.first(where: { $0.id == id }) else { return }
+    @objc public func removeNode(_ node: AnyObject?) {
+        guard let node = graph.nodes.first(where: { $0 === node }) else { return }
         graph.removeNode(node)
         // Removes itself from the boardview
         boardView.needsDisplay = true // To remove the connection link
