@@ -110,13 +110,17 @@ open class Node: NSObject, NodeRepresenter {
 /*----------------------------------------------------------------------------*/
 
 public class Graph: GraphRepresenter {
-
     public fileprivate(set) var nodes: [NodeRepresenter]
     public fileprivate(set) var connections: [ConnectionRepresenter]
 
     public init(nodes: [Node], connections: [Connection] = []) {
         self.nodes       = nodes
         self.connections = connections
+    }
+
+    public func createConnection(inputTerminal: TerminalView, outputTerminal: TerminalView) {
+        let connection = Connection(inputTerminal: inputTerminal, outputTerminal: outputTerminal)
+        addConnection(connection)
     }
 
     public func addConnection(_ connection: ConnectionRepresenter) {

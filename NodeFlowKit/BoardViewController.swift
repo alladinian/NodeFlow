@@ -115,8 +115,7 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         if let existingConnection = graph.connections.first(where: { $0.inputTerminal === inputTerminal }) {
             didDisconnect(existingConnection.inputTerminal, from: existingConnection.outputTerminal)
         }
-        let connection = Connection(inputTerminal: inputTerminal, outputTerminal: outputTerminal) as ConnectionRepresenter
-        graph.addConnection(connection)
+        graph.createConnection(inputTerminal: inputTerminal, outputTerminal: outputTerminal)
     }
 
     @objc open func didDisconnect(_ inputTerminal: TerminalView, from outputTerminal: TerminalView) {

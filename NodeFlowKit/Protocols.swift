@@ -60,6 +60,7 @@ public protocol NodeRepresenter: NSObjectProtocol {
 public protocol GraphRepresenter {
     var nodes: [NodeRepresenter] { get }
     var connections: [ConnectionRepresenter] { get }
+    func createConnection(inputTerminal: TerminalView, outputTerminal: TerminalView)
     func addConnection(_ connection: ConnectionRepresenter)
     func removeConnection(_ connection: ConnectionRepresenter)
     func addNode(_ node: NodeRepresenter)
