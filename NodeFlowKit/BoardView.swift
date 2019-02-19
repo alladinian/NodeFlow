@@ -87,7 +87,11 @@ public class BoardView: NSView {
     fileprivate var isDrawingLine: Bool = false
 
     fileprivate let activeLinkLayer = LinkLayer()
-    fileprivate var linkLayers = [LinkLayer]()
+
+    fileprivate var linkLayers: [LinkLayer] {
+        return layer?.sublayers?.compactMap({ $0 as? LinkLayer }).filter({ $0 !== activeLinkLayer }) ?? []
+    }
+
     fileprivate let activeSelectionLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.lineWidth = 1
@@ -147,12 +151,10 @@ public class BoardView: NSView {
 
     func addLinkLayer(_ link: LinkLayer) {
         guard !linkLayers.contains(link) else { return }
-        linkLayers.append(link)
         layer?.addSublayer(link)
     }
 
     func removeLinkLayer(_ link: LinkLayer) {
-        linkLayers.removeAll(where: { $0 === link })
         link.removeFromSuperlayer()
     }
 
