@@ -102,12 +102,6 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         scrollView.scrollToCenter()
     }
 
-    override open var representedObject: Any? {
-        didSet {
-
-        }
-    }
-
     @objc open func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) -> Bool {
         return terminal.isInput != otherTerminal.isInput
             && arePropertiesCompatible(terminal.property, otherTerminal.property)

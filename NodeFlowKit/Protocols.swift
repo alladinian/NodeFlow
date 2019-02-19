@@ -64,3 +64,10 @@ public protocol GraphRepresenter {
     func addNode(_ node: NodeRepresenter)
     func removeNode(_ node: NodeRepresenter)
 }
+
+
+/*----------------------------------------------------------------------------*/
+
+func asIO(_ a: NodeProperty, _ b: NodeProperty) -> (input: NodeProperty, output: NodeProperty) {
+    return ((a.isInput ? a : b), (!a.isInput ? a : b))
+}
