@@ -226,7 +226,7 @@ public class BoardView: NSView {
         for connection in graph.connections {
             // Ensure that we got a valid connection
             guard let t1 = terminalViewForProperty(connection.input), let t2 = terminalViewForProperty(connection.output) else { continue }
-            let link = LinkLayer()
+            let link = LinkLayer(terminals: (t1, t2))
             addLinkLayer(link)
             let a = convert(t1.frame, from: t1.superview)
             let b = convert(t2.frame, from: t2.superview)
@@ -291,11 +291,7 @@ public class BoardView: NSView {
             let input = t1.isInput ? t1 : t2
             let output = !t1.isInput ? t1 : t2
             if delegate?.shouldConnect(input, to: output) == true {
-                if input.isConnected, let existing = linkLayers.first(where: { $0.terminalList.contains(input) }) {
-                    removeLinkLayer(existing)
-                }
                 delegate?.didConnect(input, to: output)
-                addLinkLayer(LinkLayer(terminals: (input, output)))
             }
         }
 
