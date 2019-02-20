@@ -60,7 +60,7 @@ public struct ContentType: OptionSet {
 
 /*----------------------------------------------------------------------------*/
 
-public class Connection: NSObject, ConnectionRepresenter {
+public class BaseConnection: NSObject, ConnectionRepresenter {
     public weak var inputTerminal: TerminalView!
     public weak var outputTerminal: TerminalView!
     public var input: NodeProperty { return inputTerminal.property }
@@ -76,7 +76,7 @@ public class Connection: NSObject, ConnectionRepresenter {
 
 /*----------------------------------------------------------------------------*/
 
-open class Node: NSObject, NodeRepresenter {
+open class BaseNode: NSObject, NodeRepresenter {
     public var origin: CGPoint?
     public let name: String
     public let rightAccessoryView: NSView?
@@ -103,17 +103,17 @@ open class Node: NSObject, NodeRepresenter {
 
 /*----------------------------------------------------------------------------*/
 
-public class Graph: GraphRepresenter {
+public class BaseGraph: GraphRepresenter {
     public fileprivate(set) var nodes: [NodeRepresenter]
     public fileprivate(set) var connections: [ConnectionRepresenter]
 
-    public init(nodes: [Node], connections: [Connection] = []) {
+    public init(nodes: [BaseNode], connections: [BaseConnection] = []) {
         self.nodes       = nodes
         self.connections = connections
     }
 
     public func createConnection(inputTerminal: TerminalView, outputTerminal: TerminalView) {
-        let connection = Connection(inputTerminal: inputTerminal, outputTerminal: outputTerminal)
+        let connection = BaseConnection(inputTerminal: inputTerminal, outputTerminal: outputTerminal)
         addConnection(connection)
     }
 

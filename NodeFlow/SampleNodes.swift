@@ -15,7 +15,7 @@ struct NumProperty: NodeProperty {
     var type: ContentType = .number
     var controlView: NSView
     var isInput: Bool
-    weak var node: Node!
+    weak var node: BaseNode!
     var name: String = "Number"
     var value: Any? = 1
 
@@ -26,9 +26,9 @@ struct NumProperty: NodeProperty {
     }
 }
 
-public extension Node {
-    public static func mathNode() -> Node {
-        return Node(name: "Sum", controlRows: [],
+public extension BaseNode {
+    public static func mathNode() -> BaseNode {
+        return BaseNode(name: "Sum", controlRows: [],
                     inputs: [NumProperty(name: "Number", isInput: true), NumProperty(name: "Number", isInput: true)],
                     outputs: [NumProperty(name: "Result", isInput: false)])
     }

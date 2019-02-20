@@ -9,7 +9,7 @@
 import Cocoa
 
 //MARK: BoardView Delegate Protocol
-public protocol BoardViewDelegate: class {
+public protocol BoardViewDelegate: AnyObject {
     func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) -> Bool
     func didConnect(_ inputTerminal: TerminalView, to outputTerminal: TerminalView)
     func didDisconnect(_ inputTerminal: TerminalView, from outputTerminal: TerminalView)
