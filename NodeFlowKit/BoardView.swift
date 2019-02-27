@@ -132,7 +132,8 @@ public class BoardView: NSView {
         guard let graph = graph else { return }
         nodeViews.forEach({ $0.removeFromSuperview() })
         for (index, node) in graph.nodes.enumerated() {
-            let origin = node.origin ?? CGPoint(x: bounds.center.x + CGFloat(index) * 20, y: bounds.center.y + 200)
+            let origin = node.origin ?? CGPoint(x: bounds.center.x + CGFloat(index) * 20,
+                                                y: bounds.center.y + CGFloat(index) * 20)
             addNode(node, at: origin, needsConversion: false)
         }
         needsDisplay = true

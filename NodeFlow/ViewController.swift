@@ -14,7 +14,12 @@ class ViewController: BoardViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        graph = BaseGraph(nodes: [Node.mathNode(), Node.mathNode(), Node.mathNode()], connections: [])
+        let nodes = [
+            BaseNode.mathNode(),
+            BaseNode.mathNode(),
+            BaseNode.mathNode()
+        ]
+        graph = BaseGraph(nodes: nodes, connections: [])
     }
 
     override var representedObject: Any? {

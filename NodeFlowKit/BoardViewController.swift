@@ -52,7 +52,7 @@ extension NSScrollView {
         guard let docView = documentView else { return }
         let center = CGPoint(
             x: docView.bounds.midX - contentView.frame.width / 2,
-            y: docView.bounds.midY - (docView.isFlipped ? -1 : 1) * contentView.frame.height / 2
+            y: docView.bounds.midY - (docView.isFlipped ? 1 : -1) * contentView.frame.height / 2
         )
         docView.scroll(center)
     }
