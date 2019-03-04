@@ -286,10 +286,7 @@ public class BoardView: NSView {
 
         let terminal1 = terminalForPoint(initialMousePoint)
         let terminal2 = terminalForPoint(lastMousePoint)
-
-        if let t1 = terminal1, let t2 = terminal2, t1.isInput != t2.isInput {
-            let input = t1.isInput ? t1 : t2
-            let output = !t1.isInput ? t1 : t2
+        if let t1 = terminal1, let t2 = terminal2, let (input, output) = asIO(t1, t2) {
             if delegate?.shouldConnect(input, to: output) == true {
                 delegate?.didConnect(input, to: output)
             }

@@ -34,7 +34,7 @@ public protocol NodeProperty: NSObjectProtocol, NodeRowRepresentable {
 }
 
 public func arePropertiesCompatible(_ a: NodeProperty, _ b: NodeProperty) -> Bool {
-    let (input, output) = asIO(a, b)
+    guard let (input, output) = asIO(a, b) else { return false }
     return input.type.isSuperset(of: output.type)
 }
 
@@ -67,7 +67,12 @@ public protocol GraphRepresenter {
 
 
 /*----------------------------------------------------------------------------*/
+func asIO(_ a: TerminalView, _ b: TerminalView) -> (input: TerminalView, output: TerminalView)? {
+    guard a.isInput != b.isInput else { return nil }
+    return ((a.isInput ? a : b), (!a.isInput ? a : b))
+}
 
-func asIO(_ a: NodeProperty, _ b: NodeProperty) -> (input: NodeProperty, output: NodeProperty) {
+func asIO(_ a: NodeProperty, _ b: NodeProperty) -> (input: NodeProperty, output: NodeProperty)? {
+    guard a.isInput != b.isInput else { return nil }
     return ((a.isInput ? a : b), (!a.isInput ? a : b))
 }
