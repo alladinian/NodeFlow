@@ -10,6 +10,7 @@ import Cocoa
 
 /*--------------------------------------------------------------------------------*/
 
+/// LinkLayer is responsible for representing visually a line between two terminals
 public class LinkLayer: CAShapeLayer {
     public var terminals: (a: TerminalView, b: TerminalView)? = nil
 
@@ -122,10 +123,6 @@ public class BoardView: NSView {
         layer?.addSublayer(activeLinkLayer)
         layer?.addSublayer(activeSelectionLayer)
         addSubview(gridView)
-    }
-
-    public override func viewDidMoveToSuperview() {
-        reloadData()
     }
 
     public func reloadData() {

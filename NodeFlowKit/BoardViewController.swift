@@ -89,7 +89,6 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
 
         scrollView.documentView = boardView
         view.addSubview(scrollView)
-        boardView.reloadData()
     }
 
     override open func viewDidLayout() {
