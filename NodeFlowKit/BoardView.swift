@@ -144,7 +144,10 @@ public class BoardView: NSView {
 
     @objc public func addNode(_ node: AnyObject, at point: CGPoint, needsConversion: Bool = true) {
         guard let node = node as? NodeRepresenter else { return }
-        let nodeView = NodeView(node: node, rightAccessoryView: renderingDatasource?.rightAccessoryViewForNode(node))
+        precondition(renderingDatasource != nil)
+        let rightAccessoryView = renderingDatasource?.rightAccessoryViewForNode(node)
+        let controlRows = renderingDatasource?.controlRowsForNode(node) ?? []
+        let nodeView = NodeView(node: node, rightAccessoryView: rightAccessoryView, controlRows: controlRows)
         addSubview(nodeView)
         if needsConversion {
             nodeView.setFrameOrigin(convert(point, from: nil))

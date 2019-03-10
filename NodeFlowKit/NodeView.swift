@@ -13,12 +13,14 @@ class NodeView: NSView {
     // Init requirements
     public let node: NodeRepresenter
     public let rightAccessoryView: NSView?
+    public let controlRows: [NodeRowRepresentable]
 
     var terminals = [TerminalView]()
 
-    init(node: NodeRepresenter, rightAccessoryView: NSView?) {
-        self.node = node
+    init(node: NodeRepresenter, rightAccessoryView: NSView?, controlRows: [NodeRowRepresentable]) {
+        self.node               = node
         self.rightAccessoryView = rightAccessoryView
+        self.controlRows        = controlRows
         super.init(frame: .zero)
         commonInit()
     }
@@ -190,7 +192,7 @@ class NodeView: NSView {
     }
 
     fileprivate func setupRows() {
-        for row in node.controlRows {
+        for row in controlRows {
             if let view = row as? NSView {
                 stackView.addArrangedSubview(view)
                 constraintHorizontalEdgesOf(view, to: stackView)

@@ -8,8 +8,13 @@
 
 import Cocoa
 
+//MARK: BoardView Rendering Datasource Protocol
 public protocol BoardViewRenderingDatasource: AnyObject {
     func rightAccessoryViewForNode(_ node: NodeRepresenter) -> NSView?
+    func controlRowsForNode(_ node: NodeRepresenter) -> [NodeRowRepresentable]
+    func controlViewForProperty(_ property: NodeProperty) -> NSView
+    func topAccessoryViewForProperty(_ property: NodeProperty) -> NSView?
+    func bottomAccessoryViewForProperty(_ property: NodeProperty) -> NSView?
 }
 
 //MARK: BoardView Delegate Protocol
@@ -51,7 +56,6 @@ public protocol ConnectionRepresenter: NSObjectProtocol {
 //MARK: - Node Protocol
 public protocol NodeRepresenter: NSObjectProtocol {
     var name: String { get }
-    var controlRows: [NodeRowRepresentable] { get }
     var inputs: [NodeProperty] { get }
     var outputs: [NodeProperty] { get }
     var origin: CGPoint? { get set }

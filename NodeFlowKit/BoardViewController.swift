@@ -149,4 +149,20 @@ open class BoardViewController: NSViewController, BoardViewDelegate, BoardViewRe
         return nil
     }
 
+    open func controlRowsForNode(_ node: NodeRepresenter) -> [NodeRowRepresentable] {
+        return []
+    }
+
+    open func controlViewForProperty(_ property: NodeProperty) -> NSView {
+        return NSView()
+    }
+
+    open func topAccessoryViewForProperty(_ property: NodeProperty) -> NSView? {
+        return nil
+    }
+
+    open func bottomAccessoryViewForProperty(_ property: NodeProperty) -> NSView? {
+        return nil
+    }
+
 }
