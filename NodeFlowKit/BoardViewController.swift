@@ -144,6 +144,7 @@ open class BoardViewController: NSViewController, BoardViewDelegate, BoardViewRe
 
     open func didDropWithInfo(_ info: NSDraggingInfo) {}
 
+    //MARK:- Rendering Datasource
     open func rightAccessoryViewForNode(_ node: NodeRepresenter) -> NSView? {
         return nil
     }
