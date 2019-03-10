@@ -54,6 +54,10 @@ public class BoardView: NSView {
     fileprivate var startPoint: NSPoint!
     fileprivate var isSelectingWithRectangle = false
 
+    // Notifications
+    static let didStartDrawingLine = NSNotification.Name("userDidStartDrawingLine")
+    static let didFinishDrawingLine = NSNotification.Name("userDidFinishDrawingLine")
+
     public var graph: GraphRepresenter! {
         didSet {
             reloadData()
@@ -171,6 +175,7 @@ public class BoardView: NSView {
 
         // Interactive line drawing
         var initiatingTerminal: TerminalView?
+
         if isDrawingLine {
 
             initiatingTerminal = terminalForPoint(initialMousePoint)
@@ -188,27 +193,14 @@ public class BoardView: NSView {
             }
 
             var initiatingPoint: CGPoint! = initialMousePoint
+
             if let t1 = initiatingTerminal {
                 let localFrame = convert(t1.frame, from: t1.superview)
                 initiatingPoint = localFrame.center
-
-                #warning("Refactor")
-                for nodeView in nodeViews {
-                    for property in nodeView.node.inputs {
-                        property.controlView.superview?.alphaValue = arePropertiesCompatible(property, t1.property) ? 1 : 0.3
-                    }
-                }
             }
 
             activeLinkLayer.path = linkPathBetween(point: initiatingPoint, and: lastMousePoint).cgPath
             initiatingTerminal?.isConnected = true
-        } else {
-            #warning("Refactor")
-            for nodeView in nodeViews {
-                for property in nodeView.node.inputs {
-                    property.controlView.superview?.alphaValue = 1.0
-                }
-            }
         }
 
         // Selection drawing
@@ -259,7 +251,8 @@ public class BoardView: NSView {
         lastMousePoint    = initialMousePoint
 
         // If we're on top of a connectionView start drawing a line
-        if terminalForPoint(initialMousePoint) != nil {
+        if let terminal = terminalForPoint(initialMousePoint), !isDrawingLine {
+            NotificationCenter.default.post(name: BoardView.didStartDrawingLine, object: self, userInfo: ["property" : terminal.property])
             isDrawingLine = true
         }
 
@@ -281,6 +274,10 @@ public class BoardView: NSView {
     }
 
     public override func mouseUp(with event: NSEvent) {
+        if isDrawingLine {
+             NotificationCenter.default.post(name: BoardView.didFinishDrawingLine, object: self, userInfo: nil)
+        }
+
         isDrawingLine            = false
         isSelectingWithRectangle = false
 

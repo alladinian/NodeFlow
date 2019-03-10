@@ -134,6 +134,22 @@ class NodeView: NSView {
         setupRows()
 
         needsDisplay = true
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didStartDrawingLineAction(_:)), name: BoardView.didStartDrawingLine, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didFinishDrawingLineAction), name: BoardView.didFinishDrawingLine, object: nil)
+    }
+
+    @objc fileprivate func didStartDrawingLineAction(_ notification: Notification) {
+        guard let notificationProperty = notification.userInfo?["property"] as? NodeProperty else { return }
+        for property in node.inputs {
+            property.controlView.superview?.alphaValue = arePropertiesCompatible(property, notificationProperty) ? 1 : 0.3
+        }
+    }
+
+    @objc fileprivate func didFinishDrawingLineAction() {
+        for property in node.inputs {
+            property.controlView.superview?.alphaValue = 1.0
+        }
     }
 
     public override func layout() {
