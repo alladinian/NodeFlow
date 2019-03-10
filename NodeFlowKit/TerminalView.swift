@@ -63,18 +63,18 @@ public class TerminalView: NSView {
         let colors = Set(property.type.associatedColors)
 
         for (index, color) in colors.enumerated() {
-            let ring = CAShapeLayer()
-            let rect = bounds.insetBy(dx: 2, dy: 2)
-            ring.path = CGPath(ellipseIn: rect, transform: nil)
-            ring.bounds = rect
+            let ring         = CAShapeLayer()
+            let rect         = bounds.insetBy(dx: 2, dy: 2)
+            ring.path        = CGPath(ellipseIn: rect, transform: nil)
+            ring.bounds      = rect
             ring.strokeColor = color.cgColor
-            ring.lineWidth = 2
-            ring.fillColor = NSColor.clear.cgColor
-            let step = 1.0 / CGFloat(colors.count)
+            ring.lineWidth   = 2
+            ring.fillColor   = NSColor.clear.cgColor
+            let step         = 1.0 / CGFloat(colors.count)
             ring.strokeStart = CGFloat(index) * step
-            ring.strokeEnd = ring.strokeStart + step
-            ring.transform = CATransform3DMakeRotation(CGFloat.pi/2, 0, 0, 1)
-            ring.position = CGPoint(x: bounds.midX, y: bounds.midY)
+            ring.strokeEnd   = ring.strokeStart + step
+            ring.transform   = CATransform3DMakeRotation(CGFloat.pi/2, 0, 0, 1)
+            ring.position    = CGPoint(x: bounds.midX, y: bounds.midY)
             rings.append(ring)
             layer?.addSublayer(ring)
         }

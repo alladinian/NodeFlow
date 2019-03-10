@@ -39,6 +39,10 @@ public struct ContentType: OptionSet {
     public static let scene       = ContentType(rawValue: 1<<10)
     public static let cubeMap     = ContentType(rawValue: 1<<11)
 
+    public static var imageContent: ContentType {
+        return [.image, .url]
+    }
+
     public static var materialContent: ContentType {
         return [.color, .number, .image, .string, .url, .video, .calayer, .texture, .scene, .cubeMap]
     }
