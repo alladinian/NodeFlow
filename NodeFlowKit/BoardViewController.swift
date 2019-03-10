@@ -58,7 +58,7 @@ extension NSScrollView {
     }
 }
 
-open class BoardViewController: NSViewController, BoardViewDelegate {
+open class BoardViewController: NSViewController, BoardViewDelegate, BoardViewRenderingDatasource {
 
     fileprivate var scrollView = FlippedScrollView(frame: .zero)
     public var boardView = BoardView(frame: CGRect(x: 0, y: 0, width: 5000, height: 5000))
@@ -85,7 +85,9 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
         scrollView.allowsMagnification   = true
 
         boardView.translatesAutoresizingMaskIntoConstraints = false
-        boardView.delegate                                  = self
+
+        boardView.delegate = self
+        boardView.renderingDatasource = self
 
         scrollView.documentView = boardView
         view.addSubview(scrollView)
@@ -141,5 +143,9 @@ open class BoardViewController: NSViewController, BoardViewDelegate {
     }
 
     open func didDropWithInfo(_ info: NSDraggingInfo) {}
+
+    open func rightAccessoryViewForNode(_ node: NodeRepresenter) -> NSView? {
+        return nil
+    }
 
 }

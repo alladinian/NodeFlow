@@ -83,14 +83,12 @@ public class BaseConnection: NSObject, ConnectionRepresenter {
 open class BaseNode: NSObject, NodeRepresenter {
     public var origin: CGPoint?
     public let name: String
-    public let rightAccessoryView: NSView?
     public let controlRows: [NodeRowRepresentable]
     public private(set) var inputs: [NodeProperty]
     public private(set) var outputs: [NodeProperty]
 
-    public init(name: String, rightAccessoryView: NSView? = nil, controlRows: [NodeRowRepresentable], inputs: [NodeProperty], outputs: [NodeProperty]) {
+    public init(name: String, controlRows: [NodeRowRepresentable], inputs: [NodeProperty], outputs: [NodeProperty]) {
         self.name               = name
-        self.rightAccessoryView = rightAccessoryView
         self.controlRows        = controlRows
         self.inputs             = inputs
         self.outputs            = outputs

@@ -10,14 +10,16 @@ import Cocoa
 
 class NodeView: NSView {
 
-    // Single requirement
-    var node: NodeRepresenter!
+    // Init requirements
+    public let node: NodeRepresenter
+    public let rightAccessoryView: NSView?
 
     var terminals = [TerminalView]()
 
-    init(node: NodeRepresenter) {
-        super.init(frame: .zero)
+    init(node: NodeRepresenter, rightAccessoryView: NSView?) {
         self.node = node
+        self.rightAccessoryView = rightAccessoryView
+        super.init(frame: .zero)
         commonInit()
     }
 
@@ -54,8 +56,6 @@ class NodeView: NSView {
             node.origin = frame.origin
         }
     }
-
-    public var rightAccessoryView: NSView? = nil
 
     // Private
     fileprivate let titleLabel = NSTextField(labelWithString: "")
@@ -112,7 +112,6 @@ class NodeView: NSView {
         setupShadow()
 
         title = node.name
-        rightAccessoryView = node.rightAccessoryView
 
         titleLabel.heightAnchor.constraint(equalToConstant: kHeaderHeight).isActive = true
 

@@ -64,6 +64,8 @@ public class BoardView: NSView {
         }
     }
 
+    public weak var renderingDatasource: BoardViewRenderingDatasource?
+
     public weak var delegate: BoardViewDelegate? {
         didSet {
             guard let delegate = delegate else { return }
@@ -142,7 +144,7 @@ public class BoardView: NSView {
 
     @objc public func addNode(_ node: AnyObject, at point: CGPoint, needsConversion: Bool = true) {
         guard let node = node as? NodeRepresenter else { return }
-        let nodeView = NodeView(node: node)
+        let nodeView = NodeView(node: node, rightAccessoryView: renderingDatasource?.rightAccessoryViewForNode(node))
         addSubview(nodeView)
         if needsConversion {
             nodeView.setFrameOrigin(convert(point, from: nil))

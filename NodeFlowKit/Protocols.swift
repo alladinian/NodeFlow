@@ -8,6 +8,10 @@
 
 import Cocoa
 
+public protocol BoardViewRenderingDatasource: AnyObject {
+    func rightAccessoryViewForNode(_ node: NodeRepresenter) -> NSView?
+}
+
 //MARK: BoardView Delegate Protocol
 public protocol BoardViewDelegate: AnyObject {
     func shouldConnect(_ terminal: TerminalView, to otherTerminal: TerminalView) -> Bool
@@ -47,7 +51,6 @@ public protocol ConnectionRepresenter: NSObjectProtocol {
 //MARK: - Node Protocol
 public protocol NodeRepresenter: NSObjectProtocol {
     var name: String { get }
-    var rightAccessoryView: NSView? { get }
     var controlRows: [NodeRowRepresentable] { get }
     var inputs: [NodeProperty] { get }
     var outputs: [NodeProperty] { get }
