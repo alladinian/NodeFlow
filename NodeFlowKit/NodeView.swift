@@ -15,9 +15,12 @@ class NodeView: NSView {
     public let rightAccessoryView: NSView?
     public let controlRows: [NodeRowRepresentable]
 
+    fileprivate weak var boardView: BoardView!
+
     var terminals = [TerminalView]()
 
-    init(node: NodeRepresenter, rightAccessoryView: NSView?, controlRows: [NodeRowRepresentable]) {
+    init(boardView: BoardView, node: NodeRepresenter, rightAccessoryView: NSView?, controlRows: [NodeRowRepresentable]) {
+        self.boardView          = boardView
         self.node               = node
         self.rightAccessoryView = rightAccessoryView
         self.controlRows        = controlRows
@@ -143,13 +146,15 @@ class NodeView: NSView {
     @objc fileprivate func didStartDrawingLineAction(_ notification: Notification) {
         guard let notificationProperty = notification.userInfo?["property"] as? NodeProperty else { return }
         for property in node.inputs {
-            property.controlView.superview?.alphaValue = arePropertiesCompatible(property, notificationProperty) ? 1 : 0.3
+            #warning("Fixme")
+            //property.controlView.superview?.alphaValue = arePropertiesCompatible(property, notificationProperty) ? 1 : 0.3
         }
     }
 
     @objc fileprivate func didFinishDrawingLineAction() {
         for property in node.inputs {
-            property.controlView.superview?.alphaValue = 1.0
+            #warning("Fixme")
+            //property.controlView.superview?.alphaValue = 1.0
         }
     }
 
@@ -210,7 +215,7 @@ class NodeView: NSView {
         terminal.isInput = isInput
         terminals.append(terminal)
 
-        let control = property.controlView
+        let control = boardView.renderingDatasource?.controlViewForProperty(property)
 
         let horizontalStack = NSStackView(views: isInput ? [terminal, control!] : [control!, terminal])
         horizontalStack.distribution = .fill
@@ -220,7 +225,7 @@ class NodeView: NSView {
         verticalStack.orientation = .vertical
         verticalStack.distribution = .fill
 
-        if let accessory = property.topAccessoryView {
+        if let accessory = boardView.renderingDatasource?.topAccessoryViewForProperty(property) {
             verticalStack.addArrangedSubview(accessory)
         }
 
@@ -228,7 +233,7 @@ class NodeView: NSView {
 
         constraintHorizontalEdgesOf(horizontalStack, to: verticalStack)
 
-        if let accessory = property.bottomAccessoryView {
+        if let accessory = boardView.renderingDatasource?.bottomAccessoryViewForProperty(property) {
             verticalStack.addArrangedSubview(accessory)
         }
 

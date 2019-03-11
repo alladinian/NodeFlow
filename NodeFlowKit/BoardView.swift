@@ -147,7 +147,7 @@ public class BoardView: NSView {
         precondition(renderingDatasource != nil)
         let rightAccessoryView = renderingDatasource?.rightAccessoryViewForNode(node)
         let controlRows = renderingDatasource?.controlRowsForNode(node) ?? []
-        let nodeView = NodeView(node: node, rightAccessoryView: rightAccessoryView, controlRows: controlRows)
+        let nodeView = NodeView(boardView: self, node: node, rightAccessoryView: rightAccessoryView, controlRows: controlRows)
         addSubview(nodeView)
         if needsConversion {
             nodeView.setFrameOrigin(convert(point, from: nil))
