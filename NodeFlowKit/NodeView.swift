@@ -146,15 +146,13 @@ class NodeView: NSView {
     @objc fileprivate func didStartDrawingLineAction(_ notification: Notification) {
         guard let notificationProperty = notification.userInfo?["property"] as? NodeProperty else { return }
         for property in node.inputs {
-            #warning("Fixme")
-            //property.controlView.superview?.alphaValue = arePropertiesCompatible(property, notificationProperty) ? 1 : 0.3
+            rowCache[property.hash]?.alphaValue = arePropertiesCompatible(property, notificationProperty) ? 1 : 0.3
         }
     }
 
     @objc fileprivate func didFinishDrawingLineAction() {
         for property in node.inputs {
-            #warning("Fixme")
-            //property.controlView.superview?.alphaValue = 1.0
+            rowCache[property.hash]?.alphaValue = 1.0
         }
     }
 
@@ -209,6 +207,8 @@ class NodeView: NSView {
         }
     }
 
+    fileprivate var rowCache: [Int : NSView] = [:]
+
     fileprivate func connectionRowForProperty(_ property: NodeProperty) -> NSView {
         let terminal = TerminalView(property: property)
         let isInput = property.isInput
@@ -220,6 +220,8 @@ class NodeView: NSView {
         let horizontalStack = NSStackView(views: isInput ? [terminal, control!] : [control!, terminal])
         horizontalStack.distribution = .fill
         horizontalStack.spacing      = 8
+
+        rowCache[property.hash] = horizontalStack
 
         let verticalStack = NSStackView()
         verticalStack.orientation = .vertical

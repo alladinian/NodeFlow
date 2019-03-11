@@ -32,6 +32,7 @@ extension NSView: NodeRowRepresentable {}
 
 //MARK: - NodeProperty Protocol
 public protocol NodeProperty: NSObjectProtocol, NodeRowRepresentable {
+    var hash: Int { get }
     var name: String { get }
     var value: Any? { get set }
     var isInput: Bool { get }
