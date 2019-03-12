@@ -55,7 +55,7 @@ public class BoardView: NSView {
     fileprivate var isSelectingWithRectangle = false
 
     // Notifications
-    static let didStartDrawingLine = NSNotification.Name("userDidStartDrawingLine")
+    static let didStartDrawingLine  = NSNotification.Name("userDidStartDrawingLine")
     static let didFinishDrawingLine = NSNotification.Name("userDidFinishDrawingLine")
 
     public var graph: GraphRepresenter! {
@@ -100,9 +100,9 @@ public class BoardView: NSView {
     }
 
     fileprivate let activeSelectionLayer: CAShapeLayer = {
-        let layer = CAShapeLayer()
-        layer.lineWidth = 1
-        layer.fillColor = ThemeColor.selection.withAlphaComponent(0.1).cgColor
+        let layer         = CAShapeLayer()
+        layer.lineWidth   = 1
+        layer.fillColor   = ThemeColor.selection.withAlphaComponent(0.1).cgColor
         layer.strokeColor = ThemeColor.selection.cgColor
         return layer
     }()
@@ -122,9 +122,9 @@ public class BoardView: NSView {
         if wantsUpdateLayer {
             layerContentsRedrawPolicy = .onSetNeedsDisplay
         }
-        gridView.frame = self.bounds
-        gridView.wantsLayer = true
-        gridView.layer?.zPosition = -2 // Behind everything
+        gridView.frame                 = self.bounds
+        gridView.wantsLayer            = true
+        gridView.layer?.zPosition      = -2 // Behind everything
         activeSelectionLayer.zPosition = 1 // Above nodeviews
         layer?.addSublayer(activeLinkLayer)
         layer?.addSublayer(activeSelectionLayer)
@@ -135,8 +135,7 @@ public class BoardView: NSView {
         guard let graph = graph else { return }
         nodeViews.forEach({ $0.removeFromSuperview() })
         for (index, node) in graph.nodes.enumerated() {
-            let origin = node.origin ?? CGPoint(x: bounds.center.x + CGFloat(index) * 20,
-                                                y: bounds.center.y + CGFloat(index) * 20)
+            let origin = node.origin ?? CGPoint(x: bounds.center.x + CGFloat(index) * 20, y: bounds.center.y + CGFloat(index) * 20)
             addNode(node, at: origin, needsConversion: false)
         }
         needsDisplay = true
@@ -146,8 +145,8 @@ public class BoardView: NSView {
         guard let node = node as? NodeRepresenter else { return }
         precondition(renderingDatasource != nil)
         let rightAccessoryView = renderingDatasource?.rightAccessoryViewForNode(node)
-        let controlRows = renderingDatasource?.controlRowsForNode(node) ?? []
-        let nodeView = NodeView(boardView: self, node: node, rightAccessoryView: rightAccessoryView, controlRows: controlRows)
+        let controlRows        = renderingDatasource?.controlRowsForNode(node) ?? []
+        let nodeView           = NodeView(boardView: self, node: node, rightAccessoryView: rightAccessoryView, controlRows: controlRows)
         addSubview(nodeView)
         if needsConversion {
             nodeView.setFrameOrigin(convert(point, from: nil))
@@ -219,11 +218,11 @@ public class BoardView: NSView {
         // Permanent lines drawing
         #warning("Refactor")
         terminalViews.filter({ $0 !== initiatingTerminal }).forEach({ $0.isConnected = false })
-        linkLayers.forEach({removeLinkLayer($0)})
+        linkLayers.forEach(removeLinkLayer)
         for connection in graph.connections {
             // Ensure that we got a valid connection
             guard let t1 = terminalViewForProperty(connection.input), let t2 = terminalViewForProperty(connection.output) else { continue }
-            let link = LinkLayer(terminals: (t1, t2))
+            let link     = LinkLayer(terminals: (t1, t2))
             addLinkLayer(link)
             let a = convert(t1.frame, from: t1.superview)
             let b = convert(t2.frame, from: t2.superview)
@@ -311,10 +310,10 @@ public class BoardView: NSView {
     // Middle button scrolling
     public override func otherMouseDown(with event: NSEvent) {
         window?.makeFirstResponder(self)
-        initialMousePoint = event.locationInWindow
+        initialMousePoint    = event.locationInWindow
         initialMousePoint.x += visibleRect.origin.x
         initialMousePoint.y -= visibleRect.origin.y
-        lastMousePoint    = initialMousePoint
+        lastMousePoint       = initialMousePoint
 
         if event.clickCount == 2 {
             nextResponder?.tryToPerform(#selector(setter: NSScrollView.magnification), with: NSNumber(value: 1.0))
@@ -333,7 +332,7 @@ public class BoardView: NSView {
 
     func linkPathBetween(point p1: NSPoint, and p2: NSPoint) -> NSBezierPath {
         // Shadow vars & Swap depending on direction
-        var inputPoint = p1
+        var inputPoint  = p1
         var outputPoint = p2
 
         if inputPoint.x > outputPoint.x {
