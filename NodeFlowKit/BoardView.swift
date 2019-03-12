@@ -257,7 +257,14 @@ public class BoardView: NSView {
 
         // If we're on top of a connectionView start drawing a line
         if let terminal = terminalForPoint(initialMousePoint), !isDrawingLine {
-            NotificationCenter.default.post(name: BoardView.didStartDrawingLine, object: self, userInfo: ["property" : terminal.property])
+            var property = terminal.property
+            for connection in graph.connections {
+                if terminal.property === connection.input {
+                    property = connection.output
+                    break
+                }
+            }
+            NotificationCenter.default.post(name: BoardView.didStartDrawingLine, object: self, userInfo: ["property" : property!])
             isDrawingLine = true
         }
 
