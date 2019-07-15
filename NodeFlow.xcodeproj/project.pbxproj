@@ -71,6 +71,8 @@
 		7D1E031921BEA44C00032E50 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7D1E031B21BEA5D700032E50 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		7D1E031D21BEA65000032E50 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		7DD43CF822DC956B0066FBFA /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
+		7DD43CF922DC957A0066FBFA /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 		7D1E030521BEA3A800032E50 /* NodeFlowKit */ = {
 			isa = PBXGroup;
 			children = (
+				7DD43CF522DC953D0066FBFA /* SwiftUI */,
 				7D1E030621BEA3A800032E50 /* NodeFlowKit.h */,
 				7D1E030721BEA3A800032E50 /* Info.plist */,
 				5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */,
@@ -140,6 +143,15 @@
 				5A2727DD21CEAC050024A749 /* Colors.swift */,
 			);
 			path = NodeFlowKit;
+			sourceTree = "<group>";
+		};
+		7DD43CF522DC953D0066FBFA /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				7DD43CF922DC957A0066FBFA /* GridView.swift */,
+				7DD43CF822DC956B0066FBFA /* NodeView.swift */,
+			);
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -431,6 +443,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ako.NodeFlow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -451,6 +464,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ako.NodeFlow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

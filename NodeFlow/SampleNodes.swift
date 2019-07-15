@@ -27,7 +27,7 @@ class NumProperty: NSObject, NodeProperty {
 }
 
 public extension BaseNode {
-    public static func mathNode() -> BaseNode {
+    static func mathNode() -> BaseNode {
         let inputs = [NumProperty(name: "Number", isInput: true),
                       NumProperty(name: "Number", isInput: true)]
         let outputs = [NumProperty(name: "Result", isInput: false)]
