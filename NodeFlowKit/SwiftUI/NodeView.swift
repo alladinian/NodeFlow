@@ -15,15 +15,15 @@ struct NodeView : View {
                 Rectangle().fill(Color.white).frame(height: 40)
                 Text("Node")
                     .font(.headline)
-                    .color(Color.black)
+                    .foregroundColor(Color.black)
                     .multilineTextAlignment(.center)
                     .frame(height: 28)
             }
             VStack {
                 ConnectionView(isInput: true)
                 ConnectionView(isInput: true)
-                }.padding()
-            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            }.padding()
+        }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
             .cornerRadius(8)
             .shadow(radius: 16)
@@ -56,7 +56,7 @@ struct ConnectionView : View {
                     self.isHovering = isInside
             }
             Text(title)
-                .color(Color.white)
+                .foregroundColor(Color.white)
         }
     }
 }

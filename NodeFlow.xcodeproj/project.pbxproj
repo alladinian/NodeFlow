@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5A2727DE21CEAC050024A749 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2727DD21CEAC050024A749 /* Colors.swift */; };
+		5A829590234E85FC0005C1CF /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD43CF922DC957A0066FBFA /* GridView.swift */; };
+		5A829591234E85FF0005C1CF /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD43CF822DC956B0066FBFA /* NodeView.swift */; };
 		5AB08FE321D1598E007DA7CA /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB08FE221D1598E007DA7CA /* GridView.swift */; };
 		5ACCFBC221D2BEDF002A6DFC /* SampleNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACCFBC121D2BEDF002A6DFC /* SampleNodes.swift */; };
 		5AE1CBEF21C7029F006769C5 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */; };
@@ -270,7 +272,9 @@
 			files = (
 				7D1E02F221BEA32C00032E50 /* ViewController.swift in Sources */,
 				5ACCFBC221D2BEDF002A6DFC /* SampleNodes.swift in Sources */,
+				5A829590234E85FC0005C1CF /* GridView.swift in Sources */,
 				7D1E02F021BEA32C00032E50 /* AppDelegate.swift in Sources */,
+				5A829591234E85FF0005C1CF /* NodeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
