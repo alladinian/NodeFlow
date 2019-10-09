@@ -19,7 +19,7 @@ struct SUGridView : View {
     let gridSpacing = 10
 
     var gridImage: Image {
-        return Image(nsImage: GridView(frame: CGRect(x: 0, y: 0, width: 100, height: 100)).image())
+        return Image(nsImage: GridView(frame: CGRect(x: 0, y: 0, width: 10 * gridSpacing, height: 10 * gridSpacing)).image())
     }
     
     var body: some View {
@@ -33,8 +33,7 @@ struct SUGridView : View {
         
         return ZStack {
             Rectangle()
-            .fill(ImagePaint(image: gridImage))
-                //.fill(Color(ThemeColor.background))
+                .fill(ImagePaint(image: gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .gesture(drag)
             if self.isDragging {
