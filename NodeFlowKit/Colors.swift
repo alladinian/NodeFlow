@@ -6,7 +6,7 @@
 //  Copyright © 2018 Vasilis Akoinoglou. All rights reserved.
 //
 
-import Foundation
+import AppKit
 
 struct ThemeColor {
     static let tint             = #colorLiteral(red: 0.1919409633, green: 0.4961107969, blue: 0.745100379, alpha: 1)

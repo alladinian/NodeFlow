@@ -29,13 +29,6 @@ public extension OptionSet where RawValue: FixedWidthInteger {
 }
 
 
-// Numeric
-extension Int {
-    func isMultipleOf(_ n: Int) -> Bool {
-        return self % n == 0
-    }
-}
-
 // Events
 extension NSEvent {
     func locationConvertedFor(_ view: NSView) -> NSPoint { return view.convert(locationInWindow, from: nil) }

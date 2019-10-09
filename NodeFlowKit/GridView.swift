@@ -46,7 +46,7 @@ class GridView: NSView {
 
         func colorForStep(_ step: Int) -> NSColor {
             let stops: [(n: Int, a: CGFloat)] = [(10, 0.3), (5, 0.2)]
-            let alpha: CGFloat = stops.lazy.first(where : { step.isMultipleOf($0.n) })?.a ?? 0.1
+            let alpha: CGFloat = stops.lazy.first(where : { step.isMultiple(of: $0.n) })?.a ?? 0.1
             return ThemeColor.grid.withAlphaComponent(alpha)
         }
 
@@ -112,7 +112,7 @@ extension GridView {
     fileprivate func drawGrid() {
         func colorForStep(_ step: Int) -> NSColor {
             let stops: [(n: Int, a: CGFloat)] = [(10, 0.3), (5, 0.2)]
-            let alpha: CGFloat = stops.lazy.first(where : { step.isMultipleOf($0.n) })?.a ?? 0.1
+            let alpha: CGFloat = stops.lazy.first(where : { step.isMultiple(of: $0.n) })?.a ?? 0.1
             return ThemeColor.grid.withAlphaComponent(alpha)
         }
 
