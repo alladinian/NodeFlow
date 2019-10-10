@@ -77,13 +77,11 @@ struct SUGridView : View {
     }
 }
 
-#if DEBUG
 struct GridView_Previews : PreviewProvider {
     static var previews: some View {
         SUGridView().previewLayout(.fixed(width: 400, height: 400))
     }
 }
-#endif
 
 struct LinkView : View {
     var start: CGPoint
@@ -105,31 +103,6 @@ struct LinkView : View {
         return Path { path in
             path.move(to: inputPoint)
             path.addCurve(to: outputPoint, control1: p1, control2: p2)
-        }.stroke(Color(ThemeColor.tint), lineWidth: 5)
+        }.stroke(Color("Tint"), lineWidth: 5)
     }
 }
-
-
-// Bad performance
-
-//            // Vertical Steps ↓
-//            ForEach(1...self.stepsForGeometry(geometry).v, id: \.self) { step in
-//                Path { path in
-//                    let points = self.pointsForStep(step, isVertical: true, bounds: geometry.size)
-//                    path.move(to: points.start)
-//                    path.addLine(to: points.end)
-//                }
-//                .stroke(lineWidth: 1)
-//                .foregroundColor(self.colorForStep(step))
-//            }
-//
-//            // Horizontal Steps →
-//            ForEach(1...self.stepsForGeometry(geometry).h, id: \.self) { step in
-//                Path { path in
-//                    let points = self.pointsForStep(step, isVertical: false, bounds: geometry.size)
-//                    path.move(to: points.start)
-//                    path.addLine(to: points.end)
-//                }
-//                .stroke(lineWidth: 1)
-//                .foregroundColor(self.colorForStep(step))
-//            }
