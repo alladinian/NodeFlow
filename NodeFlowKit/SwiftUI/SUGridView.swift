@@ -12,7 +12,13 @@ func +(lhs: CGSize, rhs: CGSize) -> CGSize {
     return CGSize(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
 }
 
-struct DraggableView: View {
+struct DraggableView<Content>: View where Content: View {
+    let content: () -> Content
+
+    init(@ViewBuilder content: @escaping () -> Content) {
+        self.content = content
+    }
+
     @State var isDragging: Bool = false
 
     @State var offset: CGSize = .zero
@@ -28,8 +34,7 @@ struct DraggableView: View {
             self.dragOffset = self.offset
         }
 
-        return Rectangle()
-            .frame(width: 80, height: 80)
+        return content()
             .offset(offset)
             .gesture(drag)
     }
@@ -62,7 +67,9 @@ struct SUGridView : View {
                 .fill(ImagePaint(image: gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .gesture(drag)
-            DraggableView()
+            DraggableView {
+                Rectangle().frame(width: 80, height: 80)
+            }
             if self.isDragging {
                 LinkView(start: self.start, end: self.end)
             }
