@@ -75,10 +75,7 @@ struct DraggableCircle: View {
             .fill(Color.blue)
             .overlay(dragState.isDragging ? Circle().stroke(Color.white, lineWidth: 2) : nil)
             .frame(width: 100, height: 100, alignment: .center)
-            .offset(
-                x: viewState.width + dragState.translation.width,
-                y: viewState.height + dragState.translation.height
-            )
+            .offset(viewState + dragState.translation)
             .animation(nil)
             .shadow(radius: dragState.isActive ? 8 : 0)
             .animation(.easeInOut(duration: minimumLongPressDuration))
