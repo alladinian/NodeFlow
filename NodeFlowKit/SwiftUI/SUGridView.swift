@@ -8,7 +8,33 @@
 
 import SwiftUI
 
+func +(lhs: CGSize, rhs: CGSize) -> CGSize {
+    return CGSize(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
+}
 
+struct DraggableView: View {
+    @State var isDragging: Bool = false
+
+    @State var offset: CGSize = .zero
+    @State var dragOffset: CGSize = .zero
+
+    var body: some View {
+        let drag = DragGesture().onChanged { (value) in
+            self.offset = self.dragOffset + value.translation
+            self.isDragging = true
+        }.onEnded { (value) in
+            self.isDragging = false
+            self.offset = self.dragOffset + value.translation
+            self.dragOffset = self.offset
+        }
+
+        return Rectangle()
+            .frame(width: 80, height: 80)
+            .offset(offset)
+            .gesture(drag)
+    }
+
+}
 
 struct SUGridView : View {
 
@@ -36,6 +62,7 @@ struct SUGridView : View {
                 .fill(ImagePaint(image: gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .gesture(drag)
+            DraggableView()
             if self.isDragging {
                 LinkView(start: self.start, end: self.end)
             }
