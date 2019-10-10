@@ -12,10 +12,12 @@ struct NodeView: View {
 
     @State var name: String = "Node"
 
+    @Binding var inputs: [String]?
     @Binding var output: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
+
             Rectangle()
                 .fill(Color("NodeHeader"))
                 .frame(height: 40)
@@ -24,24 +26,33 @@ struct NodeView: View {
                         .font(.headline)
                         .foregroundColor(Color.white)
                         .multilineTextAlignment(.center)
-            )
+                )
+
             VStack {
-                ConnectionView(isInput: true)
-            }.padding()
+                ForEach(inputs ?? [], id: \.self) { input in
+                    ConnectionView(isInput: true)
+                }
+            }
+            .padding()
+
             Spacer()
+
             Divider()
+
             ConnectionView(isInput: false)
                 .padding()
+
         }
         .background(Color("NodeBackground"))
         .cornerRadius(8)
         .shadow(radius: 16)
+        .fixedSize()
     }
 }
 
 struct NodeView_Previews: PreviewProvider {
     static var previews: some View {
-        NodeView(output: .constant(""))
+        NodeView(inputs: .constant(["", ""]), output: .constant(""))
             .padding()
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A02CD9B234FDAE7004163D8 /* DraggableCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A02CD99234FDAE4004163D8 /* DraggableCircle.swift */; };
 		5A2727DE21CEAC050024A749 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2727DD21CEAC050024A749 /* Colors.swift */; };
 		5A356137234FC96E0035A323 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2727DD21CEAC050024A749 /* Colors.swift */; };
 		5A35613A234FCA000035A323 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A356138234FC9C50035A323 /* ConnectionView.swift */; };
@@ -56,6 +57,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5A02CD99234FDAE4004163D8 /* DraggableCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableCircle.swift; sourceTree = "<group>"; };
 		5A2727DD21CEAC050024A749 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		5A356138234FC9C50035A323 /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
 		5AB08FE221D1598E007DA7CA /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				7DD43CF922DC957A0066FBFA /* SUGridView.swift */,
 				7DD43CF822DC956B0066FBFA /* NodeView.swift */,
 				5A356138234FC9C50035A323 /* ConnectionView.swift */,
+				5A02CD99234FDAE4004163D8 /* DraggableCircle.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				5AC7484E234E98B500E160CF /* GridView.swift in Sources */,
 				5A356137234FC96E0035A323 /* Colors.swift in Sources */,
 				5A829590234E85FC0005C1CF /* SUGridView.swift in Sources */,
+				5A02CD9B234FDAE7004163D8 /* DraggableCircle.swift in Sources */,
 				7D1E02F021BEA32C00032E50 /* AppDelegate.swift in Sources */,
 				5A829591234E85FF0005C1CF /* NodeView.swift in Sources */,
 			);

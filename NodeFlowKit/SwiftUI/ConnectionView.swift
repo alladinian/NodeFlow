@@ -12,6 +12,7 @@ struct ConnectionView: View {
 
     @State var title: String     = "Input / Output"
     @State var isHovering: Bool  = false
+    @State var isClicking: Bool  = false
     @State var isConnected: Bool = true
     @State var isInput: Bool
 
@@ -40,6 +41,8 @@ struct ConnectionView: View {
                 .frame(width: 16, height: 16)
                 .onHover { hovering in
                     self.isHovering = hovering
+                }.onTapGesture {
+                    self.isClicking = true
                 }
 
             if isInput {

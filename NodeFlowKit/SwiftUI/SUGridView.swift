@@ -67,12 +67,15 @@ struct SUGridView : View {
                 .fill(ImagePaint(image: gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .gesture(drag)
-            DraggableView {
-                Rectangle().frame(width: 80, height: 80)
-            }
+
             if self.isDragging {
                 LinkView(start: self.start, end: self.end)
             }
+
+            DraggableView {
+                NodeView(inputs: .constant(["1","2"]), output: .constant(""))
+            }
+
         }
     }
 }
