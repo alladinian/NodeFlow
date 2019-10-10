@@ -8,33 +8,40 @@
 
 import SwiftUI
 
-struct NodeView : View {
+struct NodeView: View {
+
+    @State var name: String = "Node"
+
+    @Binding var output: String?
+
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Rectangle()
                 .fill(Color("NodeHeader"))
                 .frame(height: 40)
                 .overlay(
-                    Text("Node")
-                    .font(.headline)
-                    .foregroundColor(Color.white)
-                    .multilineTextAlignment(.center)
+                    Text(name)
+                        .font(.headline)
+                        .foregroundColor(Color.white)
+                        .multilineTextAlignment(.center)
             )
             VStack {
                 ConnectionView(isInput: true)
-                ConnectionView(isInput: true)
             }.padding()
             Spacer()
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color("NodeBackground"))
-            .cornerRadius(8)
-            .shadow(radius: 16)
-            .padding() // just for preview
+            Divider()
+            ConnectionView(isInput: false)
+                .padding()
+        }
+        .background(Color("NodeBackground"))
+        .cornerRadius(8)
+        .shadow(radius: 16)
     }
 }
 
-struct NodeView_Previews : PreviewProvider {
+struct NodeView_Previews: PreviewProvider {
     static var previews: some View {
-        NodeView()
+        NodeView(output: .constant(""))
+            .padding()
     }
 }

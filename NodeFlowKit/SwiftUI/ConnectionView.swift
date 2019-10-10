@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ConnectionView : View {
+struct ConnectionView: View {
 
     @State var title: String     = "Input / Output"
     @State var isHovering: Bool  = false
@@ -19,8 +19,10 @@ struct ConnectionView : View {
     let connectedColor = Color("Connection")
 
     var body: some View {
-        return HStack(alignment: .center) {
+        HStack(alignment: .center) {
+
             if !isInput {
+                Spacer()
                 Text(title)
                     .font(.footnote)
                     .fontWeight(.medium)
@@ -45,16 +47,19 @@ struct ConnectionView : View {
                     .font(.footnote)
                     .fontWeight(.medium)
                     .foregroundColor(Color("Text"))
+                Spacer()
             }
-        }.frame(minWidth: 100)
+
+        }
+        .frame(minWidth: 100)
     }
 }
 
 struct ConnectionView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ConnectionView(title: "Input", isInput: true)
-            ConnectionView(title: "Output", isInput: false)
+            ConnectionView(title: "Input", isInput: true).previewDisplayName("Input")
+            ConnectionView(title: "Output", isInput: false).previewDisplayName("Output")
         }.padding()
     }
 }
