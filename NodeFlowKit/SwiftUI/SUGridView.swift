@@ -8,39 +8,6 @@
 
 import SwiftUI
 
-func +(lhs: CGSize, rhs: CGSize) -> CGSize {
-    return CGSize(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
-}
-
-struct DraggableView<Content>: View where Content: View {
-    let content: () -> Content
-
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content
-    }
-
-    @State var isDragging: Bool = false
-
-    @State var offset: CGSize = .zero
-    @State var dragOffset: CGSize = .zero
-
-    var body: some View {
-        let drag = DragGesture().onChanged { (value) in
-            self.offset = self.dragOffset + value.translation
-            self.isDragging = true
-        }.onEnded { (value) in
-            self.isDragging = false
-            self.offset = self.dragOffset + value.translation
-            self.dragOffset = self.offset
-        }
-
-        return content()
-            .offset(offset)
-            .gesture(drag)
-    }
-
-}
-
 struct SUGridView : View {
 
     @State var isDragging: Bool = false
@@ -72,9 +39,7 @@ struct SUGridView : View {
                 LinkView(start: self.start, end: self.end)
             }
 
-            DraggableView {
-                NodeView(inputs: .constant(["1","2"]), output: .constant(""))
-            }
+            NodeView(inputs: .constant(["1","2"]), output: .constant("")).modifier(Draggable())
 
         }
     }

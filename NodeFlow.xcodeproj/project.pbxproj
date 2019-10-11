@@ -30,6 +30,7 @@
 		7D1E031A21BEA44C00032E50 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031921BEA44C00032E50 /* Extensions.swift */; };
 		7D1E031C21BEA5D700032E50 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031B21BEA5D700032E50 /* Protocols.swift */; };
 		7D1E031E21BEA65000032E50 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E031D21BEA65000032E50 /* Models.swift */; };
+		7D5234AA2350B421000B7DFA /* Dragging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5234A82350B3B6000B7DFA /* Dragging.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		7D1E031921BEA44C00032E50 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7D1E031B21BEA5D700032E50 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		7D1E031D21BEA65000032E50 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		7D5234A82350B3B6000B7DFA /* Dragging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dragging.swift; sourceTree = "<group>"; };
 		7DD43CF822DC956B0066FBFA /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
 		7DD43CF922DC957A0066FBFA /* SUGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SUGridView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -160,6 +162,7 @@
 				7DD43CF822DC956B0066FBFA /* NodeView.swift */,
 				5A356138234FC9C50035A323 /* ConnectionView.swift */,
 				5A02CD99234FDAE4004163D8 /* DraggableCircle.swift */,
+				7D5234A82350B3B6000B7DFA /* Dragging.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				5ACCFBC221D2BEDF002A6DFC /* SampleNodes.swift in Sources */,
 				5A35613A234FCA000035A323 /* ConnectionView.swift in Sources */,
 				5AC7484E234E98B500E160CF /* GridView.swift in Sources */,
+				7D5234AA2350B421000B7DFA /* Dragging.swift in Sources */,
 				5A356137234FC96E0035A323 /* Colors.swift in Sources */,
 				5A829590234E85FC0005C1CF /* SUGridView.swift in Sources */,
 				5A02CD9B234FDAE7004163D8 /* DraggableCircle.swift in Sources */,
