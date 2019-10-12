@@ -12,44 +12,56 @@ struct ConnectionView: View {
 
     @State var title: String     = "Input / Output"
     @State var isHovering: Bool  = false
-    @State var isClicking: Bool  = false
+    @State var isDragging: Bool  = false
     @State var isConnected: Bool = true
     @State var isInput: Bool
+
+    @EnvironmentObject var linkContext: LinkContext
 
     let borderColor    = Color("ConnectionBorder")
     let connectedColor = Color("Connection")
 
+    let connectionSize: CGFloat = 16
+
     var body: some View {
-        HStack(alignment: .center) {
+
+        let dragGesture = DragGesture(coordinateSpace: .named("GridView")).onChanged({ value in
+            self.isDragging           = true
+            self.linkContext.start    = value.startLocation
+            self.linkContext.end      = value.location
+            self.linkContext.isActive = true
+        }).onEnded({ value in
+            self.isDragging           = false
+            self.linkContext.isActive = false
+        })
+
+        let circle = Circle()
+            .inset(by: 3)
+            .fill((isHovering || isDragging) ? connectedColor : Color.clear)
+            .opacity((isHovering || isDragging) ? 0.5 : 1.0)
+
+        let titleLabel = Text(title)
+            .font(.footnote)
+            .fontWeight(.medium)
+            .foregroundColor(Color("Text"))
+
+        return HStack(alignment: .center) {
 
             if !isInput {
                 Spacer()
-                Text(title)
-                    .font(.footnote)
-                    .fontWeight(.medium)
-                    .foregroundColor(Color("Text"))
+                titleLabel
             }
 
             Circle()
                 .stroke(borderColor, lineWidth: 2)
-                .overlay(
-                    Circle()
-                        .inset(by: 3)
-                        .fill(isHovering ? connectedColor : Color.clear)
-                        .opacity(isHovering ? 0.5 : 1.0)
-                )
-                .frame(width: 16, height: 16)
+                .overlay(circle)
+                .frame(width: connectionSize, height: connectionSize)
                 .onHover { hovering in
                     self.isHovering = hovering
-                }.onTapGesture {
-                    self.isClicking = true
-                }
+                }.gesture(dragGesture)
 
             if isInput {
-                Text(title)
-                    .font(.footnote)
-                    .fontWeight(.medium)
-                    .foregroundColor(Color("Text"))
+                titleLabel
                 Spacer()
             }
 

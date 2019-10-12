@@ -8,11 +8,19 @@
 
 import SwiftUI
 
+class LinkContext: ObservableObject {
+    @Published var start: CGPoint = .zero
+    @Published var end: CGPoint = .zero
+    @Published var isActive: Bool = true
+}
+
 struct SUGridView : View {
 
     @State var isDragging: Bool = false
-    @State var start: CGPoint = .zero
-    @State var end: CGPoint = .zero
+    @State var start: CGPoint   = .zero
+    @State var end: CGPoint     = .zero
+    
+    @EnvironmentObject var linkContext: LinkContext
 
     let gridSpacing = 10
 
@@ -33,21 +41,25 @@ struct SUGridView : View {
             Rectangle()
                 .fill(ImagePaint(image: gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .gesture(drag)
+                //.gesture(drag)
 
-            if self.isDragging {
-                LinkView(start: self.start, end: self.end)
+            if linkContext.isActive {
+                LinkView(start: self.linkContext.start, end: self.linkContext.end)
             }
 
-            NodeView(inputs: .constant(["1","2"]), output: .constant("")).modifier(Draggable())
+            NodeView(inputs: .constant(["1","2"]), output: .constant(""))
+                .modifier(Draggable())
 
         }
+        .coordinateSpace(name: "GridView")
     }
 }
 
 struct GridView_Previews : PreviewProvider {
     static var previews: some View {
-        SUGridView().previewLayout(.fixed(width: 400, height: 400))
+        SUGridView()
+            .environmentObject(LinkContext())
+            .previewLayout(.fixed(width: 400, height: 400))
     }
 }
 
@@ -71,6 +83,7 @@ struct LinkView : View {
         return Path { path in
             path.move(to: inputPoint)
             path.addCurve(to: outputPoint, control1: p1, control2: p2)
-        }.stroke(Color("Tint"), lineWidth: 5)
+        }
+        .stroke(Color("Tint"), lineWidth: 3)
     }
 }

@@ -43,7 +43,7 @@ struct NodeView: View {
                 .padding()
 
         }
-        .background(Color("NodeBackground"))
+        .background(Color("NodeBackground").opacity(0.7))
         .cornerRadius(8)
         .shadow(radius: 16)
         .fixedSize()
