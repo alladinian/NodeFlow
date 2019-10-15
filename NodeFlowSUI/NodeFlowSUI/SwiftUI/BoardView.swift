@@ -14,7 +14,7 @@ class LinkContext: ObservableObject {
     @Published var isActive: Bool = true
 }
 
-struct SUGridView : View {
+struct BoardView : View {
 
     @State var nodes: [Int] = []
 
@@ -61,7 +61,7 @@ struct SUGridView : View {
 
 struct GridView_Previews : PreviewProvider {
     static var previews: some View {
-        SUGridView(nodes: [1,2,3])
+        BoardView(nodes: [1,2,3])
             .environmentObject(LinkContext())
             .previewLayout(.fixed(width: 400, height: 400))
     }
