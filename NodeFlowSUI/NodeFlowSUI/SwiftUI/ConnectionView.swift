@@ -10,11 +10,10 @@ import SwiftUI
 
 struct ConnectionView: View {
 
-    @State var title: String     = "Input / Output"
+    @State var property: NodeProperty
     @State var isHovering: Bool  = false
     @State var isDragging: Bool  = false
     @State var isConnected: Bool = true
-    @State var isInput: Bool
 
     @EnvironmentObject var linkContext: LinkContext
 
@@ -40,14 +39,14 @@ struct ConnectionView: View {
             .fill((isHovering || isDragging) ? connectedColor : Color.clear)
             .opacity((isHovering || isDragging) ? 0.5 : 1.0)
 
-        let titleLabel = Text(title)
+        let titleLabel = Text(property.name)
             .font(.footnote)
             .fontWeight(.medium)
             .foregroundColor(Color("Text"))
 
         return HStack(alignment: .center) {
 
-            if !isInput {
+            if !property.isInput {
                 Spacer()
                 titleLabel
             }
@@ -60,7 +59,7 @@ struct ConnectionView: View {
                     self.isHovering = hovering
                 }.gesture(dragGesture)
 
-            if isInput {
+            if property.isInput {
                 titleLabel
                 Spacer()
             }
@@ -73,8 +72,8 @@ struct ConnectionView: View {
 struct ConnectionView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ConnectionView(title: "Input", isInput: true).previewDisplayName("Input")
-            ConnectionView(title: "Output", isInput: false).previewDisplayName("Output")
+            ConnectionView(property: NumberProperty(isInput: true)).previewDisplayName("Input")
+            ConnectionView(property: NumberProperty(isInput: false)).previewDisplayName("Output")
         }.padding()
     }
 }

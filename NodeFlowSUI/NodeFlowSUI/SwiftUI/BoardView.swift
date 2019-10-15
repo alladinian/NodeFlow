@@ -16,7 +16,7 @@ class LinkContext: ObservableObject {
 
 struct BoardView : View {
 
-    @State var nodes: [Int] = []
+    @State var board: Board
 
     @State var isDragging: Bool = false
     @State var start: CGPoint   = .zero
@@ -48,10 +48,10 @@ struct BoardView : View {
                 LinkView(start: self.linkContext.start, end: self.linkContext.end)
             }
 
-            ForEach(nodes, id: \.self) { node in
-                NodeView(inputs: .constant(["1","2"]), output: .constant(""))
+            ForEach(board.nodes, id: \.id) { node in
+                NodeView(node: node)
                     .draggable()
-                    .offset(x: CGFloat(node) * 20, y: CGFloat(node) * 20)
+                    //.offset(x: CGFloat(node) * 20, y: CGFloat(node) * 20)
             }
 
         }
@@ -61,7 +61,7 @@ struct BoardView : View {
 
 struct GridView_Previews : PreviewProvider {
     static var previews: some View {
-        BoardView(nodes: [1,2,3])
+        BoardView(board: Board(nodes: [MathNode()], connections: []))
             .environmentObject(LinkContext())
             .previewLayout(.fixed(width: 400, height: 400))
     }

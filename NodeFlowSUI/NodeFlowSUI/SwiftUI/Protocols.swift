@@ -12,19 +12,19 @@ import SwiftUI
 protocol NodeRow {}
 
 protocol NodeProperty: NodeRow {
-    var hash: Int { get }
+    var id: String { get }
     var name: String { get }
     var value: Any? { get set }
     var isInput: Bool { get }
     var type: ContentType { get }
-    var node: Node { get set }
 }
 
 protocol Node {
+    var id: String { get }
     var name: String { get }
     var inputs: [NodeProperty] { get }
     var outputs: [NodeProperty] { get }
-    var position: CGPoint { get set }
+    //var position: CGPoint { get set }
 }
 
 protocol Connection {

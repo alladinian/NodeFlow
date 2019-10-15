@@ -10,10 +10,7 @@ import SwiftUI
 
 struct NodeView: View {
 
-    @State var name: String = "Node"
-
-    @Binding var inputs: [String]?
-    @Binding var output: String?
+    @State var node: Node
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -22,15 +19,15 @@ struct NodeView: View {
                 .fill(Color("NodeHeader"))
                 .frame(height: 40)
                 .overlay(
-                    Text(name)
+                    Text(node.name)
                         .font(.headline)
                         .foregroundColor(Color.white)
                         .multilineTextAlignment(.center)
                 )
 
             VStack {
-                ForEach(inputs ?? [], id: \.self) { input in
-                    ConnectionView(isInput: true)
+                ForEach(node.inputs, id: \.id) { input in
+                    ConnectionView(property: input)
                 }
             }
             .padding()
@@ -39,8 +36,12 @@ struct NodeView: View {
 
             Divider()
 
-            ConnectionView(isInput: false)
-                .padding()
+            VStack {
+                ForEach(node.outputs, id: \.id) { output in
+                    ConnectionView(property: output)
+                }
+            }
+            .padding()
 
         }
         .background(Color("NodeBackground").opacity(0.7))
@@ -52,7 +53,7 @@ struct NodeView: View {
 
 struct NodeView_Previews: PreviewProvider {
     static var previews: some View {
-        NodeView(inputs: .constant(["", ""]), output: .constant(""))
+        NodeView(node: MathNode())
             .padding()
     }
 }
