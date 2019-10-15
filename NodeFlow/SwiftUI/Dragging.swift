@@ -45,3 +45,9 @@ struct DraggableView<Content>: View where Content: View {
     }
 
 }
+
+extension View {
+    func draggable() -> some View {
+        return self.modifier(Draggable())
+    }
+}

@@ -50,7 +50,7 @@ struct SUGridView : View {
 
             ForEach(nodes, id: \.self) { node in
                 NodeView(inputs: .constant(["1","2"]), output: .constant(""))
-                    .modifier(Draggable())
+                    .draggable()
                     .offset(x: CGFloat(node) * 20, y: CGFloat(node) * 20)
             }
 
