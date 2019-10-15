@@ -125,6 +125,7 @@
 		7D1E02EE21BEA32C00032E50 /* NodeFlow */ = {
 			isa = PBXGroup;
 			children = (
+				7DD43CF522DC953D0066FBFA /* SwiftUI */,
 				7D1E02EF21BEA32C00032E50 /* AppDelegate.swift */,
 				7D1E02F121BEA32C00032E50 /* ViewController.swift */,
 				7D1E02F321BEA32E00032E50 /* Assets.xcassets */,
@@ -139,7 +140,6 @@
 		7D1E030521BEA3A800032E50 /* NodeFlowKit */ = {
 			isa = PBXGroup;
 			children = (
-				7DD43CF522DC953D0066FBFA /* SwiftUI */,
 				7D1E030621BEA3A800032E50 /* NodeFlowKit.h */,
 				7D1E030721BEA3A800032E50 /* Info.plist */,
 				5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */,

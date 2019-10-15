@@ -16,6 +16,8 @@ class LinkContext: ObservableObject {
 
 struct SUGridView : View {
 
+    @State var nodes: [Int] = []
+
     @State var isDragging: Bool = false
     @State var start: CGPoint   = .zero
     @State var end: CGPoint     = .zero
@@ -29,26 +31,28 @@ struct SUGridView : View {
     }
     
     var body: some View {
-        let drag = DragGesture().onChanged { (value) in
-            self.start = value.startLocation
-            self.end = value.location
-            self.isDragging = true
-        }.onEnded { (value) in
-            self.isDragging = false
-        }
         
         return ZStack {
             Rectangle()
                 .fill(ImagePaint(image: gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                //.gesture(drag)
+                .contextMenu {
+                    Button(action: {
+
+                    }) {
+                        Text("Add  Node")
+                    }
+                }
 
             if linkContext.isActive {
                 LinkView(start: self.linkContext.start, end: self.linkContext.end)
             }
 
-            NodeView(inputs: .constant(["1","2"]), output: .constant(""))
-                .modifier(Draggable())
+            ForEach(nodes, id: \.self) { node in
+                NodeView(inputs: .constant(["1","2"]), output: .constant(""))
+                    .modifier(Draggable())
+                    .offset(x: CGFloat(node) * 20, y: CGFloat(node) * 20)
+            }
 
         }
         .coordinateSpace(name: "GridView")
@@ -57,7 +61,7 @@ struct SUGridView : View {
 
 struct GridView_Previews : PreviewProvider {
     static var previews: some View {
-        SUGridView()
+        SUGridView(nodes: [1,2,3])
             .environmentObject(LinkContext())
             .previewLayout(.fixed(width: 400, height: 400))
     }
