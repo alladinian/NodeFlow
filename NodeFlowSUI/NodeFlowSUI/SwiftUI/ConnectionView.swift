@@ -24,7 +24,7 @@ struct ConnectionView: View {
 
     var body: some View {
 
-        let circle = Circle()
+        let hoverCircle = Circle()
             .inset(by: 3)
             .fill((isHovering || isDragging) ? connectedColor : Color.clear)
             .opacity((isHovering || isDragging) ? 0.5 : 1.0)
@@ -44,7 +44,7 @@ struct ConnectionView: View {
             GeometryReader { reader in
                 Circle()
                     .stroke(self.borderColor, lineWidth: 2)
-                    .overlay(circle)
+                    .overlay(hoverCircle)
                     .aspectRatio(contentMode: .fit)
                     .onHover { hovering in
                         self.isHovering = hovering

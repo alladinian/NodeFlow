@@ -48,6 +48,10 @@ struct BoardView : View {
                 LinkView(start: self.linkContext.start, end: self.linkContext.end)
             }
 
+            ForEach(self.board.connections, id: \.id) { connection in
+                EmptyView()
+            }
+
             ForEach(self.board.nodes, id: \.id) { node in
                 NodeView(node: node)
                     .draggable()

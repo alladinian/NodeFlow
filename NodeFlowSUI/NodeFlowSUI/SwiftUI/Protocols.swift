@@ -28,6 +28,7 @@ protocol Node {
 }
 
 protocol Connection {
+    var id: String { get }
     var input: NodeProperty { get }
     var output: NodeProperty { get }
 }
