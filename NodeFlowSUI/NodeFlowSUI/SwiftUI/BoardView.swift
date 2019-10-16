@@ -12,6 +12,7 @@ class LinkContext: ObservableObject {
     @Published var start: CGPoint = .zero
     @Published var end: CGPoint = .zero
     @Published var isActive: Bool = true
+    @Published var sourceProperty: NodeProperty?
 }
 
 struct BoardView : View {
@@ -32,7 +33,7 @@ struct BoardView : View {
     
     var body: some View {
         
-        return GeometryReader { geometry in
+        return ZStack {
             Rectangle()
                 .fill(ImagePaint(image: self.gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -42,7 +43,7 @@ struct BoardView : View {
                     }) {
                         Text("Add  Node")
                     }
-                }
+            }
 
             if self.linkContext.isActive {
                 LinkView(start: self.linkContext.start, end: self.linkContext.end)

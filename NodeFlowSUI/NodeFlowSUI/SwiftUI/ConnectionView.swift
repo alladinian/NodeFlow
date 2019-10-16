@@ -43,19 +43,22 @@ struct ConnectionView: View {
 
             GeometryReader { reader in
                 Circle()
-                    .stroke(self.borderColor, lineWidth: 2)
+                    .stroke(self.property.type.associatedColors.first!, lineWidth: 2)
                     .overlay(hoverCircle)
                     .aspectRatio(contentMode: .fit)
                     .onHover { hovering in
                         self.isHovering = hovering
                     }.gesture(DragGesture(coordinateSpace: .named("GridView")).onChanged { value in
-                        self.isDragging           = true
-                        self.linkContext.start    = reader.frame(in: .named("GridView")).center
-                        self.linkContext.end      = value.location
-                        self.linkContext.isActive = true
+                        self.isDragging                 = true
+                        self.linkContext.start          = reader.frame(in: .named("GridView")).center
+                        self.linkContext.end            = value.location
+                        self.linkContext.isActive       = true
+                        self.linkContext.sourceProperty = self.property
                     }.onEnded { value in
-                        self.isDragging           = false
-                        self.linkContext.isActive = false
+                        self.linkContext.end            = value.location
+                        self.isDragging                 = false
+                        self.linkContext.isActive       = false
+                        self.linkContext.sourceProperty = nil
                     })
             }.frame(width: self.connectionSize, height: self.connectionSize)
 
