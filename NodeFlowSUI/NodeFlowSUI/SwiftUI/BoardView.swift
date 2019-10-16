@@ -32,9 +32,9 @@ struct BoardView : View {
     
     var body: some View {
         
-        return ZStack {
+        return GeometryReader { geometry in
             Rectangle()
-                .fill(ImagePaint(image: gridImage))
+                .fill(ImagePaint(image: self.gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .contextMenu {
                     Button(action: {
@@ -44,14 +44,13 @@ struct BoardView : View {
                     }
                 }
 
-            if linkContext.isActive {
+            if self.linkContext.isActive {
                 LinkView(start: self.linkContext.start, end: self.linkContext.end)
             }
 
-            ForEach(board.nodes, id: \.id) { node in
+            ForEach(self.board.nodes, id: \.id) { node in
                 NodeView(node: node)
                     .draggable()
-                    //.offset(x: CGFloat(node) * 20, y: CGFloat(node) * 20)
             }
 
         }

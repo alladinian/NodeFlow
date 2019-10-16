@@ -20,19 +20,9 @@ struct ConnectionView: View {
     let borderColor    = Color("ConnectionBorder")
     let connectedColor = Color("Connection")
 
-    let connectionSize: CGFloat = 16
+    let connectionSize: CGFloat = 14
 
     var body: some View {
-
-        let dragGesture = DragGesture(coordinateSpace: .named("GridView")).onChanged({ value in
-            self.isDragging           = true
-            self.linkContext.start    = value.startLocation
-            self.linkContext.end      = value.location
-            self.linkContext.isActive = true
-        }).onEnded({ value in
-            self.isDragging           = false
-            self.linkContext.isActive = false
-        })
 
         let circle = Circle()
             .inset(by: 3)
@@ -51,13 +41,23 @@ struct ConnectionView: View {
                 titleLabel
             }
 
-            Circle()
-                .stroke(borderColor, lineWidth: 2)
-                .overlay(circle)
-                .frame(width: connectionSize, height: connectionSize)
-                .onHover { hovering in
-                    self.isHovering = hovering
-                }.gesture(dragGesture)
+            GeometryReader { reader in
+                Circle()
+                    .stroke(self.borderColor, lineWidth: 2)
+                    .overlay(circle)
+                    .aspectRatio(contentMode: .fit)
+                    .onHover { hovering in
+                        self.isHovering = hovering
+                    }.gesture(DragGesture(coordinateSpace: .named("GridView")).onChanged { value in
+                        self.isDragging           = true
+                        self.linkContext.start    = reader.frame(in: .named("GridView")).center
+                        self.linkContext.end      = value.location
+                        self.linkContext.isActive = true
+                    }.onEnded { value in
+                        self.isDragging           = false
+                        self.linkContext.isActive = false
+                    })
+            }.frame(width: self.connectionSize, height: self.connectionSize)
 
             if property.isInput {
                 titleLabel
@@ -76,4 +76,8 @@ struct ConnectionView_Previews: PreviewProvider {
             ConnectionView(property: NumberProperty(isInput: false)).previewDisplayName("Output")
         }.padding()
     }
+}
+
+extension CGRect {
+    var center: CGPoint { return CGPoint(x: midX, y: midY) }
 }
