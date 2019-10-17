@@ -22,7 +22,7 @@ struct ConnectionView: View {
     let connectionSize: CGFloat = 14
 
     var shouldHighlight: Bool {
-        return isHovering || isConnected || (linkContext.sourceProperty?.id == property.id) || (linkContext.destinationProperty?.id == property.id)
+        return isHovering || isConnected || (linkContext.sourceProperty?.id == property.id)
     }
 
     var body: some View {
@@ -63,7 +63,11 @@ struct ConnectionView: View {
                         self.linkContext.destinationProperty = nil
                     })
                     .onReceive(self.linkContext.objectWillChange) { output in
-                        if reader.frame(in: .named("GridView")).contains(self.linkContext.end), self.property.id != self.linkContext.sourceProperty!.id {
+                        DispatchQueue.main.async {
+                            self.isHovering = reader.frame(in: .named("GridView")).contains(self.linkContext.end)
+                        }
+
+                        if self.isHovering, self.property.id != self.linkContext.sourceProperty!.id {
                             DispatchQueue.main.async {
                                 self.linkContext.destinationProperty = self.property
                             }
