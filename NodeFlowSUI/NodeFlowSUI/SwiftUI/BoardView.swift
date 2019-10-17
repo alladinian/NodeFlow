@@ -13,6 +13,7 @@ class LinkContext: ObservableObject {
     @Published var end: CGPoint = .zero
     @Published var isActive: Bool = true
     @Published var sourceProperty: NodeProperty?
+    @Published var destinationProperty: NodeProperty?
 }
 
 struct BoardView : View {
