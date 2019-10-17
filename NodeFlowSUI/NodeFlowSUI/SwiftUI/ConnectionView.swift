@@ -12,8 +12,7 @@ struct ConnectionView: View {
 
     @State var property: NodeProperty
     @State var isHovering: Bool  = false
-    @State var isDragging: Bool  = false
-    @State var isConnected: Bool = true
+    @State var isConnected: Bool = false
 
     @EnvironmentObject var linkContext: LinkContext
 
@@ -22,12 +21,16 @@ struct ConnectionView: View {
 
     let connectionSize: CGFloat = 14
 
+    var shouldHighlight: Bool {
+        return isHovering || isConnected || (linkContext.sourceProperty?.id == property.id)
+    }
+
     var body: some View {
 
         let hoverCircle = Circle()
             .inset(by: 3)
-            .fill((isHovering || isDragging) ? connectedColor : Color.clear)
-            .opacity((isHovering || isDragging) ? 0.5 : 1.0)
+            .fill(shouldHighlight ? connectedColor : Color.clear)
+            .opacity(shouldHighlight ? 0.5 : 1.0)
 
         let titleLabel = Text(property.name)
             .font(.footnote)
@@ -49,14 +52,12 @@ struct ConnectionView: View {
                     .onHover { hovering in
                         self.isHovering = hovering
                     }.gesture(DragGesture(coordinateSpace: .named("GridView")).onChanged { value in
-                        self.isDragging                 = true
                         self.linkContext.start          = reader.frame(in: .named("GridView")).center
                         self.linkContext.end            = value.location
                         self.linkContext.isActive       = true
                         self.linkContext.sourceProperty = self.property
                     }.onEnded { value in
                         self.linkContext.end            = value.location
-                        self.isDragging                 = false
                         self.linkContext.isActive       = false
                         self.linkContext.sourceProperty = nil
                     })

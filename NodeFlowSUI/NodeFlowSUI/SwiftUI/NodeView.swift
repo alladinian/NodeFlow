@@ -52,8 +52,9 @@ struct NodeView: View {
 }
 
 struct NodeView_Previews: PreviewProvider {
+    static let node = MathNode()
+
     static var previews: some View {
-        NodeView(node: MathNode())
-            .padding()
+        NodeView(node: node).padding()
     }
 }

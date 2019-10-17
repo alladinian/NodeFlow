@@ -9,9 +9,7 @@
 import Foundation
 import SwiftUI
 
-protocol NodeRow {}
-
-protocol NodeProperty: NodeRow {
+protocol NodeProperty {
     var id: String { get }
     var name: String { get }
     var value: Any? { get set }
