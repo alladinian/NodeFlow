@@ -10,7 +10,7 @@ import SwiftUI
 
 struct NodeView: View {
 
-    @State var node: Node
+    let node: Node
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {

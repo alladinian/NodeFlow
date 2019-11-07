@@ -18,15 +18,15 @@ class LinkContext: ObservableObject {
 
 struct BoardView : View {
 
-    @State var board: Board
+    let board: Board
 
-    @State var isDragging: Bool = false
-    @State var start: CGPoint   = .zero
-    @State var end: CGPoint     = .zero
+    @State private var isDragging: Bool = false
+    @State private var start: CGPoint   = .zero
+    @State private var end: CGPoint     = .zero
     
     @EnvironmentObject var linkContext: LinkContext
 
-    let gridSpacing = 10
+    @State private var gridSpacing = 10
 
     var gridImage: Image {
         return Image(nsImage: GridView(frame: CGRect(x: 0, y: 0, width: 10 * gridSpacing, height: 10 * gridSpacing)).image())
@@ -39,12 +39,10 @@ struct BoardView : View {
                 .fill(ImagePaint(image: self.gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .contextMenu {
-                    Button(action: {
+                    Button("Add Node") {
 
-                    }) {
-                        Text("Add  Node")
                     }
-            }
+                }
 
             if self.linkContext.isActive {
                 LinkView(start: self.linkContext.start, end: self.linkContext.end)

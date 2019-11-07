@@ -90,7 +90,10 @@ struct ConnectionView_Previews: PreviewProvider {
         Group {
             ConnectionView(property: NumberProperty(isInput: true)).previewDisplayName("Input")
             ConnectionView(property: NumberProperty(isInput: false)).previewDisplayName("Output")
-        }.padding()
+        }
+        .padding()
+        .coordinateSpace(name: "GridView")
+        .environmentObject(LinkContext())
     }
 }
 
