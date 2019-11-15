@@ -37,6 +37,8 @@ struct ConnectionView: View {
             .fontWeight(.medium)
             .foregroundColor(Color("Text"))
 
+        let gesture = DragGesture()//DragGesture(coordinateSpace: .named("GridView"))
+
         return HStack(alignment: .center) {
 
             if !property.isInput {
@@ -51,7 +53,7 @@ struct ConnectionView: View {
                     .aspectRatio(contentMode: .fit)
                     .onHover { hovering in
                         self.isHovering = hovering
-                    }.gesture(DragGesture(coordinateSpace: .named("GridView")).onChanged { value in
+                    }.gesture(gesture.onChanged { value in
                         self.linkContext.start          = reader.frame(in: .named("GridView")).center
                         self.linkContext.end            = value.location
                         self.linkContext.isActive       = true

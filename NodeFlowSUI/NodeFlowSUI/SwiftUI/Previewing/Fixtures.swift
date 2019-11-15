@@ -12,7 +12,7 @@ struct NumberProperty: NodeProperty, Identifiable {
     var id: String        = NSUUID().uuidString
     var name: String      = "Number"
     var value: Any?       = 0
-    var isInput: Bool
+    var isInput: Bool     = true
     var type: ContentType = .number
     var number: Double {
         get { return value as? Double ?? 0}
@@ -27,7 +27,7 @@ struct NumberProperty: NodeProperty, Identifiable {
 struct MathNode: Node, Identifiable {
     var id: String              = NSUUID().uuidString
     var name: String            = "Math"
-    var inputs: [NodeProperty]  = [NumberProperty(isInput: true), NumberProperty(isInput: true)]
+    var inputs: [NodeProperty]  = [NumberProperty(), NumberProperty()]
     var outputs: [NodeProperty] = [NumberProperty(isInput: false)]
 }
 

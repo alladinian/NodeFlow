@@ -55,6 +55,8 @@ struct NodeView_Previews: PreviewProvider {
     static let node = MathNode()
 
     static var previews: some View {
-        NodeView(node: node).padding()
+        NodeView(node: node)
+            .environmentObject(LinkContext())
+            .padding()
     }
 }
