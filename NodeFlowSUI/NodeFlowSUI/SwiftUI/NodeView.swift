@@ -27,7 +27,7 @@ struct NodeView: View {
 
             VStack {
                 ForEach(node.inputs, id: \.id) { input in
-                    ConnectionView(property: input)
+                    NumberPropertyView(number: .constant("1"), property: input)
                 }
             }
             .padding()
@@ -38,15 +38,16 @@ struct NodeView: View {
 
             VStack {
                 ForEach(node.outputs, id: \.id) { output in
-                    ConnectionView(property: output)
+                    NumberPropertyView(number: .constant("1"), property: output)
                 }
             }
             .padding()
 
         }
-        .background(Color("NodeBackground").opacity(0.7))
+        .background(Color("NodeBackground").opacity(0.9))
         .cornerRadius(8)
         .shadow(radius: 16)
+        .frame(minWidth: 150)
         .fixedSize()
     }
 }
