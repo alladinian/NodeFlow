@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5A2727DE21CEAC050024A749 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2727DD21CEAC050024A749 /* Colors.swift */; };
-		5A356137234FC96E0035A323 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2727DD21CEAC050024A749 /* Colors.swift */; };
-		5AB08FE321D1598E007DA7CA /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB08FE221D1598E007DA7CA /* GridView.swift */; };
-		5AC7484E234E98B500E160CF /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB08FE221D1598E007DA7CA /* GridView.swift */; };
 		5ACCFBC221D2BEDF002A6DFC /* SampleNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACCFBC121D2BEDF002A6DFC /* SampleNodes.swift */; };
 		5AE1CBEF21C7029F006769C5 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */; };
 		7D1E02F021BEA32C00032E50 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E02EF21BEA32C00032E50 /* AppDelegate.swift */; };
@@ -53,8 +49,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5A2727DD21CEAC050024A749 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Colors.swift; path = ../NodeFlowSUI/NodeFlowSUI/SwiftUI/Colors.swift; sourceTree = "<group>"; };
-		5AB08FE221D1598E007DA7CA /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GridView.swift; path = ../NodeFlowSUI/NodeFlowSUI/SwiftUI/GridView.swift; sourceTree = "<group>"; };
 		5ACCFBC121D2BEDF002A6DFC /* SampleNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleNodes.swift; sourceTree = "<group>"; };
 		5AE1CBEE21C7029F006769C5 /* BoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
 		7D1E02EC21BEA32C00032E50 /* NodeFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NodeFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,11 +129,9 @@
 				7D1E031521BEA42800032E50 /* BoardView.swift */,
 				7D1E031121BEA3DB00032E50 /* NodeView.swift */,
 				7D1E031321BEA3FF00032E50 /* TerminalView.swift */,
-				5AB08FE221D1598E007DA7CA /* GridView.swift */,
 				7D1E031921BEA44C00032E50 /* Extensions.swift */,
 				7D1E031B21BEA5D700032E50 /* Protocols.swift */,
 				7D1E031D21BEA65000032E50 /* Models.swift */,
-				5A2727DD21CEAC050024A749 /* Colors.swift */,
 			);
 			path = NodeFlowKit;
 			sourceTree = "<group>";
@@ -202,7 +194,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1120;
+				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = "Vasilis Akoinoglou";
 				TargetAttributes = {
 					7D1E02EB21BEA32C00032E50 = {
@@ -260,8 +252,6 @@
 			files = (
 				7D1E02F221BEA32C00032E50 /* ViewController.swift in Sources */,
 				5ACCFBC221D2BEDF002A6DFC /* SampleNodes.swift in Sources */,
-				5AC7484E234E98B500E160CF /* GridView.swift in Sources */,
-				5A356137234FC96E0035A323 /* Colors.swift in Sources */,
 				7D1E02F021BEA32C00032E50 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,9 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D1E031A21BEA44C00032E50 /* Extensions.swift in Sources */,
-				5A2727DE21CEAC050024A749 /* Colors.swift in Sources */,
 				7D1E031421BEA3FF00032E50 /* TerminalView.swift in Sources */,
-				5AB08FE321D1598E007DA7CA /* GridView.swift in Sources */,
 				5AE1CBEF21C7029F006769C5 /* BoardViewController.swift in Sources */,
 				7D1E031C21BEA5D700032E50 /* Protocols.swift in Sources */,
 				7D1E031621BEA42800032E50 /* BoardView.swift in Sources */,
@@ -330,6 +318,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -392,6 +381,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

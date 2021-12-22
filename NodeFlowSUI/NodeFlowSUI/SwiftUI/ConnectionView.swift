@@ -22,7 +22,7 @@ struct ConnectionView: View {
     let connectionSize: CGFloat = 14
 
     var shouldHighlight: Bool {
-        return isHovering || isConnected || (linkContext.sourceProperty?.id == property.id)
+        isHovering || isConnected || (linkContext.sourceProperty?.id == property.id)
     }
 
     var body: some View {
@@ -32,38 +32,40 @@ struct ConnectionView: View {
             .fill(shouldHighlight ? connectedColor : Color.clear)
             .opacity(shouldHighlight ? 0.5 : 1.0)
 
-        let gesture = DragGesture(coordinateSpace: .named("GridView"))
+        func gesture(reader: GeometryProxy) -> some Gesture {
+            DragGesture(coordinateSpace: .named("GridView"))
+                .onChanged { value in
+                    linkContext.start          = reader.frame(in: .named("GridView")).center
+                    linkContext.end            = value.location
+                    linkContext.isActive       = true
+                    linkContext.sourceProperty = property
+                }.onEnded { value in
+                    linkContext.end                 = value.location
+                    linkContext.isActive            = false
+                    linkContext.sourceProperty      = nil
+                    linkContext.destinationProperty = nil
+                }
+        }
 
         return GeometryReader { reader in
             Circle()
-                .stroke(self.property.type.associatedColors.first!, lineWidth: 2)
+                .stroke(property.type.associatedColors.first!, lineWidth: 2)
                 .overlay(hoverCircle)
                 .aspectRatio(contentMode: .fit)
                 .onHover { hovering in
-                    self.isHovering = hovering
-            }.gesture(gesture.onChanged { value in
-                self.linkContext.start          = reader.frame(in: .named("GridView")).center
-                self.linkContext.end            = value.location
-                self.linkContext.isActive       = true
-                self.linkContext.sourceProperty = self.property
-            }.onEnded { value in
-                self.linkContext.end                 = value.location
-                self.linkContext.isActive            = false
-                self.linkContext.sourceProperty      = nil
-                self.linkContext.destinationProperty = nil
-            })
-                .onReceive(self.linkContext.objectWillChange) { output in
+                    isHovering = hovering
+                }
+                .gesture(gesture(reader: reader))
+                .onReceive(linkContext.objectWillChange) { output in
                     DispatchQueue.main.async {
-                        self.isHovering = reader.frame(in: .named("GridView")).contains(self.linkContext.end)
-                    }
+                        isHovering = reader.frame(in: .named("GridView")).contains(linkContext.end)
 
-                    if self.isHovering, self.property.id != self.linkContext.sourceProperty!.id {
-                        DispatchQueue.main.async {
-                            self.linkContext.destinationProperty = self.property
+                        if isHovering, property.id != linkContext.sourceProperty?.id {
+                            linkContext.destinationProperty = property
                         }
                     }
-            }
-        }.frame(width: self.connectionSize, height: self.connectionSize)
+                }
+        }.frame(width: connectionSize, height: connectionSize)
 
     }
 }
@@ -79,5 +81,5 @@ struct ConnectionView_Previews: PreviewProvider {
 }
 
 extension CGRect {
-    var center: CGPoint { return CGPoint(x: midX, y: midY) }
+    var center: CGPoint { CGPoint(x: midX, y: midY) }
 }

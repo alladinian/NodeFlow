@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import PureSwiftUI
 
 struct NodeView: View {
 
@@ -16,7 +17,7 @@ struct NodeView: View {
         VStack(alignment: .leading, spacing: 2) {
 
             Rectangle()
-                .fill(Color("NodeHeader"))
+                .fill(Color.accentColor)
                 .frame(height: 40)
                 .overlay(
                     Text(node.name)
@@ -49,6 +50,7 @@ struct NodeView: View {
         .shadow(radius: 16)
         .frame(minWidth: 150)
         .fixedSize()
+        .strokeRoundedRectangle(8, Color.accentColor.opacity(0.3), lineWidth: 1)
     }
 }
 
@@ -59,5 +61,6 @@ struct NodeView_Previews: PreviewProvider {
         NodeView(node: node)
             .environmentObject(LinkContext())
             .padding()
+            .background(Color.black)
     }
 }

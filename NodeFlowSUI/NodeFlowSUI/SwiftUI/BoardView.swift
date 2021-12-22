@@ -10,7 +10,7 @@ import SwiftUI
 
 class LinkContext: ObservableObject {
     @Published var start: CGPoint = .zero
-    @Published var end: CGPoint = .zero
+    @Published var end: CGPoint   = .zero
     @Published var isActive: Bool = true
     @Published var sourceProperty: NodeProperty?
     @Published var destinationProperty: NodeProperty?
@@ -29,36 +29,37 @@ struct BoardView : View {
     @State private var gridSpacing = 10
 
     var gridImage: Image {
-        return Image(nsImage: GridView(frame: CGRect(x: 0, y: 0, width: 10 * gridSpacing, height: 10 * gridSpacing)).image())
+        Image(nsImage: GridView(frame: CGRect(x: 0, y: 0, width: 10 * gridSpacing, height: 10 * gridSpacing)).image())
     }
     
     var body: some View {
-        
-        return ZStack {
-            Rectangle()
-                .fill(ImagePaint(image: self.gridImage))
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .contextMenu {
-                    Button("Add Node") {
+        //ScrollView {
+            ZStack {
+                Rectangle()
+                    .fill(ImagePaint(image: gridImage))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .contextMenu {
+                        Button("Add Node") {
 
+                        }
                     }
+
+                if linkContext.isActive {
+                    LinkView(start: linkContext.start, end: linkContext.end)
                 }
 
-            if self.linkContext.isActive {
-                LinkView(start: self.linkContext.start, end: self.linkContext.end)
-            }
+                ForEach(board.connections, id: \.id) { connection in
+                    EmptyView()
+                }
 
-            ForEach(self.board.connections, id: \.id) { connection in
-                EmptyView()
-            }
+                ForEach(board.nodes, id: \.id) { node in
+                    NodeView(node: node)
+                        .draggable()
+                }
 
-            ForEach(self.board.nodes, id: \.id) { node in
-                NodeView(node: node)
-                    .draggable()
             }
-
-        }
-        .coordinateSpace(name: "GridView")
+            .coordinateSpace(name: "GridView")
+        //}
     }
 }
 

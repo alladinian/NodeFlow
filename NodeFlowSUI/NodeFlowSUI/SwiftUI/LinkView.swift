@@ -36,6 +36,7 @@ struct LinkView : View {
 struct LinkView_Previews: PreviewProvider {
     static var previews: some View {
         LinkView(start: .zero, end: CGPoint(x: 100, y: 100))
-            .previewLayout(.fixed(width: 100, height: 100))
+            .previewLayout(.fixed(width: 130, height: 130))
+            .padding()
     }
 }

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,12 +15,13 @@
 		5A2502D223566B35004BFF01 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CC23566AFE004BFF01 /* BoardView.swift */; };
 		5A2502D323566B35004BFF01 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CD23566AFE004BFF01 /* NodeView.swift */; };
 		5A2502D423566B35004BFF01 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CE23566AFE004BFF01 /* ConnectionView.swift */; };
-		5A2502D523566B35004BFF01 /* DraggableCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CF23566AFE004BFF01 /* DraggableCircle.swift */; };
 		5A2502D623566B35004BFF01 /* Dragging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502D023566AFE004BFF01 /* Dragging.swift */; };
 		5A2502D823566B4D004BFF01 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502D723566B4D004BFF01 /* GridView.swift */; };
 		5A2502DA23566B68004BFF01 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502D923566B67004BFF01 /* Colors.swift */; };
 		5A2502DD23566BF9004BFF01 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502DC23566BF9004BFF01 /* Protocols.swift */; };
 		5A2502E023566E72004BFF01 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502DF23566E72004BFF01 /* Fixtures.swift */; };
+		5A5AF37E277374B80082679D /* DraggableCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CF23566AFE004BFF01 /* DraggableCircle.swift */; };
+		5A5AF38127737D160082679D /* PureSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5AF38027737D160082679D /* PureSwiftUI */; };
 		5A8BF356237F5B74008D7047 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8BF355237F5B74008D7047 /* LinkView.swift */; };
 		7D4126A12358956500213B23 /* NumberPropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4126A02358956500213B23 /* NumberPropertyView.swift */; };
 /* End PBXBuildFile section */
@@ -52,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A5AF38127737D160082679D /* PureSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +149,9 @@
 			dependencies = (
 			);
 			name = NodeFlowSUI;
+			packageProductDependencies = (
+				5A5AF38027737D160082679D /* PureSwiftUI */,
+			);
 			productName = NodeFlowSUI;
 			productReference = 5A2502B623566ACA004BFF01 /* NodeFlowSUI.app */;
 			productType = "com.apple.product-type.application";
@@ -158,7 +163,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1120;
-				LastUpgradeCheck = 1120;
+				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = "Vasilis Akoinoglou";
 				TargetAttributes = {
 					5A2502B523566ACA004BFF01 = {
@@ -175,6 +180,9 @@
 				Base,
 			);
 			mainGroup = 5A2502AD23566ACA004BFF01;
+			packageReferences = (
+				5A5AF37F27737D160082679D /* XCRemoteSwiftPackageReference "pure-swift-ui" */,
+			);
 			productRefGroup = 5A2502B723566ACA004BFF01 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -203,6 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A2502D223566B35004BFF01 /* BoardView.swift in Sources */,
+				5A5AF37E277374B80082679D /* DraggableCircle.swift in Sources */,
 				5A2502DA23566B68004BFF01 /* Colors.swift in Sources */,
 				5A2502D423566B35004BFF01 /* ConnectionView.swift in Sources */,
 				5A2502D823566B4D004BFF01 /* GridView.swift in Sources */,
@@ -211,7 +220,6 @@
 				5A2502DD23566BF9004BFF01 /* Protocols.swift in Sources */,
 				5A2502D623566B35004BFF01 /* Dragging.swift in Sources */,
 				5A2502E023566E72004BFF01 /* Fixtures.swift in Sources */,
-				5A2502D523566B35004BFF01 /* DraggableCircle.swift in Sources */,
 				5A8BF356237F5B74008D7047 /* LinkView.swift in Sources */,
 				5A2502D323566B35004BFF01 /* NodeView.swift in Sources */,
 				5A2502BA23566ACA004BFF01 /* AppDelegate.swift in Sources */,
@@ -258,6 +266,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -318,6 +327,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -349,7 +359,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NodeFlowSUI/NodeFlowSUI.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"NodeFlowSUI/Preview Content\"";
@@ -372,7 +384,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NodeFlowSUI/NodeFlowSUI.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"NodeFlowSUI/Preview Content\"";
@@ -413,6 +427,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5A5AF37F27737D160082679D /* XCRemoteSwiftPackageReference "pure-swift-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeSlicing/pure-swift-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5A5AF38027737D160082679D /* PureSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A5AF37F27737D160082679D /* XCRemoteSwiftPackageReference "pure-swift-ui" */;
+			productName = PureSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5A2502AE23566ACA004BFF01 /* Project object */;
 }

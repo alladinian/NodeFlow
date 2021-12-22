@@ -17,19 +17,19 @@ struct Draggable: ViewModifier {
 
     func body(content: Content) -> some View {
         let drag = DragGesture().onChanged { (value) in
-            self.offset = self.dragOffset + value.translation
-            self.isDragging = true
+            offset     = dragOffset + value.translation
+            isDragging = true
         }.onEnded { (value) in
-            self.isDragging = false
-            self.offset = self.dragOffset + value.translation
-            self.dragOffset = self.offset
+            isDragging = false
+            offset     = dragOffset + value.translation
+            dragOffset = offset
         }
         return content.offset(offset).gesture(drag)
     }
 }
 
 func +(lhs: CGSize, rhs: CGSize) -> CGSize {
-    return CGSize(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
+    CGSize(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
 }
 
 // MARK: - ViewBuilder Implementation
@@ -41,13 +41,13 @@ struct DraggableView<Content>: View where Content: View {
     }
 
     var body: some View {
-        return content().modifier(Draggable())
+        content().modifier(Draggable())
     }
 
 }
 
 extension View {
     func draggable() -> some View {
-        return self.modifier(Draggable())
+        modifier(Draggable())
     }
 }
