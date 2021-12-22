@@ -16,8 +16,8 @@ struct ConnectionView: View {
 
     @EnvironmentObject var linkContext: LinkContext
 
-    let borderColor    = Color("ConnectionBorder")
-    let connectedColor = Color("Connection")
+    let borderColor    = Color.accentColor.opacity(0.95)
+    let connectedColor = Color.accentColor
 
     let connectionSize: CGFloat = 14
 
@@ -52,10 +52,11 @@ struct ConnectionView: View {
                 .stroke(property.type.associatedColors.first!, lineWidth: 2)
                 .overlay(hoverCircle)
                 .aspectRatio(contentMode: .fit)
-                .onHover { hovering in
+                .whenHovered { hovering in
                     isHovering = hovering
                 }
                 .gesture(gesture(reader: reader))
+            /*
                 .onReceive(linkContext.objectWillChange) { output in
                     DispatchQueue.main.async {
                         isHovering = reader.frame(in: .named("GridView")).contains(linkContext.end)
@@ -65,7 +66,9 @@ struct ConnectionView: View {
                         }
                     }
                 }
-        }.frame(width: connectionSize, height: connectionSize)
+             */
+        }
+        .frame(width: connectionSize, height: connectionSize)
 
     }
 }

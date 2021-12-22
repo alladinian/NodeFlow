@@ -22,6 +22,7 @@
 		5A2502E023566E72004BFF01 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502DF23566E72004BFF01 /* Fixtures.swift */; };
 		5A5AF37E277374B80082679D /* DraggableCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CF23566AFE004BFF01 /* DraggableCircle.swift */; };
 		5A5AF38127737D160082679D /* PureSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5AF38027737D160082679D /* PureSwiftUI */; };
+		5A5AF3832773843C0082679D /* Hovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5AF3822773843C0082679D /* Hovering.swift */; };
 		5A8BF356237F5B74008D7047 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8BF355237F5B74008D7047 /* LinkView.swift */; };
 		7D4126A12358956500213B23 /* NumberPropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4126A02358956500213B23 /* NumberPropertyView.swift */; };
 /* End PBXBuildFile section */
@@ -44,6 +45,7 @@
 		5A2502D923566B67004BFF01 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		5A2502DC23566BF9004BFF01 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		5A2502DF23566E72004BFF01 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		5A5AF3822773843C0082679D /* Hovering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hovering.swift; sourceTree = "<group>"; };
 		5A8BF355237F5B74008D7047 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		7D4126A02358956500213B23 /* NumberPropertyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPropertyView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -111,6 +113,7 @@
 				5A2502D023566AFE004BFF01 /* Dragging.swift */,
 				5A2502DC23566BF9004BFF01 /* Protocols.swift */,
 				7D4126A02358956500213B23 /* NumberPropertyView.swift */,
+				5A5AF3822773843C0082679D /* Hovering.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				5A2502DA23566B68004BFF01 /* Colors.swift in Sources */,
 				5A2502D423566B35004BFF01 /* ConnectionView.swift in Sources */,
 				5A2502D823566B4D004BFF01 /* GridView.swift in Sources */,
+				5A5AF3832773843C0082679D /* Hovering.swift in Sources */,
 				7D4126A12358956500213B23 /* NumberPropertyView.swift in Sources */,
 				5A2502BC23566ACA004BFF01 /* ContentView.swift in Sources */,
 				5A2502DD23566BF9004BFF01 /* Protocols.swift in Sources */,
