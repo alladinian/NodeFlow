@@ -22,7 +22,7 @@ protocol Node {
     var name: String { get }
     var inputs: [NodeProperty] { get }
     var outputs: [NodeProperty] { get }
-    //var position: CGPoint { get set }
+    var position: CGPoint { get set }
 }
 
 protocol Connection {
@@ -34,7 +34,7 @@ protocol Connection {
 protocol Graph {
     var nodes: [Node] { get }
     var connections: [Connection] { get }
-    //func createConnection(inputTerminal: TerminalView, outputTerminal: TerminalView)
+    func shouldAddConnection(_ connection: Connection) -> Bool
     func addConnection(_ connection: Connection)
     func removeConnection(_ connection: Connection)
     func addNode(_ node: Node)

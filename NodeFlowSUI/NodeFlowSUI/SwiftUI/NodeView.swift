@@ -24,6 +24,7 @@ struct NodeView: View {
                         .font(.headline)
                         .foregroundColor(Color.white)
                         .multilineTextAlignment(.center)
+                        .shadow(1)
                 )
 
             VStack {

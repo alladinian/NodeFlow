@@ -19,10 +19,6 @@ class LinkContext: ObservableObject {
 struct BoardView : View {
 
     let board: Board
-
-    @State private var isDragging: Bool = false
-    @State private var start: CGPoint   = .zero
-    @State private var end: CGPoint     = .zero
     
     @EnvironmentObject var linkContext: LinkContext
 

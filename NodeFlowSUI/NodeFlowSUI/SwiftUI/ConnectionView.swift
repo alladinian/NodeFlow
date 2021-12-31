@@ -7,21 +7,22 @@
 //
 
 import SwiftUI
+import PureSwiftUI
 
-struct ConnectionView: View {
-
-    @State var property: NodeProperty
-    @State var isHovering: Bool  = false
-    @State var isConnected: Bool = false
+struct ConnectionView: View, DropDelegate {
 
     @EnvironmentObject var linkContext: LinkContext
 
-    let borderColor    = Color.accentColor.opacity(0.95)
-    let connectedColor = Color.accentColor
+    var property: NodeProperty
+    var connectionSize: CGFloat = 12
 
-    let connectionSize: CGFloat = 14
+    @State private var isHovering: Bool  = false
+    @State private var isConnected: Bool = false
 
-    var shouldHighlight: Bool {
+    private let borderColor    = Color.accentColor.opacity(0.95)
+    private let connectedColor = Color.accentColor
+
+    private var shouldHighlight: Bool {
         isHovering || isConnected || (linkContext.sourceProperty?.id == property.id)
     }
 
@@ -49,15 +50,21 @@ struct ConnectionView: View {
 
         return GeometryReader { reader in
             Circle()
-                .stroke(property.type.associatedColors.first!, lineWidth: 2)
+                .stroke(property.type.associatedColors.first!, lineWidth: 1.5)
                 .overlay(hoverCircle)
                 .aspectRatio(contentMode: .fit)
                 .whenHovered { hovering in
                     isHovering = hovering
                 }
                 .gesture(gesture(reader: reader))
+                //.preference(key: ConnectionCenterPreferenceKey.self, value: reader.frame(in: .named("GridView")).center)
             /*
-                .onReceive(linkContext.objectWillChange) { output in
+             .onDrag {
+                NSItemProvider(object: property.id as NSString)
+             }
+             .onDrop(of: [String(kUTTypeText)], delegate: self)
+
+             .onReceive(linkContext.objectWillChange) { output in
                     DispatchQueue.main.async {
                         isHovering = reader.frame(in: .named("GridView")).contains(linkContext.end)
 
@@ -68,10 +75,31 @@ struct ConnectionView: View {
                 }
              */
         }
-        .frame(width: connectionSize, height: connectionSize)
+        .aspectRatio(1, contentMode: .fit)
+        .frame(connectionSize)
 
     }
+
+    func performDrop(info: DropInfo) -> Bool {
+        true
+    }
 }
+
+/*
+struct ConnectionCenterPreferenceData: Equatable {
+    let property: NodeProperty
+    let center: CGPoint
+}
+
+struct ConnectionCenterPreferenceKey: PreferenceKey {
+    static var defaultValue: CGPoint = .zero
+
+    static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {
+        value = nextValue()
+    }
+}
+ */
+
 
 struct ConnectionView_Previews: PreviewProvider {
     static var previews: some View {
@@ -81,8 +109,4 @@ struct ConnectionView_Previews: PreviewProvider {
             .coordinateSpace(name: "GridView")
             .environmentObject(LinkContext())
     }
-}
-
-extension CGRect {
-    var center: CGPoint { CGPoint(x: midX, y: midY) }
 }

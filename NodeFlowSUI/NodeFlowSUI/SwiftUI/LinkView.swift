@@ -20,10 +20,10 @@ struct LinkView : View {
             swap(&inputPoint, &outputPoint)
         }
 
-        let th = max((outputPoint.x - inputPoint.x) / 2, 0)
+        let threshold = max((outputPoint.x - inputPoint.x) / 2, 0)
 
-        let p1 = CGPoint(x: inputPoint.x + th, y: inputPoint.y)
-        let p2 = CGPoint(x: outputPoint.x - th, y: outputPoint.y)
+        let p1 = CGPoint(x: inputPoint.x + threshold, y: inputPoint.y)
+        let p2 = CGPoint(x: outputPoint.x - threshold, y: outputPoint.y)
 
         return Path { path in
             path.move(to: inputPoint)
@@ -32,6 +32,12 @@ struct LinkView : View {
         .stroke(Color("Tint"), lineWidth: 3)
     }
 }
+
+//extension LinkView {
+//    init(connection: Connection) {
+//
+//    }
+//}
 
 struct LinkView_Previews: PreviewProvider {
     static var previews: some View {

@@ -15,11 +15,11 @@ struct NumberProperty: NodeProperty, Identifiable {
     var isInput: Bool     = true
     var type: ContentType = .number
     var number: Double {
-        get { return value as? Double ?? 0}
+        get { value as? Double ?? 0}
         set { value = newValue }
     }
     var stringValue: String {
-        get { return NumberFormatter().string(for: value) ?? "0" }
+        get { NumberFormatter().string(for: value) ?? "0" }
         set { value = Double(newValue) }
     }
 }
@@ -29,6 +29,7 @@ struct MathNode: Node, Identifiable {
     var name: String            = "Math"
     var inputs: [NodeProperty]  = [NumberProperty(), NumberProperty()]
     var outputs: [NodeProperty] = [NumberProperty(isInput: false)]
+    var position: CGPoint       = .zero
 }
 
 struct Board: Graph {
@@ -38,4 +39,7 @@ struct Board: Graph {
     func removeConnection(_ connection: Connection) {}
     func addNode(_ node: Node) {}
     func removeNode(_ node: Node) {}
+    func shouldAddConnection(_ connection: Connection) -> Bool {
+        return true
+    }
 }
