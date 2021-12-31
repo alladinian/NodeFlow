@@ -1,5 +1,5 @@
 //
-//  Protocols.swift
+//  Graph.swift
 //  NodeFlowSUI
 //
 //  Created by Vasilis Akoinoglou on 16/10/19.
@@ -16,12 +16,11 @@ class NodeProperty: Identifiable {
     var type: ContentType = .number
 }
 
-class Node: Identifiable, Hashable {
-
-    var name: String            = ""
-    var inputs: [NodeProperty]  = []
-    var outputs: [NodeProperty] = []
-    var position: CGPoint       = .zero
+class Node: Identifiable, Hashable, ObservableObject {
+    var name: String                 = ""
+    var inputs: [NodeProperty]       = []
+    var outputs: [NodeProperty]      = []
+    @Published var position: CGPoint = .zero
 
     static func == (lhs: Node, rhs: Node) -> Bool {
         lhs.id == rhs.id

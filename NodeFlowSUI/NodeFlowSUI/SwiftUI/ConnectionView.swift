@@ -9,6 +9,11 @@
 import SwiftUI
 import PureSwiftUI
 
+extension NSNotification.Name {
+    static let didStartDrawingLine  = NSNotification.Name("userDidStartDrawingLine")
+    static let didFinishDrawingLine = NSNotification.Name("userDidFinishDrawingLine")
+}
+
 struct ConnectionView: View, DropDelegate {
 
     @EnvironmentObject var linkContext: LinkContext
@@ -26,27 +31,28 @@ struct ConnectionView: View, DropDelegate {
         isHovering || isConnected || (linkContext.sourceProperty?.id == property.id)
     }
 
-    var body: some View {
+    func dragGesture(reader: GeometryProxy) -> some Gesture {
+        DragGesture(coordinateSpace: .named("GridView"))
+            .onChanged { value in
+                linkContext.start          = reader.frame(in: .gridView).center
+                linkContext.end            = value.location
+                linkContext.isActive       = true
+                linkContext.sourceProperty = property
+            }
+            .onEnded { value in
+                linkContext.end                 = value.location
+                linkContext.isActive            = false
+                linkContext.sourceProperty      = nil
+                linkContext.destinationProperty = nil
+                NotificationCenter.default.post(name: .didFinishDrawingLine, object: nil)
+            }
+    }
 
+    var body: some View {
         let hoverCircle = Circle()
             .inset(by: 3)
             .fill(shouldHighlight ? connectedColor : Color.clear)
             .opacity(shouldHighlight ? 0.5 : 1.0)
-
-        func gesture(reader: GeometryProxy) -> some Gesture {
-            DragGesture(coordinateSpace: .named("GridView"))
-                .onChanged { value in
-                    linkContext.start          = reader.frame(in: .named("GridView")).center
-                    linkContext.end            = value.location
-                    linkContext.isActive       = true
-                    linkContext.sourceProperty = property
-                }.onEnded { value in
-                    linkContext.end                 = value.location
-                    linkContext.isActive            = false
-                    linkContext.sourceProperty      = nil
-                    linkContext.destinationProperty = nil
-                }
-        }
 
         return GeometryReader { reader in
             Circle()
@@ -56,8 +62,8 @@ struct ConnectionView: View, DropDelegate {
                 .whenHovered { hovering in
                     isHovering = hovering
                 }
-                .gesture(gesture(reader: reader))
-                //.preference(key: ConnectionCenterPreferenceKey.self, value: reader.frame(in: .named("GridView")).center)
+                .gesture(dragGesture(reader: reader))
+                //.preference(key: ConnectionCenterPreferenceKey.self, value: reader.frame(in: .gridView).center)
             /*
              .onDrag {
                 NSItemProvider(object: property.id as NSString)
@@ -66,7 +72,7 @@ struct ConnectionView: View, DropDelegate {
 
              .onReceive(linkContext.objectWillChange) { output in
                     DispatchQueue.main.async {
-                        isHovering = reader.frame(in: .named("GridView")).contains(linkContext.end)
+                        isHovering = reader.frame(in: .gridView).contains(linkContext.end)
 
                         if isHovering, property.id != linkContext.sourceProperty?.id {
                             linkContext.destinationProperty = property

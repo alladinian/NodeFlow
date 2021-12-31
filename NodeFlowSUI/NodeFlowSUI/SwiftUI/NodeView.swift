@@ -11,7 +11,7 @@ import PureSwiftUI
 
 struct NodeView: View {
 
-    let node: Node
+    @ObservedObject var node: Node
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -52,6 +52,7 @@ struct NodeView: View {
         .frame(minWidth: 150)
         .fixedSize()
         .strokeRoundedRectangle(8, Color.accentColor.opacity(0.3), lineWidth: 1)
+        .draggable(offset: $node.position)
     }
 }
 

@@ -8,6 +8,10 @@
 
 import SwiftUI
 
+extension CoordinateSpace {
+    static let gridView = CoordinateSpace.named("GridView")
+}
+
 class LinkContext: ObservableObject {
     @Published var start: CGPoint = .zero
     @Published var end: CGPoint   = .zero
@@ -50,7 +54,6 @@ struct BoardView : View {
 
                 ForEach(Array(board.nodes), id: \.id) { node in
                     NodeView(node: node)
-                        .draggable()
                 }
 
             }
