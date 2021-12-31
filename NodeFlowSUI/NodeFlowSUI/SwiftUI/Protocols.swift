@@ -9,36 +9,70 @@
 import Foundation
 import SwiftUI
 
-protocol NodeProperty {
-    var id: String { get }
-    var name: String { get }
-    var value: Any? { get set }
-    var isInput: Bool { get }
-    var type: ContentType { get }
+class NodeProperty: Identifiable {
+    var name: String      = ""
+    var value: Any?       = nil
+    var isInput: Bool     = false
+    var type: ContentType = .number
 }
 
-protocol Node {
-    var id: String { get }
-    var name: String { get }
-    var inputs: [NodeProperty] { get }
-    var outputs: [NodeProperty] { get }
-    var position: CGPoint { get set }
+class Node: Identifiable, Hashable {
+
+    var name: String            = ""
+    var inputs: [NodeProperty]  = []
+    var outputs: [NodeProperty] = []
+    var position: CGPoint       = .zero
+
+    static func == (lhs: Node, rhs: Node) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
 }
 
-protocol Connection {
-    var id: String { get }
-    var input: NodeProperty { get }
-    var output: NodeProperty { get }
+class Connection: Identifiable, Hashable {
+    var input: NodeProperty
+    var output: NodeProperty
+
+    init(input: NodeProperty, output: NodeProperty) {
+        self.input  = input
+        self.output = output
+    }
+
+    static func == (lhs: Connection, rhs: Connection) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
 }
 
-protocol Graph {
-    var nodes: [Node] { get }
-    var connections: [Connection] { get }
-    func shouldAddConnection(_ connection: Connection) -> Bool
-    func addConnection(_ connection: Connection)
-    func removeConnection(_ connection: Connection)
-    func addNode(_ node: Node)
-    func removeNode(_ node: Node)
+class Graph: Identifiable {
+    var nodes: Set<Node>              = []
+    var connections: Set<Connection>  = []
+
+    func shouldAddConnection(_ connection: Connection) -> Bool {
+        return true
+    }
+
+    func addConnection(_ connection: Connection) {
+        connections.insert(connection)
+    }
+
+    func removeConnection(_ connection: Connection) {
+        connections.remove(connection)
+    }
+
+    func addNode(_ node: Node) {
+        nodes.insert(node)
+    }
+
+    func removeNode(_ node: Node) {
+        nodes.remove(node)
+    }
 }
 
 

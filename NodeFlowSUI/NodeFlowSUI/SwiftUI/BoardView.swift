@@ -44,11 +44,11 @@ struct BoardView : View {
                     LinkView(start: linkContext.start, end: linkContext.end)
                 }
 
-                ForEach(board.connections, id: \.id) { connection in
+                ForEach(Array(board.connections), id: \.id) { connection in
                     EmptyView()
                 }
 
-                ForEach(board.nodes, id: \.id) { node in
+                ForEach(Array(board.nodes), id: \.id) { node in
                     NodeView(node: node)
                         .draggable()
                 }

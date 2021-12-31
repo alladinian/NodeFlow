@@ -8,38 +8,39 @@
 
 import Foundation
 
-struct NumberProperty: NodeProperty, Identifiable {
-    var id: String        = NSUUID().uuidString
-    var name: String      = "Number"
-    var value: Any?       = 0
-    var isInput: Bool     = true
-    var type: ContentType = .number
+class NumberProperty: NodeProperty {
+
+    init(value: Any? = nil, isInput: Bool = true) {
+        super.init()
+        self.name    = "Number"
+        self.value   = value
+        self.isInput = isInput
+    }
+
     var number: Double {
         get { value as? Double ?? 0}
         set { value = newValue }
     }
+
     var stringValue: String {
         get { NumberFormatter().string(for: value) ?? "0" }
         set { value = Double(newValue) }
     }
 }
 
-struct MathNode: Node, Identifiable {
-    var id: String              = NSUUID().uuidString
-    var name: String            = "Math"
-    var inputs: [NodeProperty]  = [NumberProperty(), NumberProperty()]
-    var outputs: [NodeProperty] = [NumberProperty(isInput: false)]
-    var position: CGPoint       = .zero
+class MathNode: Node {
+    init(value: Any?  = nil) {
+        super.init()
+        self.name     = "Math"
+        self.inputs   = [NumberProperty(), NumberProperty()]
+        self.outputs  = [NumberProperty(isInput: false)]
+    }
 }
 
-struct Board: Graph {
-    var nodes: [Node]
-    var connections: [Connection]
-    func addConnection(_ connection: Connection) {}
-    func removeConnection(_ connection: Connection) {}
-    func addNode(_ node: Node) {}
-    func removeNode(_ node: Node) {}
-    func shouldAddConnection(_ connection: Connection) -> Bool {
-        return true
+class Board: Graph {
+    init(nodes: Set<Node>, connections: Set<Connection>) {
+        super.init()
+        self.nodes       = nodes
+        self.connections = connections
     }
 }
