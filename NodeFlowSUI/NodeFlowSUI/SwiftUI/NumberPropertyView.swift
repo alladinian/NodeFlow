@@ -18,6 +18,7 @@ struct NumberPropertyView: View {
                 .frame(maxWidth: 100)
                 .textFieldStyle(DefaultTextFieldStyle())
                 .disabledIf(property.isInput && property.isConnected)
+                .disabledIf(!property.isInput)
         }
     }
 }

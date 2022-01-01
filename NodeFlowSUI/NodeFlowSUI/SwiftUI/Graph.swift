@@ -26,6 +26,8 @@ class Node: Identifiable, ObservableObject {
     @Published var name: String      = "Node"
     @Published var position: CGPoint = .zero
 
+    var cancellables: Set<AnyCancellable> = []
+
     var inputs: [NodeProperty] = [] {
         didSet {
             inputs.forEach {

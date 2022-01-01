@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 class NumberProperty: NodeProperty {
 
@@ -36,10 +37,21 @@ class NumberProperty: NodeProperty {
 //MARK: - Node Factory
 
 class MathNode: Node {
+
     override init() {
         super.init()
         self.name    = "Math"
         self.inputs  = [NumberProperty(), NumberProperty()]
         self.outputs = [NumberProperty()]
+        Publishers
+            .CombineLatest(
+                inputs[0].$value.map { $0 as? Double }.replaceNil(with: 0),
+                inputs[1].$value.map { $0 as? Double }.replaceNil(with: 0)
+            )
+            .map { a, b in
+                a + b
+            }
+            .assign(to: \.value, on: self.outputs[0])
+            .store(in: &cancellables)
     }
 }
