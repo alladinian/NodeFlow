@@ -62,33 +62,19 @@ struct SocketView: View, DropDelegate {
                 .whenHovered { hovering in
                     isHovering = hovering
                 }
-//                .onDrag {
-//                    NSItemProvider(object: property.id.debugDescription as NSString)
-//                }
+                // .onDrag {
+                //    NSItemProvider(object: property.id.debugDescription as NSString)
+                //  }
                 .gesture(dragGesture(reader: reader))
                 .preference(key: SocketPreferenceKey.self,
                             value: [SocketPreferenceData(property: property,
                                                          frame: reader.frame(in: .gridView))])
                 .onPreferenceChange(SocketPreferenceKey.self) { value in
                     if let data = value.first(where: { $0.property == property }) {
-                        linkContext.objectWillChange.send()
                         property.frame = data.frame
                     }
                 }
-//                .onDrop(of: [String(kUTTypeText)], delegate: self)
-//                .onReceive(linkContext.objectWillChange) { output in
-//                    DispatchQueue.main.async {
-//                        isHovering = reader.frame(in: .gridView).contains(linkContext.end)
-//
-//                        if isHovering, property.id != linkContext.sourceProperty?.id {
-//                            linkContext.destinationProperty = property
-//                        }
-//                    }
-//                }
-            /*
-
-
-             */
+                // .onDrop(of: [String(kUTTypeText)], delegate: self)
         }
         .aspectRatio(1, contentMode: .fit)
         .frame(connectionSize)
