@@ -21,15 +21,6 @@ class NodeProperty: Identifiable, ObservableObject {
     var type: ContentType        = .number
 }
 
-extension NodeProperty: Equatable, Hashable {
-    static func == (lhs: NodeProperty, rhs: NodeProperty) -> Bool {
-        lhs.id == rhs.id
-    }
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-    }
-}
-
 class Node: Identifiable, ObservableObject {
     var name: String                 = ""
     var inputs: [NodeProperty]       = [] {
@@ -43,16 +34,6 @@ class Node: Identifiable, ObservableObject {
         }
     }
     @Published var position: CGPoint = .zero
-}
-
-extension Node: Hashable {
-    static func == (lhs: Node, rhs: Node) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-    }
 }
 
 class Connection: Identifiable, ObservableObject {
@@ -69,15 +50,6 @@ class Connection: Identifiable, ObservableObject {
     }
 }
 
-extension Connection: Hashable {
-    static func == (lhs: Connection, rhs: Connection) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-    }
-}
 
 class Graph: Identifiable, ObservableObject {
     @Published var nodes: Set<Node>              = []
@@ -167,6 +139,8 @@ public struct ContentType: OptionSet {
     }
 }
 
+//MARK: - Extensions
+
 extension OptionSet where RawValue: FixedWidthInteger {
     func elements() -> AnySequence<Self> {
         var remainingBits = rawValue
@@ -183,5 +157,34 @@ extension OptionSet where RawValue: FixedWidthInteger {
                 return nil
             }
         }
+    }
+}
+
+extension Connection: Hashable {
+    static func == (lhs: Connection, rhs: Connection) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
+}
+
+extension Node: Hashable {
+    static func == (lhs: Node, rhs: Node) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
+}
+
+extension NodeProperty: Equatable, Hashable {
+    static func == (lhs: NodeProperty, rhs: NodeProperty) -> Bool {
+        lhs.id == rhs.id
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
     }
 }
