@@ -10,11 +10,8 @@ import Foundation
 import SwiftUI
 import Combine
 
-class NodeProperty: Identifiable, Equatable, ObservableObject {
-    static func == (lhs: NodeProperty, rhs: NodeProperty) -> Bool {
-        lhs.id == rhs.id
-    }
-
+class NodeProperty: Identifiable, ObservableObject {
+    weak var node: Node?        = nil
     @Published var name: String = ""
     @Published var value: Any?  = nil
     var frame: CGRect           = .zero
@@ -22,12 +19,28 @@ class NodeProperty: Identifiable, Equatable, ObservableObject {
     var type: ContentType       = .number
 }
 
-class Node: Identifiable, Hashable, ObservableObject {
-    var name: String                 = ""
-    var inputs: [NodeProperty]       = []
-    var outputs: [NodeProperty]      = []
-    @Published var position: CGPoint = .zero
+extension NodeProperty: Equatable {
+    static func == (lhs: NodeProperty, rhs: NodeProperty) -> Bool {
+        lhs.id == rhs.id
+    }
+}
 
+class Node: Identifiable, ObservableObject {
+    var name: String                 = ""
+    var inputs: [NodeProperty]       = [] {
+        didSet {
+            inputs.forEach { $0.node = self }
+        }
+    }
+    var outputs: [NodeProperty]      = [] {
+        didSet {
+            inputs.forEach { $0.node = self }
+        }
+    }
+    @Published var position: CGPoint = .zero
+}
+
+extension Node: Hashable {
     static func == (lhs: Node, rhs: Node) -> Bool {
         lhs.id == rhs.id
     }
@@ -37,7 +50,7 @@ class Node: Identifiable, Hashable, ObservableObject {
     }
 }
 
-class Connection: Identifiable, Hashable {
+class Connection: Identifiable {
     var input: NodeProperty
     var output: NodeProperty
     var cancellable: AnyCancellable
@@ -49,7 +62,9 @@ class Connection: Identifiable, Hashable {
             .receive(on: RunLoop.main, options: nil)
             .assign(to: \.value, on: input)
     }
+}
 
+extension Connection: Hashable {
     static func == (lhs: Connection, rhs: Connection) -> Bool {
         lhs.id == rhs.id
     }
@@ -70,24 +85,22 @@ class Graph: Identifiable, ObservableObject {
             .publisher(for: .didFinishDrawingLine, object: nil)
             .subscribe(on: RunLoop.main, options: nil)
             .sink { [unowned self] value in
-                if let value = value.object as? (source: NodeProperty, destination: CGPoint) {
-                    for node in nodes {
-                        for property in (node.inputs + node.outputs) {
-                            if property.frame.contains(value.destination) {
-                                if value.source.isInput != property.isInput {
-                                    let connection = Connection(output: value.source.isInput ? property : value.source,
-                                                                input: value.source.isInput ? value.source : property)
-                                    addConnection(connection)
-                                }
-                            }
-                        }
+                guard let value = value.object as? (source: NodeProperty, destination: CGPoint) else { return }
+                for node in nodes {
+                    for property in (node.inputs + node.outputs)
+                    where property.frame.contains(value.destination) && shouldAddConnection(betweenProperty: value.source, and: property) {
+                        let connection = Connection(output: value.source.isInput ? property : value.source,
+                                                    input: value.source.isInput ? value.source : property)
+                        addConnection(connection)
                     }
                 }
             }
             .store(in: &cancellables)
     }
 
-    func shouldAddConnection(_ connection: Connection) -> Bool {
+    func shouldAddConnection(betweenProperty a: NodeProperty, and b: NodeProperty) -> Bool {
+        guard a.isInput != b.isInput else { return false }
+        guard a.node != b.node else { return false}
         return true
     }
 
