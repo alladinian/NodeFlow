@@ -12,16 +12,21 @@ import Combine
 
 class NodeProperty: Identifiable, ObservableObject {
     weak var node: Node?         = nil
+
     @Published var name: String  = ""
     @Published var value: Any?   = nil
     @Published var frame: CGRect = .zero
+
     var isInput: Bool            = false
     var type: ContentType        = .number
 }
 
-extension NodeProperty: Equatable {
+extension NodeProperty: Equatable, Hashable {
     static func == (lhs: NodeProperty, rhs: NodeProperty) -> Bool {
         lhs.id == rhs.id
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
     }
 }
 

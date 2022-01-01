@@ -87,18 +87,22 @@ struct SocketView: View, DropDelegate {
 }
 
 
-struct SocketPreferenceData: Equatable {
+struct SocketPreferenceData: Equatable, Hashable {
     let property: NodeProperty
     let frame: CGRect
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(property)
+    }
 }
 
 struct SocketPreferenceKey: PreferenceKey {
-    typealias Value = [SocketPreferenceData]
+    typealias Value = Set<SocketPreferenceData>
 
     static var defaultValue: Value = []
 
     static func reduce(value: inout Value, nextValue: () -> Value) {
-        value.append(contentsOf: nextValue())
+        value.formUnion(nextValue())
     }
 }
 
