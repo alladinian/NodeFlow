@@ -108,7 +108,7 @@ struct SocketPreferenceKey: PreferenceKey {
 
 struct SocketView_Previews: PreviewProvider {
     static var previews: some View {
-        SocketView(property: NumberProperty(isInput: true))
+        SocketView(property: NumberProperty())
             .previewDisplayName("Input")
             .padding()
             .coordinateSpace(name: "GridView")

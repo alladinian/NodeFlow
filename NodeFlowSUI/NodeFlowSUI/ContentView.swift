@@ -11,7 +11,7 @@ import SwiftUI
 struct ContentView: View {
     let nodes: Set<Node> = [MathNode(), MathNode(), MathNode(), MathNode()]
     var body: some View {
-        BoardView(board: Board(nodes: nodes, connections: []))
+        BoardView(graph: Graph(nodes: nodes))
             .environmentObject(LinkContext())
     }
 }

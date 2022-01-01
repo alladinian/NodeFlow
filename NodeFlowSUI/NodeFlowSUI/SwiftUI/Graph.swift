@@ -13,7 +13,7 @@ import Combine
 class NodeProperty: Identifiable, ObservableObject {
     weak var node: Node?         = nil
 
-    @Published var name: String  = ""
+    @Published var name: String  = "Property"
     @Published var value: Any?   = nil
     @Published var frame: CGRect = .zero
 
@@ -22,18 +22,26 @@ class NodeProperty: Identifiable, ObservableObject {
 }
 
 class Node: Identifiable, ObservableObject {
-    var name: String                 = ""
-    var inputs: [NodeProperty]       = [] {
-        didSet {
-            inputs.forEach { $0.node = self }
-        }
-    }
-    var outputs: [NodeProperty]      = [] {
-        didSet {
-            inputs.forEach { $0.node = self }
-        }
-    }
+    @Published var name: String      = "Node"
     @Published var position: CGPoint = .zero
+
+    var inputs: [NodeProperty] = [] {
+        didSet {
+            inputs.forEach {
+                $0.node    = self
+                $0.isInput = true
+            }
+        }
+    }
+
+    var outputs: [NodeProperty] = [] {
+        didSet {
+            outputs.forEach {
+                $0.node    = self
+                $0.isInput = false
+            }
+        }
+    }
 }
 
 class Connection: Identifiable, ObservableObject {
@@ -48,6 +56,10 @@ class Connection: Identifiable, ObservableObject {
             .receive(on: RunLoop.main, options: nil)
             .assign(to: \.value, on: input)
     }
+
+    deinit {
+        print("Deallocated \(self)")
+    }
 }
 
 
@@ -56,6 +68,12 @@ class Graph: Identifiable, ObservableObject {
     @Published var connections: Set<Connection>  = []
 
     var cancellables: Set<AnyCancellable> = []
+
+    convenience init(nodes: Set<Node> = [], connections: Set<Connection> = []) {
+        self.init()
+        self.nodes       = nodes
+        self.connections = connections
+    }
 
     init() {
         NotificationCenter.default
@@ -87,6 +105,7 @@ class Graph: Identifiable, ObservableObject {
     }
 
     func removeConnection(_ connection: Connection) {
+        connection.cancellable.cancel()
         connections.remove(connection)
     }
 

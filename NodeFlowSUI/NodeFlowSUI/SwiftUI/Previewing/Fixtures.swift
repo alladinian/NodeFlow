@@ -8,14 +8,18 @@
 
 import Foundation
 
-/// A property that publishes a number (output) and optionally accepts a number (input)
 class NumberProperty: NodeProperty {
 
-    init(value: Any? = nil, isInput: Bool = true) {
+    private static let formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+
+    override init() {
         super.init()
-        self.name    = "Number"
-        self.value   = value
-        self.isInput = isInput
+        self.name = "Number"
+        self.type = .number
     }
 
     var number: Double {
@@ -24,24 +28,18 @@ class NumberProperty: NodeProperty {
     }
 
     var stringValue: String {
-        get { NumberFormatter().string(for: value) ?? "0" }
+        get { Self.formatter.string(for: value) ?? "0" }
         set { value = Double(newValue) }
     }
 }
+
+//MARK: - Node Factory
 
 class MathNode: Node {
     override init() {
         super.init()
         self.name    = "Math"
-        self.inputs  = [NumberProperty(value: 0, isInput: true), NumberProperty(value: 0, isInput: true)]
-        self.outputs = [NumberProperty(value: 0, isInput: false)]
-    }
-}
-
-class Board: Graph {
-    init(nodes: Set<Node>, connections: Set<Connection>) {
-        super.init()
-        self.nodes       = nodes
-        self.connections = connections
+        self.inputs  = [NumberProperty(), NumberProperty()]
+        self.outputs = [NumberProperty()]
     }
 }

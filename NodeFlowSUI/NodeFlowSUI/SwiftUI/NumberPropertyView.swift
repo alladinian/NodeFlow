@@ -12,16 +12,10 @@ struct NumberPropertyView: View {
     @ObservedObject var property: NumberProperty
 
     var body: some View {
-        HStack {
-            if property.isInput {
-                SocketView(property: property)
-            }
+        PropertyView(property: property) {
             TextField("0", value: $property.number, formatter: NumberFormatter())
                 .frame(maxWidth: 100)
                 .textFieldStyle(DefaultTextFieldStyle())
-            if !property.isInput {
-                SocketView(property: property)
-            }
         }
     }
 }

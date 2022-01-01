@@ -22,7 +22,7 @@ class LinkContext: ObservableObject {
 
 struct BoardView : View {
 
-    let board: Board
+    let graph: Graph
     
     @EnvironmentObject var linkContext: LinkContext
 
@@ -48,12 +48,12 @@ struct BoardView : View {
                     LinkView(start: linkContext.start, end: linkContext.end)
                 }
 
-                ForEach(Array(board.connections)) { connection in
+                ForEach(Array(graph.connections)) { connection in
                     ConnectionLinkView(output: connection.output,
                                        input: connection.input)
                 }
 
-                ForEach(Array(board.nodes)) { node in
+                ForEach(Array(graph.nodes)) { node in
                     NodeView(node: node)
                 }
             }
@@ -64,7 +64,7 @@ struct BoardView : View {
 
 struct GridView_Previews : PreviewProvider {
     static var previews: some View {
-        BoardView(board: Board(nodes: [MathNode()], connections: []))
+        BoardView(graph: Graph(nodes: [MathNode()]))
             .environmentObject(LinkContext())
             .previewLayout(.fixed(width: 400, height: 400))
     }

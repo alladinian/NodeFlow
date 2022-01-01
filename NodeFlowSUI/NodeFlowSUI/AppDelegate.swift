@@ -29,35 +29,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
-
-        //test()
-    }
-
-    func test() {
-        var cancellable: AnyCancellable?
-
-        let graph = Graph()
-
-        let node1 = MathNode()
-        let node2 = MathNode()
-
-        graph.addNode(node1)
-        graph.addNode(node2)
-
-        let output = NumberProperty(value: 1, isInput: false)
-        let input  = NumberProperty(value: 0, isInput: true)
-
-        let connection = Connection(output: output, input: input)
-
-        graph.addConnection(connection)
-
-        dump(graph)
-
-        //cancellable = output.$value.assign(to: \.value, on: input)
-
-        output.value = 2
-
-        print(input.value, output.value)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
