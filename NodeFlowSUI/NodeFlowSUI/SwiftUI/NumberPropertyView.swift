@@ -9,15 +9,14 @@
 import SwiftUI
 
 struct NumberPropertyView: View {
-    @Binding var number: String
-    var property: NodeProperty
+    @ObservedObject var property: NumberProperty
 
     var body: some View {
         HStack {
             if property.isInput {
                 ConnectionView(property: property)
             }
-            TextField("0", text: $number)
+            TextField("0", value: $property.number, formatter: NumberFormatter())
                 .frame(maxWidth: 100)
                 .textFieldStyle(DefaultTextFieldStyle())
             if !property.isInput {
@@ -29,7 +28,7 @@ struct NumberPropertyView: View {
 
 struct NumberPropertyView_Previews: PreviewProvider {
     static var previews: some View {
-        NumberPropertyView(number: .constant("1.0"), property: NumberProperty())
+        NumberPropertyView(property: NumberProperty())
             .environmentObject(LinkContext())
             .padding()
             .previewLayout(.sizeThatFits)

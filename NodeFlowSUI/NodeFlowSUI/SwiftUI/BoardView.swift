@@ -48,11 +48,11 @@ struct BoardView : View {
                     LinkView(start: linkContext.start, end: linkContext.end)
                 }
 
-                ForEach(Array(board.connections), id: \.id) { connection in
-                    EmptyView()
+                ForEach(Array(board.connections)) { connection in
+                    LinkView(start: connection.output.frame.center, end: connection.input.frame.center)
                 }
 
-                ForEach(Array(board.nodes), id: \.id) { node in
+                ForEach(Array(board.nodes)) { node in
                     NodeView(node: node)
                 }
 

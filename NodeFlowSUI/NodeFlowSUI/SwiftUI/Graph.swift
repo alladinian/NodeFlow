@@ -8,12 +8,18 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
-class NodeProperty: Identifiable {
-    var name: String      = ""
-    var value: Any?       = nil
-    var isInput: Bool     = false
-    var type: ContentType = .number
+class NodeProperty: Identifiable, Equatable, ObservableObject {
+    static func == (lhs: NodeProperty, rhs: NodeProperty) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    @Published var name: String = ""
+    @Published var value: Any?  = nil
+    var frame: CGRect           = .zero
+    var isInput: Bool           = false
+    var type: ContentType       = .number
 }
 
 class Node: Identifiable, Hashable, ObservableObject {
@@ -34,10 +40,14 @@ class Node: Identifiable, Hashable, ObservableObject {
 class Connection: Identifiable, Hashable {
     var input: NodeProperty
     var output: NodeProperty
+    var cancellable: AnyCancellable
 
-    init(input: NodeProperty, output: NodeProperty) {
-        self.input  = input
-        self.output = output
+    init(output: NodeProperty, input: NodeProperty) {
+        self.input       = input
+        self.output      = output
+        self.cancellable = output.$value
+            .receive(on: RunLoop.main, options: nil)
+            .assign(to: \.value, on: input)
     }
 
     static func == (lhs: Connection, rhs: Connection) -> Bool {
@@ -49,9 +59,33 @@ class Connection: Identifiable, Hashable {
     }
 }
 
-class Graph: Identifiable {
-    var nodes: Set<Node>              = []
-    var connections: Set<Connection>  = []
+class Graph: Identifiable, ObservableObject {
+    @Published var nodes: Set<Node>              = []
+    @Published var connections: Set<Connection>  = []
+
+    var cancellables: Set<AnyCancellable> = []
+
+    init() {
+        NotificationCenter.default
+            .publisher(for: .didFinishDrawingLine, object: nil)
+            .subscribe(on: RunLoop.main, options: nil)
+            .sink { [unowned self] value in
+                if let value = value.object as? (source: NodeProperty, destination: CGPoint) {
+                    for node in nodes {
+                        for property in (node.inputs + node.outputs) {
+                            if property.frame.contains(value.destination) {
+                                if value.source.isInput != property.isInput {
+                                    let connection = Connection(output: value.source.isInput ? property : value.source,
+                                                                input: value.source.isInput ? value.source : property)
+                                    addConnection(connection)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .store(in: &cancellables)
+    }
 
     func shouldAddConnection(_ connection: Connection) -> Bool {
         return true

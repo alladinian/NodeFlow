@@ -32,7 +32,7 @@ struct ConnectionView: View, DropDelegate {
     }
 
     func dragGesture(reader: GeometryProxy) -> some Gesture {
-        DragGesture(coordinateSpace: .named("GridView"))
+        DragGesture(coordinateSpace: .gridView)
             .onChanged { value in
                 linkContext.start          = reader.frame(in: .gridView).center
                 linkContext.end            = value.location
@@ -40,11 +40,11 @@ struct ConnectionView: View, DropDelegate {
                 linkContext.sourceProperty = property
             }
             .onEnded { value in
+                NotificationCenter.default.post(name: .didFinishDrawingLine, object: (property, value.location))
                 linkContext.end                 = value.location
                 linkContext.isActive            = false
                 linkContext.sourceProperty      = nil
                 linkContext.destinationProperty = nil
-                NotificationCenter.default.post(name: .didFinishDrawingLine, object: nil)
             }
     }
 
@@ -62,23 +62,32 @@ struct ConnectionView: View, DropDelegate {
                 .whenHovered { hovering in
                     isHovering = hovering
                 }
+//                .onDrag {
+//                    NSItemProvider(object: property.id.debugDescription as NSString)
+//                }
                 .gesture(dragGesture(reader: reader))
-                //.preference(key: ConnectionCenterPreferenceKey.self, value: reader.frame(in: .gridView).center)
-            /*
-             .onDrag {
-                NSItemProvider(object: property.id as NSString)
-             }
-             .onDrop(of: [String(kUTTypeText)], delegate: self)
-
-             .onReceive(linkContext.objectWillChange) { output in
-                    DispatchQueue.main.async {
-                        isHovering = reader.frame(in: .gridView).contains(linkContext.end)
-
-                        if isHovering, property.id != linkContext.sourceProperty?.id {
-                            linkContext.destinationProperty = property
-                        }
+                .preference(key: SocketPreferenceKey.self,
+                            value: [SocketPreferenceData(property: property,
+                                                         frame: reader.frame(in: .gridView))])
+                .onPreferenceChange(SocketPreferenceKey.self) { value in
+                    if let data = value.first(where: { $0.property == property }) {
+                        linkContext.objectWillChange.send()
+                        property.frame = data.frame
                     }
                 }
+//                .onDrop(of: [String(kUTTypeText)], delegate: self)
+//                .onReceive(linkContext.objectWillChange) { output in
+//                    DispatchQueue.main.async {
+//                        isHovering = reader.frame(in: .gridView).contains(linkContext.end)
+//
+//                        if isHovering, property.id != linkContext.sourceProperty?.id {
+//                            linkContext.destinationProperty = property
+//                        }
+//                    }
+//                }
+            /*
+
+
              */
         }
         .aspectRatio(1, contentMode: .fit)
@@ -91,21 +100,21 @@ struct ConnectionView: View, DropDelegate {
     }
 }
 
-/*
-struct ConnectionCenterPreferenceData: Equatable {
+
+struct SocketPreferenceData: Equatable {
     let property: NodeProperty
-    let center: CGPoint
+    let frame: CGRect
 }
 
-struct ConnectionCenterPreferenceKey: PreferenceKey {
-    static var defaultValue: CGPoint = .zero
+struct SocketPreferenceKey: PreferenceKey {
+    typealias Value = [SocketPreferenceData]
 
-    static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {
-        value = nextValue()
+    static var defaultValue: Value = []
+
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+        value.append(contentsOf: nextValue())
     }
 }
- */
-
 
 struct ConnectionView_Previews: PreviewProvider {
     static var previews: some View {

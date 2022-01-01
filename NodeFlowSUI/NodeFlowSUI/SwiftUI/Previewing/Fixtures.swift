@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A property that publishes a number (output) and optionally accepts a number (input)
 class NumberProperty: NodeProperty {
 
     init(value: Any? = nil, isInput: Bool = true) {
@@ -29,11 +30,11 @@ class NumberProperty: NodeProperty {
 }
 
 class MathNode: Node {
-    init(value: Any?  = nil) {
+    override init() {
         super.init()
-        self.name     = "Math"
-        self.inputs   = [NumberProperty(), NumberProperty()]
-        self.outputs  = [NumberProperty(isInput: false)]
+        self.name    = "Math"
+        self.inputs  = [NumberProperty(value: 0, isInput: true), NumberProperty(value: 0, isInput: true)]
+        self.outputs = [NumberProperty(value: 0, isInput: false)]
     }
 }
 

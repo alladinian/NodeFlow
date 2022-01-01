@@ -28,8 +28,8 @@ struct NodeView: View {
                 )
 
             VStack {
-                ForEach(node.inputs, id: \.id) { input in
-                    NumberPropertyView(number: .constant("1"), property: input)
+                ForEach(node.inputs) { input in
+                    NumberPropertyView(property: input as! NumberProperty)
                 }
             }
             .padding()
@@ -39,8 +39,8 @@ struct NodeView: View {
             Divider()
 
             VStack {
-                ForEach(node.outputs, id: \.id) { output in
-                    NumberPropertyView(number: .constant("1"), property: output)
+                ForEach(node.outputs) { output in
+                    NumberPropertyView(property: output as! NumberProperty)
                 }
             }
             .padding()
