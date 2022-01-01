@@ -18,6 +18,7 @@ class NodeProperty: Identifiable, ObservableObject {
     @Published var frame: CGRect = .zero
 
     var isInput: Bool            = false
+    var isConnected: Bool        = false
     var type: ContentType        = .number
 }
 
@@ -52,6 +53,7 @@ class Connection: Identifiable, ObservableObject {
     init(output: NodeProperty, input: NodeProperty) {
         self.input       = input
         self.output      = output
+        [self.input, self.output].forEach { $0.isConnected = true }
         self.cancellable = output.$value
             .receive(on: RunLoop.main, options: nil)
             .assign(to: \.value, on: input)

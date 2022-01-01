@@ -18,17 +18,16 @@ struct SocketView: View, DropDelegate {
 
     @EnvironmentObject var linkContext: LinkContext
 
-    var property: NodeProperty
-    var connectionSize: CGFloat = 12
+    let property: NodeProperty
 
     @State private var isHovering: Bool  = false
-    @State private var isConnected: Bool = false
 
-    private let borderColor    = Color.accentColor.opacity(0.95)
-    private let connectedColor = Color.accentColor
+    private let connectionSize: CGFloat = 12
+    private let borderColor             = Color.accentColor.opacity(0.95)
+    private let connectedColor          = Color.accentColor
 
     private var shouldHighlight: Bool {
-        isHovering || isConnected || (linkContext.sourceProperty?.id == property.id)
+        isHovering || property.isConnected || (linkContext.sourceProperty?.id == property.id)
     }
 
     func dragGesture(reader: GeometryProxy) -> some Gesture {

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import PureSwiftUI
 
 struct NumberPropertyView: View {
     @ObservedObject var property: NumberProperty
@@ -16,6 +17,7 @@ struct NumberPropertyView: View {
             TextField("0", value: $property.number, formatter: NumberFormatter())
                 .frame(maxWidth: 100)
                 .textFieldStyle(DefaultTextFieldStyle())
+                .disabledIf(property.isInput && property.isConnected)
         }
     }
 }
