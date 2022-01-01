@@ -86,13 +86,13 @@ class Graph: Identifiable, ObservableObject {
             .subscribe(on: RunLoop.main, options: nil)
             .sink { [unowned self] value in
                 guard let value = value.object as? (source: NodeProperty, destination: CGPoint) else { return }
-                for node in nodes {
+                for node in nodes.reversed() {
                     for property in (node.inputs + node.outputs)
                     where property.frame.contains(value.destination) && shouldAddConnection(betweenProperty: value.source, and: property) {
                         let connection = Connection(output: value.source.isInput ? property : value.source,
                                                     input: value.source.isInput ? value.source : property)
                         addConnection(connection)
-                        break
+                        return
                     }
                 }
             }

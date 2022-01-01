@@ -44,10 +44,6 @@ struct BoardView : View {
                         }
                     }
 
-                ForEach(Array(board.nodes)) { node in
-                    NodeView(node: node)
-                }
-
                 if linkContext.isActive {
                     LinkView(start: linkContext.start, end: linkContext.end)
                 }
@@ -55,6 +51,10 @@ struct BoardView : View {
                 ForEach(Array(board.connections)) { connection in
                     ConnectionLinkView(output: connection.output,
                                        input: connection.input)
+                }
+
+                ForEach(Array(board.nodes)) { node in
+                    NodeView(node: node)
                 }
             }
             .coordinateSpace(name: "GridView")
