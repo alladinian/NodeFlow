@@ -1,5 +1,5 @@
 //
-//  ConnectionView.swift
+//  SocketView.swift
 //  NodeFlowKit
 //
 //  Created by Vasilis Akoinoglou on 10/10/19.
@@ -14,7 +14,7 @@ extension NSNotification.Name {
     static let didFinishDrawingLine = NSNotification.Name("userDidFinishDrawingLine")
 }
 
-struct ConnectionView: View, DropDelegate {
+struct SocketView: View, DropDelegate {
 
     @EnvironmentObject var linkContext: LinkContext
 
@@ -116,9 +116,9 @@ struct SocketPreferenceKey: PreferenceKey {
     }
 }
 
-struct ConnectionView_Previews: PreviewProvider {
+struct SocketView_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionView(property: NumberProperty(isInput: true))
+        SocketView(property: NumberProperty(isInput: true))
             .previewDisplayName("Input")
             .padding()
             .coordinateSpace(name: "GridView")

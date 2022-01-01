@@ -14,7 +14,7 @@
 		5A2502C423566ACB004BFF01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A2502C223566ACB004BFF01 /* Main.storyboard */; };
 		5A2502D223566B35004BFF01 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CC23566AFE004BFF01 /* BoardView.swift */; };
 		5A2502D323566B35004BFF01 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CD23566AFE004BFF01 /* NodeView.swift */; };
-		5A2502D423566B35004BFF01 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CE23566AFE004BFF01 /* ConnectionView.swift */; };
+		5A2502D423566B35004BFF01 /* SocketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CE23566AFE004BFF01 /* SocketView.swift */; };
 		5A2502D623566B35004BFF01 /* Dragging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502D023566AFE004BFF01 /* Dragging.swift */; };
 		5A2502D823566B4D004BFF01 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502D723566B4D004BFF01 /* GridView.swift */; };
 		5A2502DA23566B68004BFF01 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502D923566B67004BFF01 /* Colors.swift */; };
@@ -38,7 +38,7 @@
 		5A2502C623566ACB004BFF01 /* NodeFlowSUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NodeFlowSUI.entitlements; sourceTree = "<group>"; };
 		5A2502CC23566AFE004BFF01 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		5A2502CD23566AFE004BFF01 /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
-		5A2502CE23566AFE004BFF01 /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
+		5A2502CE23566AFE004BFF01 /* SocketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketView.swift; sourceTree = "<group>"; };
 		5A2502CF23566AFE004BFF01 /* DraggableCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableCircle.swift; sourceTree = "<group>"; };
 		5A2502D023566AFE004BFF01 /* Dragging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dragging.swift; sourceTree = "<group>"; };
 		5A2502D723566B4D004BFF01 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 				5A2502CC23566AFE004BFF01 /* BoardView.swift */,
 				5A8BF355237F5B74008D7047 /* LinkView.swift */,
 				5A2502CD23566AFE004BFF01 /* NodeView.swift */,
-				5A2502CE23566AFE004BFF01 /* ConnectionView.swift */,
+				5A2502CE23566AFE004BFF01 /* SocketView.swift */,
 				5A2502D023566AFE004BFF01 /* Dragging.swift */,
 				7D4126A02358956500213B23 /* NumberPropertyView.swift */,
 				5A5AF3822773843C0082679D /* Hovering.swift */,
@@ -218,7 +218,7 @@
 				5A2502D223566B35004BFF01 /* BoardView.swift in Sources */,
 				5A5AF37E277374B80082679D /* DraggableCircle.swift in Sources */,
 				5A2502DA23566B68004BFF01 /* Colors.swift in Sources */,
-				5A2502D423566B35004BFF01 /* ConnectionView.swift in Sources */,
+				5A2502D423566B35004BFF01 /* SocketView.swift in Sources */,
 				5A2502D823566B4D004BFF01 /* GridView.swift in Sources */,
 				5A5AF3832773843C0082679D /* Hovering.swift in Sources */,
 				7D4126A12358956500213B23 /* NumberPropertyView.swift in Sources */,

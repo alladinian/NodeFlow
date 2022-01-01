@@ -14,13 +14,13 @@ struct NumberPropertyView: View {
     var body: some View {
         HStack {
             if property.isInput {
-                ConnectionView(property: property)
+                SocketView(property: property)
             }
             TextField("0", value: $property.number, formatter: NumberFormatter())
                 .frame(maxWidth: 100)
                 .textFieldStyle(DefaultTextFieldStyle())
             if !property.isInput {
-                ConnectionView(property: property)
+                SocketView(property: property)
             }
         }
     }

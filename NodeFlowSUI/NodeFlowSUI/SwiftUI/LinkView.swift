@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LinkView : View {
+struct LinkView: View {
     var start: CGPoint
     var end: CGPoint
 
@@ -33,11 +33,14 @@ struct LinkView : View {
     }
 }
 
-//extension LinkView {
-//    init(connection: Connection) {
-//
-//    }
-//}
+struct ConnectionLinkView: View {
+    @ObservedObject var output: NodeProperty
+    @ObservedObject var input: NodeProperty
+
+    var body: some View {
+        LinkView(start: output.frame.center, end: input.frame.center)
+    }
+}
 
 struct LinkView_Previews: PreviewProvider {
     static var previews: some View {
