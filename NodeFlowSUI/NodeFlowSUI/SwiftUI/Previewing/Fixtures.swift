@@ -29,7 +29,7 @@ class NumberProperty: NodeProperty {
     }
 
     var stringValue: String {
-        get { Self.formatter.string(for: value) ?? "0" }
+        get { NumberProperty.formatter.string(for: value) ?? "0" }
         set { value = Double(newValue) }
     }
 }
@@ -131,7 +131,7 @@ class MathNode: Node {
      Limits the output to the range (0.0 to 1.0). See Clamp.
      */
 
-    enum Operation {
+    enum Operation: CaseIterable {
         case add, subtract, multiply, divide
         case power, log, squareRoot, inverseSquareRoot
         case absolute, exponent
@@ -162,9 +162,7 @@ class MathNode: Node {
                 inputs[0].$value.map { $0 as? Double }.replaceNil(with: 0),
                 inputs[1].$value.map { $0 as? Double }.replaceNil(with: 0)
             )
-            .map { a, b in
-                a + b
-            }
+            .map(+)
             .assign(to: \.value, on: self.outputs[0])
             .store(in: &cancellables)
     }

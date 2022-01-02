@@ -24,11 +24,11 @@ struct PropertyView<Content: View>: View {
                 SocketView(property: property)
             }
             content
+                .disabledIf(property.isInput && property.isConnected)
+                .disabledIf(!property.isInput)
             if !property.isInput {
                 SocketView(property: property)
             }
         }
-        .disabledIf(property.isInput && property.isConnected)
-        .disabledIf(!property.isInput)
     }
 }
