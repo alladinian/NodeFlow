@@ -20,6 +20,7 @@ class NodeProperty: Identifiable, ObservableObject {
     var isInput: Bool            = true
     var isConnected: Bool        = false
     var hasSocket: Bool          = true
+    var isHidden: Bool           = false
     var type: ContentType        = .number
 }
 

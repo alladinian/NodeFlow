@@ -27,7 +27,7 @@ struct NodeView: View {
     }
 
     var inputs: some View {
-        VStack {
+        VStack(alignment: .trailing) {
             ForEach(node.inputs) { input in
                 switch input.type {
                 case .number:
@@ -59,13 +59,13 @@ struct NodeView: View {
 
             header
 
-            inputs.padding()
-
-            Spacer()
+            inputs
+                .padding()
 
             Divider()
 
-            outputs.padding()
+            outputs
+                .padding()
 
         }
         .background(Color("NodeBackground").opacity(0.9))

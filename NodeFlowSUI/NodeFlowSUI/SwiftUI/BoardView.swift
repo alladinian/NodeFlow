@@ -33,32 +33,37 @@ struct BoardView : View {
     }
     
     var body: some View {
-        //ScrollView {
-            ZStack {
-                Rectangle()
-                    .fill(ImagePaint(image: gridImage))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .contextMenu {
-                        Button("Add Node") {
+        ZStack {
+            Rectangle()
+                .fill(ImagePaint(image: gridImage))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .opacity(0.6)
+                .contextMenu {
+                    Button("Add Node") {
 
-                        }
                     }
-
-                if linkContext.isActive {
-                    LinkView(start: linkContext.start, end: linkContext.end)
                 }
 
-                ForEach(Array(graph.connections)) { connection in
-                    ConnectionLinkView(output: connection.output,
-                                       input: connection.input)
-                }
-
-                ForEach(Array(graph.nodes)) { node in
-                    NodeView(node: node)
-                }
+            if linkContext.isActive {
+                LinkView(start: linkContext.start, end: linkContext.end)
             }
-            .coordinateSpace(name: "GridView")
-        //}
+
+            ForEach(Array(graph.connections)) { connection in
+                ConnectionLinkView(output: connection.output,
+                                   input: connection.input)
+            }
+
+            ForEach(Array(graph.nodes)) { node in
+                NodeView(node: node)
+            }
+        }
+        .coordinateSpace(name: "GridView")
+        .onTapGesture {
+            DispatchQueue.main.async {
+                // Unfocus controls on bg tap
+                NSApp.keyWindow?.makeFirstResponder(nil)
+            }
+        }
     }
 }
 

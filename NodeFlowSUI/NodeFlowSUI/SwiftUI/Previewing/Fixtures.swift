@@ -170,7 +170,7 @@ class MathNode: Node {
 
         var description: String { rawValue }
 
-        func transform(_ a: Double, _ b: Double) -> Double { //<T: BinaryFloatingPoint>() -> (T, T) -> T {
+        func transform(_ a: Double, _ b: Double) -> Double {
             switch self {
             case .add:      return a + b
             case .subtract: return a - b

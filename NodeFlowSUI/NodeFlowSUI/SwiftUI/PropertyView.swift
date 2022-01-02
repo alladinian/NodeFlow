@@ -26,7 +26,6 @@ struct PropertyView<Content: View>: View {
             content
                 .disabledIf(property.isInput && property.isConnected)
                 .disabledIf(!property.isInput)
-                //.padding(.horizontal, property.hasSocket ? 0 : 20)
             if !property.isInput, property.hasSocket {
                 SocketView(property: property)
             }
