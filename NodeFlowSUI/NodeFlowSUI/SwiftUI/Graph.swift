@@ -52,15 +52,24 @@ class Node: Identifiable, ObservableObject {
 class Connection: Identifiable, ObservableObject {
     var input: NodeProperty
     var output: NodeProperty
-    var cancellable: AnyCancellable
+    var cancellable: AnyCancellable?
 
-    init(output: NodeProperty, input: NodeProperty) {
-        self.input       = input
-        self.output      = output
-        [self.input, self.output].forEach { $0.isConnected = true }
-        self.cancellable = output.$value
+    init?(output: NodeProperty, input: NodeProperty) {
+        guard !output.isInput, input.isInput else { return nil }
+        self.output = output
+        self.input  = input
+    }
+
+    func setup() {
+        [input, output].forEach { $0.isConnected = true }
+        cancellable = output.$value
             .receive(on: RunLoop.main, options: nil)
             .assign(to: \.value, on: input)
+    }
+
+    func tearUp() {
+        [input, output].forEach { $0.isConnected = false }
+        cancellable?.cancel()
     }
 
     deinit {
@@ -68,8 +77,25 @@ class Connection: Identifiable, ObservableObject {
     }
 }
 
-
 class Graph: Identifiable, ObservableObject {
+
+    enum ConnectionError: LocalizedError {
+        case sameNode
+        case typeMismatch
+        case inputOccupied
+
+        var errorDescription: String? {
+            switch self {
+            case .sameNode:
+                return "Attempted connection on the same node"
+            case .typeMismatch:
+                return "Property types do not match"
+            case .inputOccupied:
+                return "Input is already occupied"
+            }
+        }
+    }
+
     @Published var nodes: Set<Node>              = []
     @Published var connections: Set<Connection>  = []
 
@@ -87,31 +113,61 @@ class Graph: Identifiable, ObservableObject {
             .subscribe(on: RunLoop.main, options: nil)
             .sink { [unowned self] value in
                 guard let value = value.object as? (source: NodeProperty, destination: CGPoint) else { return }
-                for node in nodes.reversed() {
-                    for property in (node.inputs + node.outputs)
-                    where property.frame.contains(value.destination) && shouldAddConnection(betweenProperty: value.source, and: property) {
-                        let connection = Connection(output: value.source.isInput ? property : value.source,
-                                                    input: value.source.isInput ? value.source : property)
-                        addConnection(connection)
-                        return
-                    }
-                }
+                attemptConnectionFrom(value.source, toPoint: value.destination)
             }
             .store(in: &cancellables)
     }
 
-    func shouldAddConnection(betweenProperty a: NodeProperty, and b: NodeProperty) -> Bool {
-        guard a.isInput != b.isInput else { return false }
-        guard a.node != b.node else { return false}
-        return true
+    private func attemptConnectionFrom(_ source: NodeProperty, toPoint destination: CGPoint) {
+        for node in nodes.reversed() {
+            for property in (node.inputs + node.outputs) where property.frame.contains(destination) {
+                guard let connection = Connection(output: source.isInput ? property : source, input: source.isInput ? source : property) else { continue }
+
+                do {
+                    try addConnection(connection)
+                } catch let error as ConnectionError {
+                    switch error {
+                    case .sameNode:
+                        debugPrint(error)
+                    case .typeMismatch:
+                        debugPrint(error)
+                    case .inputOccupied:
+                        debugPrint(error)
+                        // Find and remove the old connection
+                        if let oldConnection = connections.first(where: { $0.input == property }) {
+                            removeConnection(oldConnection)
+                            attemptConnectionFrom(source, toPoint: destination)
+                        }
+                        return
+                    }
+                } catch {
+
+                }
+
+                return
+
+            }
+        }
     }
 
-    func addConnection(_ connection: Connection) {
+    func addConnection(_ connection: Connection) throws {
+        let (input, output) = (connection.input, connection.output)
+
+        // Reject if both are on the same node
+        guard input.node != output.node else { throw ConnectionError.sameNode }
+
+        // Reject if types don't match
+        guard input.type.contains(output.type) else { throw ConnectionError.typeMismatch }
+
+        // Reject if input is already occupied
+        guard !input.isConnected else { throw ConnectionError.inputOccupied }
+
+        connection.setup()
         connections.insert(connection)
     }
 
     func removeConnection(_ connection: Connection) {
-        connection.cancellable.cancel()
+        connection.tearUp()
         connections.remove(connection)
     }
 
@@ -120,6 +176,12 @@ class Graph: Identifiable, ObservableObject {
     }
 
     func removeNode(_ node: Node) {
+        let involvedConnections = connections.filter {
+            ($0.input.node == node) || ($0.output.node == node)
+        }
+        for connection in involvedConnections {
+            removeConnection(connection)
+        }
         nodes.remove(node)
     }
 }
