@@ -17,7 +17,7 @@ class NodeProperty: Identifiable, ObservableObject {
     @Published var value: Any?   = nil
     @Published var frame: CGRect = .zero
 
-    var isInput: Bool            = false
+    var isInput: Bool            = true
     var isConnected: Bool        = false
     var type: ContentType        = .number
 }

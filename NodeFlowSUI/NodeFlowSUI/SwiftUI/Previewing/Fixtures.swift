@@ -54,4 +54,5 @@ class MathNode: Node {
             .assign(to: \.value, on: self.outputs[0])
             .store(in: &cancellables)
     }
+
 }

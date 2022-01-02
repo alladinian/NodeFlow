@@ -13,37 +13,57 @@ struct NodeView: View {
 
     @ObservedObject var node: Node
 
+    var header: some View {
+        Rectangle()
+            .fill(Color.accentColor)
+            .frame(height: 40)
+            .overlay(
+                Text(node.name)
+                    .font(.headline)
+                    .foregroundColor(Color.white)
+                    .multilineTextAlignment(.center)
+                    .shadow(1)
+            )
+    }
+
+    var inputs: some View {
+        VStack {
+            ForEach(node.inputs) { input in
+                switch input.type {
+                case .number:
+                    NumberPropertyView(property: input as! NumberProperty)
+                default:
+                    EmptyView()
+                }
+            }
+        }
+    }
+
+    var outputs: some View {
+        VStack {
+            ForEach(node.outputs) { output in
+                switch output.type {
+                case .number:
+                    NumberPropertyView(property: output as! NumberProperty)
+                default:
+                    EmptyView()
+                }
+            }
+        }
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
 
-            Rectangle()
-                .fill(Color.accentColor)
-                .frame(height: 40)
-                .overlay(
-                    Text(node.name)
-                        .font(.headline)
-                        .foregroundColor(Color.white)
-                        .multilineTextAlignment(.center)
-                        .shadow(1)
-                )
+            header
 
-            VStack {
-                ForEach(node.inputs) { input in
-                    NumberPropertyView(property: input as! NumberProperty)
-                }
-            }
-            .padding()
+            inputs.padding()
 
             Spacer()
 
             Divider()
 
-            VStack {
-                ForEach(node.outputs) { output in
-                    NumberPropertyView(property: output as! NumberProperty)
-                }
-            }
-            .padding()
+            outputs.padding()
 
         }
         .background(Color("NodeBackground").opacity(0.9))
