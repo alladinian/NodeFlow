@@ -20,13 +20,14 @@ struct PropertyView<Content: View>: View {
 
     var body: some View {
         HStack {
-            if property.isInput {
+            if property.isInput, property.hasSocket {
                 SocketView(property: property)
             }
             content
                 .disabledIf(property.isInput && property.isConnected)
                 .disabledIf(!property.isInput)
-            if !property.isInput {
+                //.padding(.horizontal, property.hasSocket ? 0 : 20)
+            if !property.isInput, property.hasSocket {
                 SocketView(property: property)
             }
         }

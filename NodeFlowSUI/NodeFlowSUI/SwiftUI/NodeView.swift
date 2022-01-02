@@ -32,6 +32,8 @@ struct NodeView: View {
                 switch input.type {
                 case .number:
                     NumberPropertyView(property: input as! NumberProperty)
+                case .picker:
+                    PickerPropertyView(property: input as! PickerProperty)
                 default:
                     EmptyView()
                 }

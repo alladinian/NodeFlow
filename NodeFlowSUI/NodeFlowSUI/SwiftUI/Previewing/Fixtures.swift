@@ -11,9 +11,10 @@ import Combine
 
 class NumberProperty: NodeProperty {
 
-    private static let formatter: NumberFormatter = {
+    static let formatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
         return formatter
     }()
 
@@ -31,6 +32,22 @@ class NumberProperty: NodeProperty {
     var stringValue: String {
         get { NumberProperty.formatter.string(for: value) ?? "0" }
         set { value = Double(newValue) }
+    }
+}
+
+class PickerProperty: NodeProperty {
+    let options: [String]
+    @Published var selection: String {
+        didSet {
+            value = selection
+        }
+    }
+    init(options: [String]) {
+        self.options   = options
+        self.selection = options.first!
+        super.init()
+        self.name      = "Picker"
+        self.type      = .picker
     }
 }
 
@@ -131,9 +148,9 @@ class MathNode: Node {
      Limits the output to the range (0.0 to 1.0). See Clamp.
      */
 
-    enum Operation: CaseIterable {
+    enum Operation: String, CaseIterable, CustomStringConvertible {
         case add, subtract, multiply, divide
-        case power, log, squareRoot, inverseSquareRoot
+        case power, log, squareRoot, iSquareRoot
         case absolute, exponent
 
         case min, max, ltn, gtn, sign, compare
@@ -150,19 +167,45 @@ class MathNode: Node {
         case rad, deg
 
         case clamp
+
+        var description: String { rawValue }
+
+        func transform(_ a: Double, _ b: Double) -> Double { //<T: BinaryFloatingPoint>() -> (T, T) -> T {
+            switch self {
+            case .add:      return a + b
+            case .subtract: return a - b
+            case .multiply: return a * b
+            case .divide:   return a / b
+
+            default: return a + b
+            }
+        }
     }
 
     override init() {
         super.init()
         self.name    = "Math"
-        self.inputs  = [NumberProperty(), NumberProperty()]
-        self.outputs = [NumberProperty()]
+
+        self.inputs  = [
+            NumberProperty(),
+            NumberProperty(),
+            PickerProperty(options: Operation.allCases.map(\.description)),
+        ]
+
+        self.outputs = [
+            NumberProperty()
+        ]
+
         Publishers
-            .CombineLatest(
+            .CombineLatest3(
                 inputs[0].$value.map { $0 as? Double }.replaceNil(with: 0),
-                inputs[1].$value.map { $0 as? Double }.replaceNil(with: 0)
+                inputs[1].$value.map { $0 as? Double }.replaceNil(with: 0),
+                inputs[2].$value.map { $0 as? String }.replaceNil(with: Operation.allCases.first!.description)
             )
-            .map(+)
+            .map { a, b, c in
+                let operation = Operation(rawValue: c)
+                return operation?.transform(a, b)
+            }
             .assign(to: \.value, on: self.outputs[0])
             .store(in: &cancellables)
     }

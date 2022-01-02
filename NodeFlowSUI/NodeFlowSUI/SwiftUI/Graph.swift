@@ -19,6 +19,7 @@ class NodeProperty: Identifiable, ObservableObject {
 
     var isInput: Bool            = true
     var isConnected: Bool        = false
+    var hasSocket: Bool          = true
     var type: ContentType        = .number
 }
 
@@ -138,6 +139,7 @@ public struct ContentType: OptionSet {
     public static let texture     = ContentType(rawValue: 1<<9)
     public static let scene       = ContentType(rawValue: 1<<10)
     public static let cubeMap     = ContentType(rawValue: 1<<11)
+    public static let picker      = ContentType(rawValue: 1<<12)
 
     public static var imageContent: ContentType {
         return [.image, .url]
