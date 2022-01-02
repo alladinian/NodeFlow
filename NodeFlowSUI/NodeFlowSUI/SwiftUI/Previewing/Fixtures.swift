@@ -12,9 +12,9 @@ import Combine
 class NumberProperty: NodeProperty {
 
     static let formatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
+        let formatter                     = NumberFormatter()
+        formatter.numberStyle             = .decimal
+        formatter.maximumFractionDigits   = 2
         return formatter
     }()
 
@@ -176,6 +176,14 @@ class MathNode: Node {
             case .subtract: return a - b
             case .multiply: return a * b
             case .divide:   return a / b
+
+            case .power:    return Foundation.pow(a, b)
+            case .log:      return Foundation.log(a) / Foundation.log(b)
+
+            case .min: return Swift.min(a, b)
+            case .max: return Swift.max(a, b)
+            case .ltn: return a < b ? 1 : 0
+            case .gtn: return a > b ? 1 : 0
 
             default: return a + b
             }
