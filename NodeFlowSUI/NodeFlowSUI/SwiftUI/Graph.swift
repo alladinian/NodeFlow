@@ -148,7 +148,7 @@ public struct ContentType: OptionSet {
     }
 
     public var associatedColors: [Color] {
-        return elements().map { element in
+        elements().map { element in
             switch element {
             case .vector, .vectorImage: return .purple
             case .number:               return .gray

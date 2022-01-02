@@ -1,5 +1,5 @@
 //
-//  NumberPropertyView.swift
+//  PropertiesFactory.swift
 //  NodeFlowSUI
 //
 //  Created by Vasilis Akoinoglou on 17/10/19.
@@ -17,13 +17,18 @@ struct NumberPropertyView: View {
             TextField("0", value: $property.number, formatter: NumberFormatter())
                 .frame(maxWidth: 100)
                 .textFieldStyle(DefaultTextFieldStyle())
-                .disabledIf(property.isInput && property.isConnected)
-                .disabledIf(!property.isInput)
         }
     }
 }
 
-struct NumberPropertyView_Previews: PreviewProvider {
+
+
+
+
+
+
+
+struct PropertiesFactory_Previews: PreviewProvider {
     static var previews: some View {
         NumberPropertyView(property: NumberProperty())
             .environmentObject(LinkContext())

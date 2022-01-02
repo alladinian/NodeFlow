@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import PureSwiftUI
 
 struct PropertyView<Content: View>: View {
     let property: NodeProperty
@@ -27,5 +28,7 @@ struct PropertyView<Content: View>: View {
                 SocketView(property: property)
             }
         }
+        .disabledIf(property.isInput && property.isConnected)
+        .disabledIf(!property.isInput)
     }
 }
