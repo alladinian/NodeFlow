@@ -61,14 +61,15 @@ class Connection: Identifiable, ObservableObject {
     }
 
     func setup() {
-        [input, output].forEach { $0.isConnected = true }
+        [output, input].forEach { $0.isConnected = true }
         cancellable = output.$value
             .receive(on: RunLoop.main, options: nil)
             .assign(to: \.value, on: input)
     }
 
     func tearUp() {
-        [input, output].forEach { $0.isConnected = false }
+        [output, input].forEach { $0.isConnected = false }
+        input.value = nil
         cancellable?.cancel()
     }
 
