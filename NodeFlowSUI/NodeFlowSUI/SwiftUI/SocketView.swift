@@ -9,11 +9,6 @@
 import SwiftUI
 import PureSwiftUI
 
-extension NSNotification.Name {
-    static let didStartDrawingLine  = NSNotification.Name("userDidStartDrawingLine")
-    static let didFinishDrawingLine = NSNotification.Name("userDidFinishDrawingLine")
-}
-
 struct SocketView: View, DropDelegate {
 
     @EnvironmentObject var linkContext: LinkContext
@@ -33,13 +28,13 @@ struct SocketView: View, DropDelegate {
     func dragGesture(reader: GeometryProxy) -> some Gesture {
         DragGesture(coordinateSpace: .gridView)
             .onChanged { value in
-                linkContext.start          = property.frame.center
+                if linkContext.sourceProperty == nil {
+                    linkContext.sourceProperty = property
+                }
                 linkContext.end            = value.location
                 linkContext.isActive       = true
-                linkContext.sourceProperty = property
             }
             .onEnded { value in
-                NotificationCenter.default.post(name: .didFinishDrawingLine, object: (property, value.location))
                 linkContext.end                 = value.location
                 linkContext.isActive            = false
                 linkContext.sourceProperty      = nil
@@ -111,6 +106,5 @@ struct SocketView_Previews: PreviewProvider {
             .previewDisplayName("Input")
             .padding()
             .coordinateSpace(name: "GridView")
-            .environmentObject(LinkContext())
     }
 }
