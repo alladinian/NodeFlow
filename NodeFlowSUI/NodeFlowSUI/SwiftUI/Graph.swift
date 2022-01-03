@@ -77,6 +77,14 @@ class Connection: Identifiable, ObservableObject {
     }
 }
 
+class LinkContext: ObservableObject {
+    @Published var start: CGPoint = .zero
+    @Published var end: CGPoint   = .zero
+    @Published var isActive: Bool = false
+    @Published var sourceProperty: NodeProperty?
+    @Published var destinationProperty: NodeProperty?
+}
+
 class Graph: Identifiable, ObservableObject {
 
     enum ConnectionError: LocalizedError {
@@ -96,10 +104,12 @@ class Graph: Identifiable, ObservableObject {
         }
     }
 
+    var linkContext: LinkContext
+
     @Published var nodes: Set<Node>              = []
     @Published var connections: Set<Connection>  = []
 
-    var cancellables: Set<AnyCancellable> = []
+    var cancellables: Set<AnyCancellable>        = []
 
     convenience init(nodes: Set<Node> = [], connections: Set<Connection> = []) {
         self.init()
@@ -108,12 +118,28 @@ class Graph: Identifiable, ObservableObject {
     }
 
     init() {
-        NotificationCenter.default
-            .publisher(for: .didFinishDrawingLine, object: nil)
-            .subscribe(on: RunLoop.main, options: nil)
-            .sink { [unowned self] value in
-                guard let value = value.object as? (source: NodeProperty, destination: CGPoint) else { return }
-                attemptConnectionFrom(value.source, toPoint: value.destination)
+        self.linkContext = LinkContext()
+
+        self.linkContext.$isActive
+            .removeDuplicates()
+            .combineLatest(self.linkContext.$sourceProperty, self.linkContext.$end)
+            .receive(on: RunLoop.main, options: nil)
+            .sink { [unowned self] isActive, source, end in
+                // Started a line
+                if isActive, let source = source {
+                    // For outputs & unoccupied inputs always start a connection line
+                    if !source.isInput || !source.isConnected {
+                        // Nothing to do...
+                    } else if let connection = connections.first(where: { $0.input == source }) {
+                        let output = connection.output
+                        removeConnection(connection)
+                        linkContext.sourceProperty = output
+                    }
+                }
+                // Ended a line
+                else if let source = source {
+                    attemptConnectionFrom(source, toPoint: end)
+                }
             }
             .store(in: &cancellables)
     }

@@ -43,7 +43,6 @@ struct PickerPropertyView: View {
 struct PropertiesFactory_Previews: PreviewProvider {
     static var previews: some View {
         NumberPropertyView(property: NumberProperty())
-            .environmentObject(LinkContext())
             .padding()
             .previewLayout(.sizeThatFits)
 

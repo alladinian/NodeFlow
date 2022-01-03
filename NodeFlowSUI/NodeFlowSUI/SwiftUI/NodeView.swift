@@ -83,7 +83,6 @@ struct NodeView_Previews: PreviewProvider {
 
     static var previews: some View {
         NodeView(node: node)
-            .environmentObject(LinkContext())
             .padding()
             .background(Color.black)
     }

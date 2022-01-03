@@ -12,7 +12,6 @@ struct ContentView: View {
     let nodes: Set<Node> = [MathNode(), MathNode(), MathNode(), MathNode()]
     var body: some View {
         BoardView(graph: Graph(nodes: nodes))
-            .environmentObject(LinkContext())
     }
 }
 
