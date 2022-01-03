@@ -13,15 +13,15 @@ import Combine
 class NodeProperty: Identifiable, ObservableObject {
     weak var node: Node?         = nil
 
-    @Published var name: String  = "Property"
-    @Published var value: Any?   = nil
-    @Published var frame: CGRect = .zero
+    @Published var name: String      = "Property"
+    @Published var value: Any?       = nil
+    @Published var frame: CGRect     = .zero
+    @Published var isConnected: Bool = false
+    @Published var isEnabled: Bool   = true
 
-    var isInput: Bool            = true
-    var isConnected: Bool        = false
-    var hasSocket: Bool          = true
-    var isHidden: Bool           = false
-    var type: ContentType        = .number
+    var isInput: Bool                = true
+    var hasSocket: Bool              = true
+    var type: ContentType            = .number
 }
 
 class Node: Identifiable, ObservableObject {
@@ -78,7 +78,7 @@ class Connection: Identifiable, ObservableObject {
 }
 
 class LinkContext: ObservableObject {
-    @Published var start: CGPoint = .zero
+    var start: CGPoint { sourceProperty?.frame.center ?? .zero }
     @Published var end: CGPoint   = .zero
     @Published var isActive: Bool = false
     @Published var sourceProperty: NodeProperty?

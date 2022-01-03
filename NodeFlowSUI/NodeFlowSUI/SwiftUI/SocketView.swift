@@ -9,11 +9,6 @@
 import SwiftUI
 import PureSwiftUI
 
-extension NSNotification.Name {
-    static let didStartDrawingLine  = NSNotification.Name("userDidStartDrawingLine")
-    static let didFinishDrawingLine = NSNotification.Name("userDidFinishDrawingLine")
-}
-
 struct SocketView: View, DropDelegate {
 
     @EnvironmentObject var linkContext: LinkContext
@@ -36,7 +31,6 @@ struct SocketView: View, DropDelegate {
                 if linkContext.sourceProperty == nil {
                     linkContext.sourceProperty = property
                 }
-                linkContext.start          = property.frame.center
                 linkContext.end            = value.location
                 linkContext.isActive       = true
             }
