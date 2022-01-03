@@ -33,7 +33,7 @@ struct SocketView: View, DropDelegate {
     func dragGesture(reader: GeometryProxy) -> some Gesture {
         DragGesture(coordinateSpace: .gridView)
             .onChanged { value in
-                linkContext.start          = reader.frame(in: .gridView).center
+                linkContext.start          = property.frame.center
                 linkContext.end            = value.location
                 linkContext.isActive       = true
                 linkContext.sourceProperty = property

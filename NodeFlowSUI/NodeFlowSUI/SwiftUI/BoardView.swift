@@ -15,7 +15,12 @@ extension CoordinateSpace {
 class LinkContext: ObservableObject {
     @Published var start: CGPoint = .zero
     @Published var end: CGPoint   = .zero
-    @Published var isActive: Bool = true
+    @Published var isActive: Bool = false {
+        didSet {
+            guard oldValue != isActive else { return }
+            print("Link context is \(isActive ? "active" : "inactive")")
+        }
+    }
     @Published var sourceProperty: NodeProperty?
     @Published var destinationProperty: NodeProperty?
 }
@@ -44,13 +49,24 @@ struct BoardView : View {
                     }
                 }
 
-            if linkContext.isActive {
-                LinkView(start: linkContext.start, end: linkContext.end)
+            if linkContext.isActive, let source = linkContext.sourceProperty {
+                // For outputs & unoccupied inputs always start a connection line
+                if !source.isInput || !source.isConnected {
+                    LinkView(start: linkContext.start, end: linkContext.end)
+                } else if let connection = graph.connections.first(where: { $0.input == source }) {
+                    // Readjust the current connection line
+                    Color.clear.onAppear {
+                        let output = connection.output
+                        let start  = output.frame.center
+                        graph.removeConnection(connection)
+                        linkContext.start          = start
+                        linkContext.sourceProperty = output
+                    }
+                }
             }
 
             ForEach(Array(graph.connections)) { connection in
-                ConnectionLinkView(output: connection.output,
-                                   input: connection.input)
+                ConnectionLinkView(output: connection.output, input: connection.input)
             }
 
             ForEach(Array(graph.nodes)) { node in
