@@ -8,17 +8,26 @@
 
 import SwiftUI
 
+extension CoordinateSpace {
+    static let gridView = CoordinateSpace.named("GridView")
+}
+
 class LinkContext: ObservableObject {
     @Published var start: CGPoint = .zero
     @Published var end: CGPoint   = .zero
-    @Published var isActive: Bool = true
+    @Published var isActive: Bool = false {
+        didSet {
+            guard oldValue != isActive else { return }
+            print("Link context is \(isActive ? "active" : "inactive")")
+        }
+    }
     @Published var sourceProperty: NodeProperty?
     @Published var destinationProperty: NodeProperty?
 }
 
 struct BoardView : View {
 
-    let board: Board
+    let graph: Graph
     
     @EnvironmentObject var linkContext: LinkContext
 
@@ -29,39 +38,54 @@ struct BoardView : View {
     }
     
     var body: some View {
-        //ScrollView {
-            ZStack {
-                Rectangle()
-                    .fill(ImagePaint(image: gridImage))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .contextMenu {
-                        Button("Add Node") {
+        ZStack {
+            Rectangle()
+                .fill(ImagePaint(image: gridImage))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .opacity(0.6)
+                .contextMenu {
+                    Button("Add Node") {
 
-                        }
                     }
+                }
 
-                if linkContext.isActive {
+            if linkContext.isActive, let source = linkContext.sourceProperty {
+                // For outputs & unoccupied inputs always start a connection line
+                if !source.isInput || !source.isConnected {
                     LinkView(start: linkContext.start, end: linkContext.end)
+                } else if let connection = graph.connections.first(where: { $0.input == source }) {
+                    // Readjust the current connection line
+                    Color.clear.onAppear {
+                        let output = connection.output
+                        let start  = output.frame.center
+                        graph.removeConnection(connection)
+                        linkContext.start          = start
+                        linkContext.sourceProperty = output
+                    }
                 }
-
-                ForEach(board.connections, id: \.id) { connection in
-                    EmptyView()
-                }
-
-                ForEach(board.nodes, id: \.id) { node in
-                    NodeView(node: node)
-                        .draggable()
-                }
-
             }
-            .coordinateSpace(name: "GridView")
-        //}
+
+            ForEach(Array(graph.connections)) { connection in
+                ConnectionLinkView(output: connection.output, input: connection.input)
+            }
+
+            ForEach(Array(graph.nodes)) { node in
+                NodeView(node: node)
+            }
+        }
+        .coordinateSpace(name: "GridView")
+        .onTapGesture {
+            DispatchQueue.main.async {
+                // Unfocus controls on bg tap
+                NSApp.keyWindow?.makeFirstResponder(nil)
+            }
+        }
     }
 }
 
 struct GridView_Previews : PreviewProvider {
     static var previews: some View {
-        BoardView(board: Board(nodes: [MathNode()], connections: []))
+        BoardView(graph: Graph(nodes: [MathNode()]))
             .environmentObject(LinkContext())
             .previewLayout(.fixed(width: 400, height: 400))
     }

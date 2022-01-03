@@ -7,39 +7,119 @@
 //
 
 import Foundation
+import Combine
 
-struct NumberProperty: NodeProperty, Identifiable {
-    var id: String        = NSUUID().uuidString
-    var name: String      = "Number"
-    var value: Any?       = 0
-    var isInput: Bool     = true
-    var type: ContentType = .number
+class NumberProperty: NodeProperty {
+
+    static let formatter: NumberFormatter = {
+        let formatter                     = NumberFormatter()
+        formatter.numberStyle             = .decimal
+        formatter.maximumFractionDigits   = 2
+        return formatter
+    }()
+
+    override init() {
+        super.init()
+        self.name = "Number"
+        self.type = .number
+    }
+
     var number: Double {
         get { value as? Double ?? 0}
         set { value = newValue }
     }
-    var stringValue: String {
-        get { NumberFormatter().string(for: value) ?? "0" }
-        set { value = Double(newValue) }
+
+}
+
+class PickerProperty: NodeProperty {
+    let options: [String]
+    @Published var selection: String {
+        didSet {
+            value = selection
+        }
+    }
+    init(options: [String]) {
+        self.options   = options
+        self.selection = options.first!
+        super.init()
+        self.name      = "Picker"
+        self.type      = .picker
     }
 }
 
-struct MathNode: Node, Identifiable {
-    var id: String              = NSUUID().uuidString
-    var name: String            = "Math"
-    var inputs: [NodeProperty]  = [NumberProperty(), NumberProperty()]
-    var outputs: [NodeProperty] = [NumberProperty(isInput: false)]
-    var position: CGPoint       = .zero
-}
+//MARK: - Node Factory
 
-struct Board: Graph {
-    var nodes: [Node]
-    var connections: [Connection]
-    func addConnection(_ connection: Connection) {}
-    func removeConnection(_ connection: Connection) {}
-    func addNode(_ node: Node) {}
-    func removeNode(_ node: Node) {}
-    func shouldAddConnection(_ connection: Connection) -> Bool {
-        return true
+class MathNode: Node {
+
+    // https://docs.blender.org/manual/en/latest/modeling/geometry_nodes/utilities/math.html
+
+    enum Operation: String, CaseIterable, CustomStringConvertible {
+        case add, subtract, multiply, divide
+        case power, log, squareRoot, iSquareRoot
+        case absolute, exponent
+
+        case min, max, ltn, gtn, sign, compare
+
+        case round, floor, ceil
+        case truncate, fraction, modulo, wrap
+        case snap
+        case pingPong
+
+        case sin, cos, tan
+        case asin, acos, atan, atan2
+        case hsin, hcos, htan
+
+        case rad, deg
+
+        case clamp
+
+        var description: String { rawValue }
+
+        func transform(_ a: Double, _ b: Double) -> Double {
+            switch self {
+            case .add:      return a + b
+            case .subtract: return a - b
+            case .multiply: return a * b
+            case .divide:   return a / b
+
+            case .power:    return Foundation.pow(a, b)
+            case .log:      return Foundation.log(a) / Foundation.log(b)
+
+            case .min: return Swift.min(a, b)
+            case .max: return Swift.max(a, b)
+            case .ltn: return a < b ? 1 : 0
+            case .gtn: return a > b ? 1 : 0
+
+            default: return a + b
+            }
+        }
     }
+
+    override init() {
+        super.init()
+        self.name    = "Math"
+
+        self.inputs  = [
+            NumberProperty(),
+            NumberProperty(),
+            PickerProperty(options: Operation.allCases.map(\.description)),
+        ]
+
+        self.outputs = [
+            NumberProperty()
+        ]
+
+        Publishers
+            .CombineLatest3(
+                inputs[0].$value.map { $0 as? Double }.replaceNil(with: 0),
+                inputs[1].$value.map { $0 as? Double }.replaceNil(with: 0),
+                inputs[2].$value.map { $0 as? String }.replaceNil(with: Operation.allCases.first!.description)
+            )
+            .map { a, b, c in
+                Operation(rawValue: c)?.transform(a, b)
+            }
+            .assign(to: \.value, on: self.outputs[0])
+            .store(in: &cancellables)
+    }
+
 }

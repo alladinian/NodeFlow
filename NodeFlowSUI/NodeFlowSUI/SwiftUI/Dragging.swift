@@ -12,17 +12,18 @@ import SwiftUI
 struct Draggable: ViewModifier {
     @State var isDragging: Bool = false
 
-    @State var offset: CGSize = .zero
+    @Binding var offset: CGPoint
+
     @State var dragOffset: CGSize = .zero
 
     func body(content: Content) -> some View {
-        let drag = DragGesture().onChanged { (value) in
-            offset     = dragOffset + value.translation
+        let drag       = DragGesture().onChanged { (value) in
+            offset     = (dragOffset + value.translation).toPoint()
             isDragging = true
         }.onEnded { (value) in
             isDragging = false
-            offset     = dragOffset + value.translation
-            dragOffset = offset
+            offset     = (dragOffset + value.translation).toPoint()
+            dragOffset = offset.toSize()
         }
         return content.offset(offset).gesture(drag)
     }
@@ -32,6 +33,19 @@ func +(lhs: CGSize, rhs: CGSize) -> CGSize {
     CGSize(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
 }
 
+extension CGPoint {
+    func toSize() -> CGSize {
+        CGSize(x, y)
+    }
+}
+
+extension CGSize {
+    func toPoint() -> CGPoint {
+        CGPoint(width, height)
+    }
+}
+
+/*
 // MARK: - ViewBuilder Implementation
 struct DraggableView<Content>: View where Content: View {
     let content: () -> Content
@@ -45,9 +59,10 @@ struct DraggableView<Content>: View where Content: View {
     }
 
 }
+ */
 
 extension View {
-    func draggable() -> some View {
-        modifier(Draggable())
+    func draggable(offset: Binding<CGPoint>) -> some View {
+        modifier(Draggable(offset: offset))
     }
 }

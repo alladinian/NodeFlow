@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LinkView : View {
+struct LinkView: View {
     var start: CGPoint
     var end: CGPoint
 
@@ -29,15 +29,18 @@ struct LinkView : View {
             path.move(to: inputPoint)
             path.addCurve(to: outputPoint, control1: p1, control2: p2)
         }
-        .stroke(Color("Tint"), lineWidth: 3)
+        .stroke(Color("Tint"), style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
     }
 }
 
-//extension LinkView {
-//    init(connection: Connection) {
-//
-//    }
-//}
+struct ConnectionLinkView: View {
+    @ObservedObject var output: NodeProperty
+    @ObservedObject var input: NodeProperty
+
+    var body: some View {
+        LinkView(start: output.frame.center, end: input.frame.center)
+    }
+}
 
 struct LinkView_Previews: PreviewProvider {
     static var previews: some View {

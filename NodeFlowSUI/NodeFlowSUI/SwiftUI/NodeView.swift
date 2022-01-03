@@ -11,39 +11,61 @@ import PureSwiftUI
 
 struct NodeView: View {
 
-    let node: Node
+    @ObservedObject var node: Node
+
+    var header: some View {
+        Rectangle()
+            .fill(Color.accentColor)
+            .frame(height: 40)
+            .overlay(
+                Text(node.name)
+                    .font(.headline)
+                    .foregroundColor(Color.white)
+                    .multilineTextAlignment(.center)
+                    .shadow(1)
+            )
+    }
+
+    var inputs: some View {
+        VStack(alignment: .trailing) {
+            ForEach(node.inputs) { input in
+                switch input.type {
+                case .number:
+                    NumberPropertyView(property: input as! NumberProperty)
+                case .picker:
+                    PickerPropertyView(property: input as! PickerProperty)
+                default:
+                    EmptyView()
+                }
+            }
+        }
+    }
+
+    var outputs: some View {
+        VStack {
+            ForEach(node.outputs) { output in
+                switch output.type {
+                case .number:
+                    NumberPropertyView(property: output as! NumberProperty)
+                default:
+                    EmptyView()
+                }
+            }
+        }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
 
-            Rectangle()
-                .fill(Color.accentColor)
-                .frame(height: 40)
-                .overlay(
-                    Text(node.name)
-                        .font(.headline)
-                        .foregroundColor(Color.white)
-                        .multilineTextAlignment(.center)
-                        .shadow(1)
-                )
+            header
 
-            VStack {
-                ForEach(node.inputs, id: \.id) { input in
-                    NumberPropertyView(number: .constant("1"), property: input)
-                }
-            }
-            .padding()
-
-            Spacer()
+            inputs
+                .padding()
 
             Divider()
 
-            VStack {
-                ForEach(node.outputs, id: \.id) { output in
-                    NumberPropertyView(number: .constant("1"), property: output)
-                }
-            }
-            .padding()
+            outputs
+                .padding()
 
         }
         .background(Color("NodeBackground").opacity(0.9))
@@ -52,6 +74,7 @@ struct NodeView: View {
         .frame(minWidth: 150)
         .fixedSize()
         .strokeRoundedRectangle(8, Color.accentColor.opacity(0.3), lineWidth: 1)
+        .draggable(offset: $node.position)
     }
 }
 
