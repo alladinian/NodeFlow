@@ -11,6 +11,7 @@ import SwiftUI
 struct LinkView: View {
     var start: CGPoint
     var end: CGPoint
+    var color: Color = .blue
 
     var body: some View {
         var inputPoint = start
@@ -29,7 +30,7 @@ struct LinkView: View {
             path.move(to: inputPoint)
             path.addCurve(to: outputPoint, control1: p1, control2: p2)
         }
-        .stroke(Color("Tint"), style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+        .stroke(color, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
     }
 }
 

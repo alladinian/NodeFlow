@@ -13,6 +13,8 @@ struct NodeView: View {
 
     @ObservedObject var node: Node
 
+    let isSelected: Bool
+
     var header: some View {
         Rectangle()
             .fill(Color.accentColor)
@@ -52,30 +54,36 @@ struct NodeView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(spacing: 0) {
             header
-            inputs
-                .padding()
+            inputs.padding()
             Divider()
-            outputs
-                .padding()
+            outputs.padding()
         }
         .background(Color("NodeBackground").opacity(0.9))
         .cornerRadius(8)
         .shadow(radius: 16)
         .frame(minWidth: 150)
         .fixedSize()
-        .strokeRoundedRectangle(8, Color.accentColor.opacity(0.3), lineWidth: 1)
+        .strokeRoundedRectangle(8, Color.accentColor.opacity(isSelected ? 1 : 0.3), lineWidth: isSelected ?  2 : 1)
+        .shadow(color: isSelected ? .accentColor.opacity(0.6) : .clear, radius: 6, x: 0, y: 0)
+        .zIndex(isSelected ? 2 : 1)
         .draggable(offset: $node.position)
+        .onTapGesture {
+            DispatchQueue.main.async {
+                node.graph?.selectedNode = node
+            }
+        }
     }
 }
 
 struct NodeView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            NodeView(node: MathNode())
+            NodeView(node: MathNode(), isSelected: false)
+            NodeView(node: MathNode(), isSelected: true)
         }
-        .padding()
+        .padding(40)
         .background(Color.black)
         .environmentObject(LinkContext())
     }

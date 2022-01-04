@@ -30,7 +30,7 @@ struct PickerPropertyView: View {
             }
         }
         .labelsHidden()
-        .fixedSize()
+        //.fixedSize()
     }
 }
 
@@ -42,10 +42,13 @@ struct PickerPropertyView: View {
 
 struct PropertiesFactory_Previews: PreviewProvider {
     static var previews: some View {
-        NumberPropertyView(property: NumberProperty())
-            .padding()
-            .previewLayout(.sizeThatFits)
+        Group {
+            NumberPropertyView(property: NumberProperty())
+                .padding()
+                .previewLayout(.sizeThatFits)
 
-        PickerPropertyView(property: PickerProperty(options: MathNode.Operation.allCases.map(\.description)))
+            PickerPropertyView(property: PickerProperty(options: MathNode.Operation.allCases.map(\.description)))
+        }
+        .environmentObject(LinkContext())
     }
 }
