@@ -97,7 +97,7 @@ class MathNode: Node {
 
     override init() {
         super.init()
-        self.name    = "Math"
+        self.name = "Math"
 
         self.inputs  = [
             NumberProperty(),
@@ -118,8 +118,51 @@ class MathNode: Node {
             .map { a, b, c in
                 Operation(rawValue: c)?.transform(a, b)
             }
+            .receive(on: RunLoop.main)
             .assign(to: \.value, on: self.outputs[0])
             .store(in: &cancellables)
     }
 
+}
+
+class OscillatorNode: Node {
+    enum OscillationFunction: String, CaseIterable, CustomStringConvertible {
+        case sin, cos
+
+        func transform(_ a: Double) -> Double {
+            switch self {
+            case .sin:
+                return Foundation.sin(a)
+            case .cos:
+                return Foundation.cos(a)
+            }
+        }
+
+        var description: String { rawValue }
+    }
+
+    @Published var function: OscillationFunction = .sin
+
+    override init() {
+        super.init()
+        self.name = "Oscillator"
+
+        self.inputs = [
+            PickerProperty(options: OscillationFunction.allCases.map(\.description))
+        ]
+
+        self.outputs = [
+            NumberProperty()
+        ]
+
+        Timer.publish(every: 1.0 / 30.0, on: .main, in: .default)
+            .autoconnect()
+            .combineLatest($function)
+            //.receive(on: RunLoop.main)
+            .map { time, function in
+                function.transform(time.timeIntervalSince1970)
+            }
+            .assign(to: \.value, on: self.outputs[0])
+            .store(in: &cancellables)
+    }
 }

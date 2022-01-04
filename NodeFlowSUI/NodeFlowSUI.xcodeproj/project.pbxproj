@@ -13,7 +13,6 @@
 		5A2502C123566ACB004BFF01 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A2502C023566ACB004BFF01 /* Preview Assets.xcassets */; };
 		5A2502C423566ACB004BFF01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A2502C223566ACB004BFF01 /* Main.storyboard */; };
 		5A2502D223566B35004BFF01 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CC23566AFE004BFF01 /* BoardView.swift */; };
-		5A2502D323566B35004BFF01 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CD23566AFE004BFF01 /* NodeView.swift */; };
 		5A2502D423566B35004BFF01 /* SocketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CE23566AFE004BFF01 /* SocketView.swift */; };
 		5A2502D623566B35004BFF01 /* Dragging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502D023566AFE004BFF01 /* Dragging.swift */; };
 		5A2502D823566B4D004BFF01 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502D723566B4D004BFF01 /* GridView.swift */; };
@@ -23,6 +22,7 @@
 		5A5AF37E277374B80082679D /* DraggableCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CF23566AFE004BFF01 /* DraggableCircle.swift */; };
 		5A5AF38127737D160082679D /* PureSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5AF38027737D160082679D /* PureSwiftUI */; };
 		5A5AF3832773843C0082679D /* Hovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5AF3822773843C0082679D /* Hovering.swift */; };
+		5A824DAA278509CA00FB7393 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CD23566AFE004BFF01 /* NodeView.swift */; };
 		5A8BF356237F5B74008D7047 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8BF355237F5B74008D7047 /* LinkView.swift */; };
 		5AB591F527810B6700642B62 /* PropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB591F427810B6700642B62 /* PropertyView.swift */; };
 		5AB591F727810B9800642B62 /* ColorPropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB591F627810B9800642B62 /* ColorPropertyView.swift */; };
@@ -267,11 +267,11 @@
 				5AB591F527810B6700642B62 /* PropertyView.swift in Sources */,
 				7D4126A12358956500213B23 /* PropertiesFactory.swift in Sources */,
 				5A2502BC23566ACA004BFF01 /* ContentView.swift in Sources */,
+				5A824DAA278509CA00FB7393 /* NodeView.swift in Sources */,
 				5A2502DD23566BF9004BFF01 /* Graph.swift in Sources */,
 				5A2502D623566B35004BFF01 /* Dragging.swift in Sources */,
 				5A2502E023566E72004BFF01 /* Fixtures.swift in Sources */,
 				5A8BF356237F5B74008D7047 /* LinkView.swift in Sources */,
-				5A2502D323566B35004BFF01 /* NodeView.swift in Sources */,
 				5A2502BA23566ACA004BFF01 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

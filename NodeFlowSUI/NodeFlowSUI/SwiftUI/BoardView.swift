@@ -21,7 +21,7 @@ struct BoardView : View {
     @ObservedObject private var linkContext: LinkContext
 
     init(graph: Graph) {
-        self.graph = graph
+        self.graph       = graph
         self.linkContext = graph.linkContext
     }
 

@@ -26,47 +26,39 @@ struct NodeView: View {
             )
     }
 
+    func propertyViews(from properties: [NodeProperty]) -> some View {
+        ForEach(properties) { property in
+            switch property.type {
+            case .number:
+                NumberPropertyView(property: property as! NumberProperty)
+            case .picker:
+                PickerPropertyView(property: property as! PickerProperty)
+            default:
+                EmptyView()
+            }
+        }
+    }
+
     var inputs: some View {
         VStack(alignment: .trailing) {
-            ForEach(node.inputs) { input in
-                switch input.type {
-                case .number:
-                    NumberPropertyView(property: input as! NumberProperty)
-                case .picker:
-                    PickerPropertyView(property: input as! PickerProperty)
-                default:
-                    EmptyView()
-                }
-            }
+            propertyViews(from: node.inputs)
         }
     }
 
     var outputs: some View {
         VStack {
-            ForEach(node.outputs) { output in
-                switch output.type {
-                case .number:
-                    NumberPropertyView(property: output as! NumberProperty)
-                default:
-                    EmptyView()
-                }
-            }
+            propertyViews(from: node.outputs)
         }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-
             header
-
             inputs
                 .padding()
-
             Divider()
-
             outputs
                 .padding()
-
         }
         .background(Color("NodeBackground").opacity(0.9))
         .cornerRadius(8)
@@ -79,11 +71,12 @@ struct NodeView: View {
 }
 
 struct NodeView_Previews: PreviewProvider {
-    static let node = MathNode()
-
     static var previews: some View {
-        NodeView(node: node)
-            .padding()
-            .background(Color.black)
+        Group {
+            NodeView(node: MathNode())
+        }
+        .padding()
+        .background(Color.black)
+        .environmentObject(LinkContext())
     }
 }

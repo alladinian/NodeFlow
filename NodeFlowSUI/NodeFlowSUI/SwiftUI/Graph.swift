@@ -11,7 +11,7 @@ import SwiftUI
 import Combine
 
 class NodeProperty: Identifiable, ObservableObject {
-    weak var node: Node?         = nil
+    weak var node: Node?
 
     @Published var name: String      = "Property"
     @Published var value: Any?       = nil
@@ -25,6 +25,8 @@ class NodeProperty: Identifiable, ObservableObject {
 }
 
 class Node: Identifiable, ObservableObject {
+    weak var graph: Graph?
+
     @Published var name: String      = "Node"
     @Published var position: CGPoint = .zero
 
@@ -109,6 +111,7 @@ class Graph: Identifiable, ObservableObject {
 
     @Published var nodes: Set<Node>              = []
     @Published var connections: Set<Connection>  = []
+    @Published var selectedNode: Node?
 
     var cancellables: Set<AnyCancellable>        = []
 
@@ -116,6 +119,7 @@ class Graph: Identifiable, ObservableObject {
         self.init()
         self.nodes       = nodes
         self.connections = connections
+        self.nodes.forEach { $0.graph = self }
     }
 
     init() {
