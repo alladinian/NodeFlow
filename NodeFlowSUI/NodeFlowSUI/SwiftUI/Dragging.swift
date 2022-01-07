@@ -14,21 +14,24 @@ struct Draggable: ViewModifier {
 
     var onStarted: (() -> ())? = nil
 
-    @State private var isDragging: Bool = false
+    @GestureState private var isDragging: Bool = false
     @State private var dragOffset: CGSize = .zero
 
     func body(content: Content) -> some View {
-        let drag       = DragGesture().onChanged { (value) in
-            offset     = (dragOffset + value.translation).toPoint()
-            if !isDragging {
-                onStarted?()
+        let drag = DragGesture()
+            .onChanged { value in
+                offset = (dragOffset + value.translation).toPoint()
+                if !isDragging {
+                    onStarted?()
+                }
             }
-            isDragging = true
-        }.onEnded { (value) in
-            isDragging = false
-            offset     = (dragOffset + value.translation).toPoint()
-            dragOffset = offset.toSize()
-        }
+            .updating($isDragging) { value, state, transaction in
+                state = true
+            }
+            .onEnded { value in
+                offset     = (dragOffset + value.translation).toPoint()
+                dragOffset = offset.toSize()
+            }
         return content.offset(offset).gesture(drag)
     }
 }

@@ -12,11 +12,12 @@ extension CoordinateSpace {
     static let gridView = CoordinateSpace.named("GridView")
 }
 
+private let gridSpacing = 10
+private let gridImage: Image = Image(nsImage: GridView(frame: CGRect(x: 0, y: 0, width: 10 * gridSpacing, height: 10 * gridSpacing)).image())
+
 struct BoardView : View {
 
     @ObservedObject var graph: Graph
-
-    private let gridSpacing = 10
 
     @ObservedObject private var linkContext: LinkContext
     @ObservedObject private var selectionContext: SelectionContext
@@ -25,10 +26,6 @@ struct BoardView : View {
         self.graph            = graph
         self.linkContext      = graph.linkContext
         self.selectionContext = graph.selectionContext
-    }
-
-    var gridImage: Image {
-        Image(nsImage: GridView(frame: CGRect(x: 0, y: 0, width: 10 * gridSpacing, height: 10 * gridSpacing)).image())
     }
     
     var body: some View {
@@ -65,13 +62,19 @@ struct BoardView : View {
                 selectionContext.selectedNodes = []
             }
         }
+        .gesture(
+            DragGesture().onChanged { value in
+
+            }.onEnded { value in
+                
+            }
+        )
     }
 }
 
 struct GridView_Previews : PreviewProvider {
     static var previews: some View {
         BoardView(graph: Graph(nodes: [MathNode()]))
-            .environmentObject(LinkContext())
             .previewLayout(.fixed(width: 400, height: 400))
     }
 }
