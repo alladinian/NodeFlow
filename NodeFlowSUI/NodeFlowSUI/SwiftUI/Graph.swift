@@ -118,7 +118,7 @@ class Graph: Identifiable, ObservableObject {
 
     @Published var nodes: Set<Node>              = []
     @Published var connections: Set<Connection>  = []
-    @Published var selectedNode: Node?
+    @Published var selectedNodes: Set<Node>      = []
 
     var cancellables: Set<AnyCancellable>        = []
 

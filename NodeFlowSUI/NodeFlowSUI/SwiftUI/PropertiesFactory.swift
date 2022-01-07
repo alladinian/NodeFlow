@@ -30,7 +30,6 @@ struct PickerPropertyView: View {
             }
         }
         .labelsHidden()
-        //.fixedSize()
     }
 }
 

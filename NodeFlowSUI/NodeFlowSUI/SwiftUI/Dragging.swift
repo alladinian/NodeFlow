@@ -10,15 +10,19 @@ import SwiftUI
 
 // MARK: - Modifier Implementation
 struct Draggable: ViewModifier {
-    @State var isDragging: Bool = false
-
     @Binding var offset: CGPoint
 
-    @State var dragOffset: CGSize = .zero
+    var onStarted: (() -> ())? = nil
+
+    @State private var isDragging: Bool = false
+    @State private var dragOffset: CGSize = .zero
 
     func body(content: Content) -> some View {
         let drag       = DragGesture().onChanged { (value) in
             offset     = (dragOffset + value.translation).toPoint()
+            if !isDragging {
+                onStarted?()
+            }
             isDragging = true
         }.onEnded { (value) in
             isDragging = false
@@ -62,7 +66,7 @@ struct DraggableView<Content>: View where Content: View {
  */
 
 extension View {
-    func draggable(offset: Binding<CGPoint>) -> some View {
-        modifier(Draggable(offset: offset))
+    func draggable(offset: Binding<CGPoint>, onStarted: (() -> ())? = nil) -> some View {
+        modifier(Draggable(offset: offset, onStarted: onStarted))
     }
 }

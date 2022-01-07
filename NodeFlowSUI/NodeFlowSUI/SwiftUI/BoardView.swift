@@ -50,7 +50,7 @@ struct BoardView : View {
             }
 
             ForEach(Array(graph.nodes)) { node in
-                NodeView(node: node, isSelected: graph.selectedNode == node)
+                NodeView(node: node, isSelected: graph.selectedNodes.contains(node))
             }
         }
         .environmentObject(graph.linkContext)
@@ -59,7 +59,7 @@ struct BoardView : View {
             DispatchQueue.main.async {
                 // Unfocus controls on bg tap
                 NSApp.keyWindow?.makeFirstResponder(nil)
-                graph.selectedNode = nil
+                graph.selectedNodes = []
             }
         }
     }
