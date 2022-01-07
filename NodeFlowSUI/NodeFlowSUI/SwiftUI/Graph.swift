@@ -142,24 +142,25 @@ class Graph: Identifiable, ObservableObject {
         self.linkContext = LinkContext()
 
         self.linkContext.$isActive
-            .removeDuplicates()
             .combineLatest(self.linkContext.$sourceProperty, self.linkContext.$end)
+            .removeDuplicates(by: { a, b in
+                a.0 == b.0
+            })
             .receive(on: RunLoop.main, options: nil)
             .sink { [unowned self] isActive, source, end in
                 // Started a line
                 if isActive, let source = source {
-                    // For outputs & unoccupied inputs always start a connection line
-                    if !source.isInput || !source.isConnected {
-                        // Nothing to do...
-                    } else if let connection = connections.first(where: { $0.input == source }) {
+                    if let connection = connections.first(where: { $0.input == source }) {
                         let output = connection.output
                         removeConnection(connection)
                         linkContext.sourceProperty = output
                     }
+                    print("Started line...")
                 }
                 // Ended a line
                 else if let source = source {
                     attemptConnectionFrom(source, toPoint: end)
+                    print("Ended line...")
                 }
             }
             .store(in: &cancellables)

@@ -33,10 +33,15 @@ struct PickerPropertyView: View {
     }
 }
 
-
-
-
-
+struct ColorPropertyView: View {
+    @ObservedObject var property: NodeProperty
+    var body: some View {
+        PropertyView(property: property) {
+            ColorPicker("Color", selection: .constant(.red))
+                .labelsHidden()
+        }
+    }
+}
 
 
 struct PropertiesFactory_Previews: PreviewProvider {

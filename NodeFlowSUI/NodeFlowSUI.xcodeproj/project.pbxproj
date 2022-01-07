@@ -26,7 +26,6 @@
 		5A824DAD27884BB300FB7393 /* SwiftGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 5A824DAC27884BB300FB7393 /* SwiftGraph */; };
 		5A8BF356237F5B74008D7047 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8BF355237F5B74008D7047 /* LinkView.swift */; };
 		5AB591F527810B6700642B62 /* PropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB591F427810B6700642B62 /* PropertyView.swift */; };
-		5AB591F727810B9800642B62 /* ColorPropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB591F627810B9800642B62 /* ColorPropertyView.swift */; };
 		7D4126A12358956500213B23 /* PropertiesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4126A02358956500213B23 /* PropertiesFactory.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,7 +62,6 @@
 		5A8BF355237F5B74008D7047 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		5A8CA7BC277F4C7300A88706 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AB591F427810B6700642B62 /* PropertyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyView.swift; sourceTree = "<group>"; };
-		5AB591F627810B9800642B62 /* ColorPropertyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPropertyView.swift; sourceTree = "<group>"; };
 		7D4126A02358956500213B23 /* PropertiesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,9 +130,8 @@
 				5A2502CD23566AFE004BFF01 /* NodeView.swift */,
 				5A2502CE23566AFE004BFF01 /* SocketView.swift */,
 				5A2502D023566AFE004BFF01 /* Dragging.swift */,
-				5AB591F427810B6700642B62 /* PropertyView.swift */,
 				7D4126A02358956500213B23 /* PropertiesFactory.swift */,
-				5AB591F627810B9800642B62 /* ColorPropertyView.swift */,
+				5AB591F427810B6700642B62 /* PropertyView.swift */,
 				5A5AF3822773843C0082679D /* Hovering.swift */,
 			);
 			path = SwiftUI;
@@ -262,7 +259,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A2502D223566B35004BFF01 /* BoardView.swift in Sources */,
-				5AB591F727810B9800642B62 /* ColorPropertyView.swift in Sources */,
 				5A5AF37E277374B80082679D /* DraggableCircle.swift in Sources */,
 				5A2502DA23566B68004BFF01 /* Colors.swift in Sources */,
 				5A2502D423566B35004BFF01 /* SocketView.swift in Sources */,
@@ -427,7 +423,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.vakoinoglou.NodeFlowSUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -452,7 +448,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.vakoinoglou.NodeFlowSUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

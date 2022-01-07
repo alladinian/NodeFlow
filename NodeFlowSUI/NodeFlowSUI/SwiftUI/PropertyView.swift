@@ -22,11 +22,13 @@ struct PropertyView<Content: View>: View {
         HStack {
             if property.isInput, property.hasSocket {
                 SocketView(property: property)
+                Spacer()
             }
             content
                 .disabledIf(property.isInput && property.isConnected)
-                .disabledIf(!property.isInput)
+                .disabledIf(!property.isInput && property.node?.inputs.count ?? 0 > 0)
             if !property.isInput, property.hasSocket {
+                Spacer()
                 SocketView(property: property)
             }
         }

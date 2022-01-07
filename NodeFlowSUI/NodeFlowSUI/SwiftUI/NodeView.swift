@@ -35,6 +35,8 @@ struct NodeView: View {
                 NumberPropertyView(property: property as! NumberProperty)
             case .picker:
                 PickerPropertyView(property: property as! PickerProperty)
+            case .color:
+                ColorPropertyView(property: property as! ColorProperty)
             default:
                 EmptyView()
             }
@@ -56,8 +58,10 @@ struct NodeView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
-            inputs.padding()
-            Divider()
+            if !node.inputs.isEmpty {
+                inputs.padding()
+                Divider()
+            }
             outputs.padding()
         }
         .background(Color("NodeBackground").opacity(0.9))
@@ -90,6 +94,7 @@ struct NodeView_Previews: PreviewProvider {
         Group {
             NodeView(node: MathNode(), isSelected: false)
             NodeView(node: MathNode(), isSelected: true)
+            NodeView(node: ColorNode(), isSelected: false)
         }
         .padding(40)
         .background(Color.black)

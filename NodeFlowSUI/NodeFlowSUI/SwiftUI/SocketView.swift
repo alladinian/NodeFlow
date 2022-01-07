@@ -31,8 +31,8 @@ struct SocketView: View, DropDelegate {
                 if linkContext.sourceProperty == nil {
                     linkContext.sourceProperty = property
                 }
-                linkContext.end            = value.location
-                linkContext.isActive       = true
+                linkContext.end = value.location
+                linkContext.isActive = true
             }
             .onEnded { value in
                 linkContext.end                 = value.location

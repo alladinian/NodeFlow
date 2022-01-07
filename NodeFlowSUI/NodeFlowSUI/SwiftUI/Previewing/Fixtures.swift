@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 import Combine
 
 class NumberProperty: NodeProperty {
@@ -44,6 +45,15 @@ class PickerProperty: NodeProperty {
         super.init()
         self.name      = "Picker"
         self.type      = .picker
+    }
+}
+
+class ColorProperty: NodeProperty {
+    @Published var color: Color = .cgMagenta
+    override init() {
+        super.init()
+        self.name = "Color"
+        self.type = .color
     }
 }
 
@@ -164,5 +174,13 @@ class OscillatorNode: Node {
             }
             .assign(to: \.value, on: self.outputs[0])
             .store(in: &cancellables)
+    }
+}
+
+class ColorNode: Node {
+    override init() {
+        super.init()
+        self.name = "Color"
+        self.outputs = [ColorProperty()]
     }
 }
