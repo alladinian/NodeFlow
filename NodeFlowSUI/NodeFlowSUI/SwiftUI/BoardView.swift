@@ -19,10 +19,12 @@ struct BoardView : View {
     private let gridSpacing = 10
 
     @ObservedObject private var linkContext: LinkContext
+    @ObservedObject private var selectionContext: SelectionContext
 
     init(graph: Graph) {
-        self.graph       = graph
-        self.linkContext = graph.linkContext
+        self.graph            = graph
+        self.linkContext      = graph.linkContext
+        self.selectionContext = graph.selectionContext
     }
 
     var gridImage: Image {
@@ -50,16 +52,17 @@ struct BoardView : View {
             }
 
             ForEach(Array(graph.nodes)) { node in
-                NodeView(node: node, isSelected: graph.selectedNodes.contains(node))
+                NodeView(node: node, isSelected: selectionContext.selectedNodes.contains(node))
             }
         }
         .environmentObject(graph.linkContext)
+        .environmentObject(graph.selectionContext)
         .coordinateSpace(name: "GridView")
         .onTapGesture {
             DispatchQueue.main.async {
                 // Unfocus controls on bg tap
                 NSApp.keyWindow?.makeFirstResponder(nil)
-                graph.selectedNodes = []
+                selectionContext.selectedNodes = []
             }
         }
     }

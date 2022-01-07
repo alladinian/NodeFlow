@@ -74,15 +74,15 @@ struct NodeView: View {
         .zIndex(isSelected ? 2 : 1)
         .draggable(offset: $node.position, onStarted: {
             DispatchQueue.main.async {
-                node.graph?.selectedNodes = [node]
+                node.graph?.selectionContext.selectedNodes = [node]
             }
         })
         .onTapGesture {
             DispatchQueue.main.async {
                 if NSEvent.modifierFlags.contains(.shift) || NSEvent.modifierFlags.contains(.option) {
-                    node.graph?.selectedNodes.insert(node)
+                    node.graph?.selectionContext.selectedNodes.insert(node)
                 } else {
-                    node.graph?.selectedNodes = [node]
+                    node.graph?.selectionContext.selectedNodes = [node]
                 }
             }
         }

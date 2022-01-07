@@ -92,6 +92,10 @@ class LinkContext: ObservableObject {
     @Published var destinationProperty: NodeProperty?
 }
 
+class SelectionContext: ObservableObject {
+    @Published var selectedNodes: Set<Node> = []
+}
+
 class Graph: Identifiable, ObservableObject {
 
     enum ConnectionError: LocalizedError {
@@ -114,11 +118,11 @@ class Graph: Identifiable, ObservableObject {
         }
     }
 
-    var linkContext: LinkContext
+    let linkContext = LinkContext()
+    let selectionContext = SelectionContext()
 
     @Published var nodes: Set<Node>              = []
     @Published var connections: Set<Connection>  = []
-    @Published var selectedNodes: Set<Node>      = []
 
     var cancellables: Set<AnyCancellable>        = []
 
@@ -139,8 +143,6 @@ class Graph: Identifiable, ObservableObject {
     }
 
     init() {
-        self.linkContext = LinkContext()
-
         self.linkContext.$isActive
             .combineLatest(self.linkContext.$sourceProperty, self.linkContext.$end)
             .removeDuplicates(by: { a, b in
