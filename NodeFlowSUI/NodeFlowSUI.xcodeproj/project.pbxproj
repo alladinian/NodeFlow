@@ -23,6 +23,7 @@
 		5A5AF38127737D160082679D /* PureSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5AF38027737D160082679D /* PureSwiftUI */; };
 		5A5AF3832773843C0082679D /* Hovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5AF3822773843C0082679D /* Hovering.swift */; };
 		5A824DAA278509CA00FB7393 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CD23566AFE004BFF01 /* NodeView.swift */; };
+		5A824DAD27884BB300FB7393 /* SwiftGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 5A824DAC27884BB300FB7393 /* SwiftGraph */; };
 		5A8BF356237F5B74008D7047 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8BF355237F5B74008D7047 /* LinkView.swift */; };
 		5AB591F527810B6700642B62 /* PropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB591F427810B6700642B62 /* PropertyView.swift */; };
 		5AB591F727810B9800642B62 /* ColorPropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB591F627810B9800642B62 /* ColorPropertyView.swift */; };
@@ -72,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A5AF38127737D160082679D /* PureSwiftUI in Frameworks */,
+				5A824DAD27884BB300FB7393 /* SwiftGraph in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,6 +184,7 @@
 			name = NodeFlowSUI;
 			packageProductDependencies = (
 				5A5AF38027737D160082679D /* PureSwiftUI */,
+				5A824DAC27884BB300FB7393 /* SwiftGraph */,
 			);
 			productName = NodeFlowSUI;
 			productReference = 5A2502B623566ACA004BFF01 /* NodeFlowSUI.app */;
@@ -213,6 +216,7 @@
 			mainGroup = 5A2502AD23566ACA004BFF01;
 			packageReferences = (
 				5A5AF37F27737D160082679D /* XCRemoteSwiftPackageReference "pure-swift-ui" */,
+				5A824DAB27884BB300FB7393 /* XCRemoteSwiftPackageReference "SwiftGraph" */,
 			);
 			productRefGroup = 5A2502B723566ACA004BFF01 /* Products */;
 			projectDirPath = "";
@@ -487,6 +491,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		5A824DAB27884BB300FB7393 /* XCRemoteSwiftPackageReference "SwiftGraph" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:davecom/SwiftGraph.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -494,6 +506,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5A5AF37F27737D160082679D /* XCRemoteSwiftPackageReference "pure-swift-ui" */;
 			productName = PureSwiftUI;
+		};
+		5A824DAC27884BB300FB7393 /* SwiftGraph */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A824DAB27884BB300FB7393 /* XCRemoteSwiftPackageReference "SwiftGraph" */;
+			productName = SwiftGraph;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import SwiftGraph
 
 class NodeProperty: Identifiable, ObservableObject {
     weak var node: Node?
@@ -25,6 +26,9 @@ class NodeProperty: Identifiable, ObservableObject {
 }
 
 class Node: Identifiable, ObservableObject {
+
+    var id = UUID()
+
     weak var graph: Graph?
 
     @Published var name: String      = "Node"
@@ -93,6 +97,7 @@ class Graph: Identifiable, ObservableObject {
     enum ConnectionError: LocalizedError {
         case sameNode
         case typeMismatch
+        case feedbackLoop
         case inputOccupied
 
         var errorDescription: String? {
@@ -101,6 +106,8 @@ class Graph: Identifiable, ObservableObject {
                 return "Attempted connection on the same node"
             case .typeMismatch:
                 return "Property types do not match"
+            case .feedbackLoop:
+                return "Connection causes a feedback loop"
             case .inputOccupied:
                 return "Input is already occupied"
             }
@@ -115,11 +122,20 @@ class Graph: Identifiable, ObservableObject {
 
     var cancellables: Set<AnyCancellable>        = []
 
+    private var internalGraph = UnweightedGraph<Node.ID>()
+
     convenience init(nodes: Set<Node> = [], connections: Set<Connection> = []) {
         self.init()
         self.nodes       = nodes
         self.connections = connections
         self.nodes.forEach { $0.graph = self }
+        for node in self.nodes {
+            let _ = internalGraph.addVertex(node.id)
+        }
+        for connection in self.connections {
+            guard let output = connection.output.node?.id, let input = connection.input.node?.id else { continue }
+            internalGraph.addEdge(from: output, to: input, directed: true)
+        }
     }
 
     init() {
@@ -162,6 +178,8 @@ class Graph: Identifiable, ObservableObject {
                         debugPrint(error)
                     case .typeMismatch:
                         debugPrint(error)
+                    case .feedbackLoop:
+                        debugPrint(error)
                     case .inputOccupied:
                         debugPrint(error)
                         // Find and remove the old connection
@@ -193,17 +211,30 @@ class Graph: Identifiable, ObservableObject {
         // Reject if input is already occupied
         guard !input.isConnected else { throw ConnectionError.inputOccupied }
 
+        // Reject if we find a feedback loop
+        if let output = output.node?.id, let input = input.node?.id {
+            internalGraph.addEdge(from: output, to: input, directed: true)
+            if !internalGraph.detectCycles().flatMap({ $0 }).isEmpty {
+                internalGraph.removeAllEdges(from: output, to: input)
+                throw ConnectionError.feedbackLoop
+            }
+        }
+
         connection.setup()
         connections.insert(connection)
     }
 
     func removeConnection(_ connection: Connection) {
+        if let output = connection.output.node?.id, let input = connection.input.node?.id {
+            internalGraph.removeAllEdges(from: output, to: input)
+        }
         connection.tearUp()
         connections.remove(connection)
     }
 
     func addNode(_ node: Node) {
         nodes.insert(node)
+        let _ = internalGraph.addVertex(node.id)
     }
 
     func removeNode(_ node: Node) {
@@ -213,6 +244,7 @@ class Graph: Identifiable, ObservableObject {
         for connection in involvedConnections {
             removeConnection(connection)
         }
+        internalGraph.removeVertex(node.id)
         nodes.remove(node)
     }
 }
