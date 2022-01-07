@@ -94,6 +94,7 @@ class LinkContext: ObservableObject {
 
 class SelectionContext: ObservableObject {
     @Published var selectedNodes: Set<Node> = []
+    @Published var selectionRect: CGRect = .zero
 }
 
 class Graph: Identifiable, ObservableObject {

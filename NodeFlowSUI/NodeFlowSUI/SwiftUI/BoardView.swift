@@ -7,9 +7,19 @@
 //
 
 import SwiftUI
+import PureSwiftUI
 
 extension CoordinateSpace {
     static let gridView = CoordinateSpace.named("GridView")
+}
+
+extension CGRect {
+    init(p1: CGPoint, p2: CGPoint) {
+        self.init(x: min(p1.x, p2.x),
+                  y: min(p1.y, p2.y),
+                  width: abs(p1.x - p2.x),
+                  height: abs(p1.y - p2.y))
+    }
 }
 
 private let gridSpacing = 10
@@ -22,10 +32,36 @@ struct BoardView : View {
     @ObservedObject private var linkContext: LinkContext
     @ObservedObject private var selectionContext: SelectionContext
 
+    @State private var zoomFactor: CGFloat = 1
+
     init(graph: Graph) {
         self.graph            = graph
         self.linkContext      = graph.linkContext
         self.selectionContext = graph.selectionContext
+    }
+
+    var zoomControls: some View {
+        HStack {
+            Button {
+                zoomFactor /= 1.1
+            } label: {
+                Label("", sfSymbol: .minus_magnifyingglass).labelStyle(.iconOnly)
+            }.buttonStyle(.plain)
+
+            Picker(selection: .constant(1), label: Text("Picker")) {
+                Text("1").tag(1)
+                Text("2").tag(2)
+            }
+            .labelsHidden()
+            .fixedSize()
+
+            Button {
+                zoomFactor *= 1.1
+            } label: {
+                Label("", sfSymbol: .plus_magnifyingglass).labelStyle(.iconOnly)
+            }.buttonStyle(.plain)
+
+        }.padding()
     }
     
     var body: some View {
@@ -34,11 +70,6 @@ struct BoardView : View {
                 .fill(ImagePaint(image: gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .opacity(0.6)
-                .contextMenu {
-                    Button("Add Node") {
-
-                    }
-                }
 
             if linkContext.isActive {
                 LinkView(start: linkContext.start, end: linkContext.end)
@@ -51,9 +82,19 @@ struct BoardView : View {
             ForEach(Array(graph.nodes)) { node in
                 NodeView(node: node, isSelected: selectionContext.selectedNodes.contains(node))
             }
+
+            if selectionContext.selectionRect != .zero {
+                GeometryReader { reader in
+                    Rectangle()
+                        .stroke(Color.cgLightGray)
+                        .background(Color.cgLightGray.opacity(0.1))
+                        .frame(selectionContext.selectionRect.size)
+                        .offset(selectionContext.selectionRect.origin)
+                }
+                .zIndex(10)
+            }
         }
         .environmentObject(graph.linkContext)
-        .environmentObject(graph.selectionContext)
         .coordinateSpace(name: "GridView")
         .onTapGesture {
             DispatchQueue.main.async {
@@ -64,11 +105,20 @@ struct BoardView : View {
         }
         .gesture(
             DragGesture().onChanged { value in
-
+                let p1 = value.startLocation
+                let p2 = value.location
+                selectionContext.selectionRect = CGRect(p1: p1, p2: p2)
             }.onEnded { value in
-                
+                selectionContext.selectionRect = .zero
             }
         )
+        .contextMenu {
+            Button("Add Node") {
+
+            }
+        }
+        //.scale(zoomFactor)
+        //.overlay(zoomControls, alignment: .bottomLeading)
     }
 }
 
