@@ -55,6 +55,16 @@ struct NodeView: View {
         }
     }
 
+    func selectNode() {
+        DispatchQueue.main.async {
+            if NSEvent.modifierFlags.contains(.shift) || NSEvent.modifierFlags.contains(.option) {
+                node.graph?.selectionContext.selectedNodes.insert(node)
+            } else {
+                node.graph?.selectionContext.selectedNodes = [node]
+            }
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             header
@@ -72,20 +82,14 @@ struct NodeView: View {
         .strokeRoundedRectangle(8, Color.accentColor.opacity(isSelected ? 1 : 0.3), lineWidth: isSelected ?  2 : 1)
         .shadow(color: isSelected ? .accentColor.opacity(0.6) : .clear, radius: 6, x: 0, y: 0)
         .zIndex(isSelected ? 2 : 1)
-        .draggable(offset: $node.position, onStarted: {
-            DispatchQueue.main.async {
-                node.graph?.selectionContext.selectedNodes = [node]
-            }
-        })
-        .onTapGesture {
-            DispatchQueue.main.async {
-                if NSEvent.modifierFlags.contains(.shift) || NSEvent.modifierFlags.contains(.option) {
-                    node.graph?.selectionContext.selectedNodes.insert(node)
-                } else {
-                    node.graph?.selectionContext.selectedNodes = [node]
-                }
-            }
-        }
+        .draggable(offset: $node.position, onStarted: selectNode)
+        .onTapGesture(perform: selectNode)
+//        .geometryReader { reader in
+//            DispatchQueue.main.async {
+//                node.frame = reader.frame(in: .gridView)
+//                print(node.frame)
+//            }
+//        }
     }
 }
 

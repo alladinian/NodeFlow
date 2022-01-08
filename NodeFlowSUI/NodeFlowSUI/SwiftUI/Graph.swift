@@ -33,6 +33,7 @@ class Node: Identifiable, ObservableObject {
 
     @Published var name: String      = "Node"
     @Published var position: CGPoint = .zero
+    @Published var frame: CGRect     = .zero
 
     var cancellables: Set<AnyCancellable> = []
 
@@ -164,6 +165,17 @@ class Graph: Identifiable, ObservableObject {
                 else if let source = source {
                     attemptConnectionFrom(source, toPoint: end)
                     print("Ended line...")
+                }
+            }
+            .store(in: &cancellables)
+
+        self.selectionContext.$selectionRect
+            .filter { $0 != .zero }
+            .receive(on: RunLoop.main, options: nil)
+            .sink { [unowned self] rect in
+                #warning("fix this")
+                for node in self.nodes where rect.contains(node.frame.origin) {
+                    self.selectionContext.selectedNodes.insert(node)
                 }
             }
             .store(in: &cancellables)
