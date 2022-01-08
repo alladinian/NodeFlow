@@ -30,16 +30,7 @@ struct NodeView: View {
 
     func propertyViews(from properties: [NodeProperty]) -> some View {
         ForEach(properties) { property in
-            switch property.type {
-            case .number:
-                NumberPropertyView(property: property as! NumberProperty)
-            case .picker:
-                PickerPropertyView(property: property as! PickerProperty)
-            case .color:
-                ColorPropertyView(property: property as! ColorProperty)
-            default:
-                EmptyView()
-            }
+            property.controlView
         }
     }
 

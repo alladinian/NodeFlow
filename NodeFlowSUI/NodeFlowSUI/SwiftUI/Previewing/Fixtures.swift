@@ -30,15 +30,21 @@ class NumberProperty: NodeProperty {
         set { value = newValue }
     }
 
+    override var controlView: AnyView {
+        NumberPropertyView(property: self).asAnyView
+    }
 }
 
 class PickerProperty: NodeProperty {
+
     let options: [String]
+
     @Published var selection: String {
         didSet {
             value = selection
         }
     }
+
     init(options: [String]) {
         self.options   = options
         self.selection = options.first!
@@ -46,14 +52,24 @@ class PickerProperty: NodeProperty {
         self.name      = "Picker"
         self.type      = .picker
     }
+
+    override var controlView: AnyView {
+        PickerPropertyView(property: self).asAnyView
+    }
 }
 
 class ColorProperty: NodeProperty {
+
     @Published var color: Color = .cgMagenta
+
     override init() {
         super.init()
         self.name = "Color"
         self.type = .color
+    }
+
+    override var controlView: AnyView {
+        ColorPropertyView(property: self).asAnyView
     }
 }
 

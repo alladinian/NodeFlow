@@ -23,6 +23,10 @@ class NodeProperty: Identifiable, ObservableObject {
     var isInput: Bool                = true
     var hasSocket: Bool              = true
     var type: ContentType            = .number
+
+    var controlView: AnyView {
+        EmptyView().asAnyView
+    }
 }
 
 class Node: Identifiable, ObservableObject {
