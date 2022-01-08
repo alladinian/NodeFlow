@@ -20,10 +20,10 @@ struct Draggable: ViewModifier {
     func body(content: Content) -> some View {
         let drag = DragGesture()
             .onChanged { value in
-                offset = (previousOffset + value.translation).toPoint()
                 if !isDragging {
                     onStarted?()
                 }
+                offset = (previousOffset + value.translation).toPoint()
             }
             .updating($isDragging) { value, state, transaction in
                 state = true

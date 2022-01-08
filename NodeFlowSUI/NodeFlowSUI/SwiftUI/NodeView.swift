@@ -46,9 +46,9 @@ struct NodeView: View {
         }
     }
 
-    func selectNode() {
+    func selectNode(drag: Bool = false) {
         DispatchQueue.main.async {
-            if NSEvent.modifierFlags.contains(.shift) || NSEvent.modifierFlags.contains(.option) {
+            if drag || NSEvent.modifierFlags.contains(.shift) || NSEvent.modifierFlags.contains(.option) {
                 node.graph?.selectionContext.selectedNodes.insert(node)
             } else {
                 node.graph?.selectionContext.selectedNodes = [node]
@@ -73,8 +73,12 @@ struct NodeView: View {
         .strokeRoundedRectangle(8, Color.accentColor.opacity(isSelected ? 1 : 0.3), lineWidth: isSelected ?  2 : 1)
         .shadow(color: isSelected ? .accentColor.opacity(0.6) : .clear, radius: 6, x: 0, y: 0)
         .zIndex(isSelected ? 2 : 1)
-        .draggable(offset: $node.offset, onStarted: selectNode)
-        .onTapGesture(perform: selectNode)
+        .draggable(offset: $node.offset, onStarted: {
+            selectNode(drag: true)
+        })
+        .onTapGesture(perform: {
+            selectNode()
+        })
 //        .geometryReader { reader in
 //            DispatchQueue.main.async {
 //                node.frame = reader.frame(in: .gridView)
