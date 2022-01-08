@@ -31,9 +31,9 @@ class Node: Identifiable, ObservableObject {
 
     weak var graph: Graph?
 
-    @Published var name: String      = "Node"
-    @Published var position: CGPoint = .zero
-    @Published var frame: CGRect     = .zero
+    @Published var name: String    = "Node"
+    @Published var offset: CGPoint = .zero
+    //@Published var frame: CGRect   = .zero
 
     var cancellables: Set<AnyCancellable> = []
 
@@ -173,9 +173,12 @@ class Graph: Identifiable, ObservableObject {
             .filter { $0 != .zero }
             .receive(on: RunLoop.main, options: nil)
             .sink { [unowned self] rect in
-                #warning("fix this")
-                for node in self.nodes where rect.contains(node.frame.origin) {
-                    self.selectionContext.selectedNodes.insert(node)
+                for node in self.nodes {
+                    if rect.contains(node.offset) {
+                        self.selectionContext.selectedNodes.insert(node)
+                    } else {
+                        self.selectionContext.selectedNodes.remove(node)
+                    }
                 }
             }
             .store(in: &cancellables)

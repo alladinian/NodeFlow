@@ -65,7 +65,7 @@ struct BoardView : View {
     }
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .topLeading) {
             Rectangle()
                 .fill(ImagePaint(image: gridImage))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -84,14 +84,12 @@ struct BoardView : View {
             }
 
             if selectionContext.selectionRect != .zero {
-                GeometryReader { reader in
-                    Rectangle()
-                        .stroke(Color.cgLightGray)
-                        .background(Color.cgLightGray.opacity(0.1))
-                        .frame(selectionContext.selectionRect.size)
-                        .offset(selectionContext.selectionRect.origin)
-                }
-                .zIndex(10)
+                Rectangle()
+                    .stroke(Color.cgLightGray)
+                    .background(Color.cgLightGray.opacity(0.1))
+                    .frame(selectionContext.selectionRect.size)
+                    .offset(selectionContext.selectionRect.origin)
+                    .zIndex(10)
             }
         }
         .environmentObject(graph.linkContext)
@@ -117,6 +115,7 @@ struct BoardView : View {
 
             }
         }
+        .padding()
         //.scale(zoomFactor)
         //.overlay(zoomControls, alignment: .bottomLeading)
     }

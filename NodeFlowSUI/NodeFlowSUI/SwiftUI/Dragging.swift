@@ -15,12 +15,12 @@ struct Draggable: ViewModifier {
     var onStarted: (() -> ())? = nil
 
     @GestureState private var isDragging: Bool = false
-    @State private var dragOffset: CGSize = .zero
+    @State private var previousOffset: CGSize = .zero
 
     func body(content: Content) -> some View {
         let drag = DragGesture()
             .onChanged { value in
-                offset = (dragOffset + value.translation).toPoint()
+                offset = (previousOffset + value.translation).toPoint()
                 if !isDragging {
                     onStarted?()
                 }
@@ -29,8 +29,8 @@ struct Draggable: ViewModifier {
                 state = true
             }
             .onEnded { value in
-                offset     = (dragOffset + value.translation).toPoint()
-                dragOffset = offset.toSize()
+                offset     = (previousOffset + value.translation).toPoint()
+                previousOffset = offset.toSize()
             }
         return content.offset(offset).gesture(drag)
     }

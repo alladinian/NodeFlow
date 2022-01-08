@@ -82,7 +82,7 @@ struct NodeView: View {
         .strokeRoundedRectangle(8, Color.accentColor.opacity(isSelected ? 1 : 0.3), lineWidth: isSelected ?  2 : 1)
         .shadow(color: isSelected ? .accentColor.opacity(0.6) : .clear, radius: 6, x: 0, y: 0)
         .zIndex(isSelected ? 2 : 1)
-        .draggable(offset: $node.position, onStarted: selectNode)
+        .draggable(offset: $node.offset, onStarted: selectNode)
         .onTapGesture(perform: selectNode)
 //        .geometryReader { reader in
 //            DispatchQueue.main.async {
