@@ -13,19 +13,35 @@ struct NodeView: View {
 
     @ObservedObject var node: Node
 
+    @State private var isHoveringHeader: Bool = false
+
     let isSelected: Bool
+
+    var deleteButton: some View {
+        Button(action: {
+            node.graph?.removeNode(node)
+        }, label: {
+            Label("", sfSymbol: .trash).labelStyle(.iconOnly)
+        }).buttonStyle(.borderless).padding(8)
+    }
+
+    var title: some View {
+        Text(node.name)
+            .font(.headline)
+            .foregroundColor(Color.white)
+            .multilineTextAlignment(.center)
+            .shadow(1)
+    }
 
     var header: some View {
         Rectangle()
             .fill(Color.accentColor)
             .frame(height: 40)
-            .overlay(
-                Text(node.name)
-                    .font(.headline)
-                    .foregroundColor(Color.white)
-                    .multilineTextAlignment(.center)
-                    .shadow(1)
-            )
+            .overlay(title)
+            .onHover { hovering in
+                isHoveringHeader = hovering
+            }
+            .overlay(deleteButton.opacity(isHoveringHeader ? 1 : 0), alignment: .trailing)
     }
 
     func propertyViews(from properties: [NodeProperty]) -> some View {
