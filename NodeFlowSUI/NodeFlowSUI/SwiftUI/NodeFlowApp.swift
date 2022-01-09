@@ -13,8 +13,7 @@ import Combine
 @main
 struct NodeFlowApp: App {
 
-    @StateObject var graph = Graph.testGraph
-    @ObservedObject var selectionContext: SelectionContext = Graph.testGraph.selectionContext
+    let graph = Graph.testGraph
 
     var body: some Scene {
         WindowGroup {
@@ -23,11 +22,7 @@ struct NodeFlowApp: App {
         .windowStyle(HiddenTitleBarWindowStyle())
         .windowToolbarStyle(UnifiedCompactWindowToolbarStyle())
         .commands {
-            CommandMenu("Tools", content: {
-                Button("TEST...", action: { }).disabled(!selectionContext.hasSelection)
-            })
-
-            EditCommands(selectionContext: selectionContext)
+            EditCommands(selectionContext: graph.selectionContext)
         }
 
         Settings {
