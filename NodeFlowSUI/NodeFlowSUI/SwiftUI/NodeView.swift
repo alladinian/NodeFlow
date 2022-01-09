@@ -21,7 +21,7 @@ struct NodeView: View {
         Button(action: {
             node.graph?.removeNode(node)
         }, label: {
-            Label("", sfSymbol: .trash).labelStyle(.iconOnly)
+            Label("", sfSymbol: .trash).labelStyle(.iconOnly).shadow(1)
         }).buttonStyle(.borderless).padding(8)
     }
 

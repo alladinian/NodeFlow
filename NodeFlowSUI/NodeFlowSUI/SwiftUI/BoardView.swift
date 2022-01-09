@@ -115,7 +115,6 @@ struct BoardView : View {
 
             }
         }
-        .padding()
         //.scale(zoomFactor)
         //.overlay(zoomControls, alignment: .bottomLeading)
     }
