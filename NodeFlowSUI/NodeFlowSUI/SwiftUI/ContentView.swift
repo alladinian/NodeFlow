@@ -8,16 +8,24 @@
 
 import SwiftUI
 
+extension Graph {
+    static var testGraph: Graph = {
+        let nodes: Set<Node> = [MathNode(), MathNode(), MathNode(), ColorNode()]
+        let graph = Graph(nodes: nodes)
+        return graph
+    }()
+}
+
 struct ContentView: View {
-    let nodes: Set<Node> = [MathNode(), MathNode(), MathNode(), ColorNode()]
+    @ObservedObject var graph: Graph
     var body: some View {
-        BoardView(graph: Graph(nodes: nodes))
+        BoardView(graph: graph)
     }
 }
 
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(graph: Graph.testGraph)
     }
 }

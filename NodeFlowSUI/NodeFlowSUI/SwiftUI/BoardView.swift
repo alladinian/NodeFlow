@@ -30,7 +30,7 @@ struct BoardView : View {
     @ObservedObject var graph: Graph
 
     @ObservedObject private var linkContext: LinkContext
-    @ObservedObject private var selectionContext: SelectionContext
+    @ObservedObject var selectionContext: SelectionContext
 
     @State private var zoomFactor: CGFloat = 1
 

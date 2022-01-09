@@ -24,6 +24,7 @@
 		5A5AF3832773843C0082679D /* Hovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5AF3822773843C0082679D /* Hovering.swift */; };
 		5A824DAA278509CA00FB7393 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CD23566AFE004BFF01 /* NodeView.swift */; };
 		5A824DAD27884BB300FB7393 /* SwiftGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 5A824DAC27884BB300FB7393 /* SwiftGraph */; };
+		5A824DB5278B184300FB7393 /* DeletemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A824DB4278B184300FB7393 /* DeletemeView.swift */; };
 		5A8BF356237F5B74008D7047 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8BF355237F5B74008D7047 /* LinkView.swift */; };
 		5AB591F527810B6700642B62 /* PropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB591F427810B6700642B62 /* PropertyView.swift */; };
 		7D4126A12358956500213B23 /* PropertiesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4126A02358956500213B23 /* PropertiesFactory.swift */; };
@@ -59,6 +60,7 @@
 		5A2502DF23566E72004BFF01 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
 		5A5AF3822773843C0082679D /* Hovering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hovering.swift; sourceTree = "<group>"; };
 		5A77B38427825A57000DE0F0 /* Nodes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nodes.xcodeproj; path = ../Nodes/Nodes.xcodeproj; sourceTree = "<group>"; };
+		5A824DB4278B184300FB7393 /* DeletemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletemeView.swift; sourceTree = "<group>"; };
 		5A8BF355237F5B74008D7047 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		5A8CA7BC277F4C7300A88706 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AB591F427810B6700642B62 /* PropertyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyView.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				5A2502CC23566AFE004BFF01 /* BoardView.swift */,
 				5A8BF355237F5B74008D7047 /* LinkView.swift */,
 				5A2502CD23566AFE004BFF01 /* NodeView.swift */,
+				5A824DB4278B184300FB7393 /* DeletemeView.swift */,
 				5A2502CE23566AFE004BFF01 /* SocketView.swift */,
 				5A2502D023566AFE004BFF01 /* Dragging.swift */,
 				7D4126A02358956500213B23 /* PropertiesFactory.swift */,
@@ -271,6 +274,7 @@
 				5A2502DD23566BF9004BFF01 /* Graph.swift in Sources */,
 				5A2502D623566B35004BFF01 /* Dragging.swift in Sources */,
 				5A2502E023566E72004BFF01 /* Fixtures.swift in Sources */,
+				5A824DB5278B184300FB7393 /* DeletemeView.swift in Sources */,
 				5A8BF356237F5B74008D7047 /* LinkView.swift in Sources */,
 				5A2502BA23566ACA004BFF01 /* NodeFlowApp.swift in Sources */,
 			);

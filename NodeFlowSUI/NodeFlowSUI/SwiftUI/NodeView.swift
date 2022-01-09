@@ -90,7 +90,7 @@ struct NodeView: View {
         .shadow(color: isSelected ? .accentColor.opacity(0.6) : .clear, radius: 6, x: 0, y: 0)
         .zIndex(isSelected ? 2 : 1)
         .draggable(offset: $node.offset, onStarted: {
-            selectNode(drag: true)
+            selectNode(drag: false) // fixme
         })
         .onTapGesture(perform: {
             selectNode()

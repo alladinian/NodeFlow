@@ -98,8 +98,21 @@ class LinkContext: ObservableObject {
 }
 
 class SelectionContext: ObservableObject {
+    weak var graph: Graph?
+
     @Published var selectedNodes: Set<Node> = []
     @Published var selectionRect: CGRect = .zero
+    @Published var hasSelection: Bool = false
+
+    private var cancellables: Set<AnyCancellable> = []
+
+    init(graph: Graph) {
+        self.graph = graph
+        $selectedNodes
+            .map(\.isNotEmpty)
+            .assign(to: \.hasSelection, on: self)
+            .store(in: &cancellables)
+    }
 }
 
 class Graph: Identifiable, ObservableObject {
@@ -125,7 +138,7 @@ class Graph: Identifiable, ObservableObject {
     }
 
     let linkContext = LinkContext()
-    let selectionContext = SelectionContext()
+    lazy var selectionContext = SelectionContext(graph: self)
 
     @Published var nodes: Set<Node>              = []
     @Published var connections: Set<Connection>  = []

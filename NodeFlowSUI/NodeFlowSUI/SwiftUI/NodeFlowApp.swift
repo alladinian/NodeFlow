@@ -12,9 +12,58 @@ import Combine
 
 @main
 struct NodeFlowApp: App {
+
+    @StateObject var graph = Graph.testGraph
+    @ObservedObject var selectionContext: SelectionContext = Graph.testGraph.selectionContext
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(graph: graph)
         }
+        .windowStyle(HiddenTitleBarWindowStyle())
+        .windowToolbarStyle(UnifiedCompactWindowToolbarStyle())
+        .commands {
+            CommandMenu("Tools", content: {
+                Button("TEST...", action: { }).disabled(!selectionContext.hasSelection)
+            })
+
+            EditCommands(selectionContext: selectionContext)
+        }
+
+        Settings {
+            Color.red
+        }
+    }
+}
+
+struct EditCommands: Commands {
+
+    @ObservedObject var selectionContext: SelectionContext
+
+    var body: some Commands {
+        CommandGroup(replacing: CommandGroupPlacement.pasteboard) {
+            Button("Delete") {
+                selectionContext.selectedNodes.forEach {
+                    $0.graph?.removeNode($0)
+                }
+            }
+            .keyboardShortcut(.delete, modifiers: [])
+            .disabled(!selectionContext.hasSelection)
+
+            Button("Select All") {
+                selectionContext.selectedNodes = selectionContext.graph?.nodes ?? []
+            }
+            .keyboardShortcut("a")
+        }
+    }
+}
+
+struct FocusedMessageKey : FocusedValueKey {
+    typealias Value = Binding<SelectionContext>
+}
+extension FocusedValues {
+    var selectionContext: FocusedMessageKey.Value? {
+        get { self[FocusedMessageKey.self] }
+        set { self[FocusedMessageKey.self] = newValue }
     }
 }
