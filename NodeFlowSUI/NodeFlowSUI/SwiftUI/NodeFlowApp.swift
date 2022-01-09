@@ -52,13 +52,3 @@ struct EditCommands: Commands {
         }
     }
 }
-
-struct FocusedMessageKey : FocusedValueKey {
-    typealias Value = Binding<SelectionContext>
-}
-extension FocusedValues {
-    var selectionContext: FocusedMessageKey.Value? {
-        get { self[FocusedMessageKey.self] }
-        set { self[FocusedMessageKey.self] = newValue }
-    }
-}
