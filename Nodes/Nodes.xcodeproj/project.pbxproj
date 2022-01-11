@@ -62,10 +62,10 @@
 		5A77B36F27825A4C000DE0F0 /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
+				5A77B37927825A4E000DE0F0 /* Persistence.swift */,
 				5A77B37027825A4C000DE0F0 /* NodesApp.swift */,
 				5A77B37227825A4C000DE0F0 /* ContentView.swift */,
 				5A77B37427825A4E000DE0F0 /* Assets.xcassets */,
-				5A77B37927825A4E000DE0F0 /* Persistence.swift */,
 				5A77B37E27825A4E000DE0F0 /* Nodes.entitlements */,
 				5A5EED23278DE0B2009CD007 /* Models.swift */,
 				5A77B37B27825A4E000DE0F0 /* Nodes.xcdatamodeld */,
