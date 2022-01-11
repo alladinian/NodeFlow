@@ -1,9 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Connection" representedClassName="Connection" syncable="YES" codeGenerationType="category">
+        <relationship name="graph" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Graph" inverseName="connections" inverseEntity="Graph"/>
+        <relationship name="input" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NodeProperty"/>
+        <relationship name="output" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NodeProperty"/>
+    </entity>
+    <entity name="Graph" representedClassName="Graph" syncable="YES" codeGenerationType="category">
+        <attribute name="name" optional="YES" attributeType="String" defaultValueString="Graph"/>
+        <relationship name="connections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Connection" inverseName="graph" inverseEntity="Connection"/>
+        <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Node" inverseName="graph" inverseEntity="Node"/>
+    </entity>
+    <entity name="Node" representedClassName="Node" syncable="YES" codeGenerationType="category">
+        <attribute name="frame" optional="YES" attributeType="Transformable" customClassName="NSValue"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="offset" optional="YES" attributeType="Transformable" valueTransformerName="NSValue"/>
+        <relationship name="graph" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Graph" inverseName="nodes" inverseEntity="Graph"/>
+        <relationship name="properties" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="NodeProperty" inverseName="node" inverseEntity="NodeProperty"/>
+        <fetchedProperty name="inputs" optional="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="NodeProperty" predicateString="isInput == YES"/>
+        </fetchedProperty>
+        <fetchedProperty name="outputs" optional="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="NodeProperty" predicateString="isInput == NO"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="NodeProperty" representedClassName="NodeProperty" syncable="YES" codeGenerationType="category">
+        <attribute name="frame" optional="YES" attributeType="Transformable" customClassName="NSValue"/>
+        <attribute name="hasSocket" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="isConnected" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isInput" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" defaultValueString="Property"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="value" optional="YES" attributeType="Transformable"/>
+        <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="properties" inverseEntity="Node"/>
     </entity>
     <elements>
-        <element name="Item" positionX="-63" positionY="-18" width="128" height="44"/>
+        <element name="Connection" positionX="131.3818359375" positionY="-206.3166809082031" width="128" height="74"/>
+        <element name="Graph" positionX="-222.6395263671875" positionY="-343.1923522949219" width="128" height="88"/>
+        <element name="Node" positionX="-534.8623046875" positionY="-124.5686187744141" width="128" height="140"/>
+        <element name="NodeProperty" positionX="-250.4354248046875" positionY="-126.5808563232422" width="128" height="164"/>
     </elements>
 </model>

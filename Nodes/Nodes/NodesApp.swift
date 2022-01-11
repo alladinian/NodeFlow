@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+let f = NodeProperty()
+
 @main
 struct NodesApp: App {
     let persistenceController = PersistenceController.shared

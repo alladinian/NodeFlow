@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A5EED24278DE0B2009CD007 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EED23278DE0B2009CD007 /* Models.swift */; };
+		5A5EED27278DE204009CD007 /* PureSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5EED26278DE204009CD007 /* PureSwiftUI */; };
 		5A77B37127825A4C000DE0F0 /* NodesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B37027825A4C000DE0F0 /* NodesApp.swift */; };
 		5A77B37327825A4C000DE0F0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B37227825A4C000DE0F0 /* ContentView.swift */; };
 		5A77B37527825A4E000DE0F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A77B37427825A4E000DE0F0 /* Assets.xcassets */; };
@@ -16,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5A5EED23278DE0B2009CD007 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		5A77B36D27825A4C000DE0F0 /* Nodes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nodes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A77B37027825A4C000DE0F0 /* NodesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodesApp.swift; sourceTree = "<group>"; };
 		5A77B37227825A4C000DE0F0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -31,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A5EED27278DE204009CD007 /* PureSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +65,7 @@
 				5A77B37427825A4E000DE0F0 /* Assets.xcassets */,
 				5A77B37927825A4E000DE0F0 /* Persistence.swift */,
 				5A77B37E27825A4E000DE0F0 /* Nodes.entitlements */,
+				5A5EED23278DE0B2009CD007 /* Models.swift */,
 				5A77B37B27825A4E000DE0F0 /* Nodes.xcdatamodeld */,
 				5A77B37627825A4E000DE0F0 /* Preview Content */,
 			);
@@ -91,6 +96,9 @@
 			dependencies = (
 			);
 			name = Nodes;
+			packageProductDependencies = (
+				5A5EED26278DE204009CD007 /* PureSwiftUI */,
+			);
 			productName = Nodes;
 			productReference = 5A77B36D27825A4C000DE0F0 /* Nodes.app */;
 			productType = "com.apple.product-type.application";
@@ -119,6 +127,9 @@
 				Base,
 			);
 			mainGroup = 5A77B36427825A4C000DE0F0;
+			packageReferences = (
+				5A5EED25278DE204009CD007 /* XCRemoteSwiftPackageReference "pure-swift-ui" */,
+			);
 			productRefGroup = 5A77B36E27825A4C000DE0F0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -149,6 +160,7 @@
 				5A77B37327825A4C000DE0F0 /* ContentView.swift in Sources */,
 				5A77B37127825A4C000DE0F0 /* NodesApp.swift in Sources */,
 				5A77B37D27825A4E000DE0F0 /* Nodes.xcdatamodeld in Sources */,
+				5A5EED24278DE0B2009CD007 /* Models.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,6 +358,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5A5EED25278DE204009CD007 /* XCRemoteSwiftPackageReference "pure-swift-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeSlicing/pure-swift-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5A5EED26278DE204009CD007 /* PureSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A5EED25278DE204009CD007 /* XCRemoteSwiftPackageReference "pure-swift-ui" */;
+			productName = PureSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		5A77B37B27825A4E000DE0F0 /* Nodes.xcdatamodeld */ = {
