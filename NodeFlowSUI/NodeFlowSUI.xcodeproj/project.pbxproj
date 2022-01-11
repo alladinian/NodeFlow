@@ -29,16 +29,6 @@
 		7D4126A12358956500213B23 /* PropertiesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4126A02358956500213B23 /* PropertiesFactory.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		5A77B38827825A57000DE0F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5A77B38427825A57000DE0F0 /* Nodes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5A77B36D27825A4C000DE0F0;
-			remoteInfo = Nodes;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		5A2502B623566ACA004BFF01 /* NodeFlowSUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NodeFlowSUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A2502B923566ACA004BFF01 /* NodeFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeFlowApp.swift; sourceTree = "<group>"; };
@@ -58,7 +48,6 @@
 		5A2502DC23566BF9004BFF01 /* Graph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		5A2502DF23566E72004BFF01 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
 		5A5AF3822773843C0082679D /* Hovering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hovering.swift; sourceTree = "<group>"; };
-		5A77B38427825A57000DE0F0 /* Nodes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nodes.xcodeproj; path = ../Nodes/Nodes.xcodeproj; sourceTree = "<group>"; };
 		5A8BF355237F5B74008D7047 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		5A8CA7BC277F4C7300A88706 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AB591F427810B6700642B62 /* PropertyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyView.swift; sourceTree = "<group>"; };
@@ -81,7 +70,6 @@
 		5A2502AD23566ACA004BFF01 = {
 			isa = PBXGroup;
 			children = (
-				5A77B38427825A57000DE0F0 /* Nodes.xcodeproj */,
 				5A2502B823566ACA004BFF01 /* NodeFlowSUI */,
 				5A2502B723566ACA004BFF01 /* Products */,
 			);
@@ -155,14 +143,6 @@
 			path = Previewing;
 			sourceTree = "<group>";
 		};
-		5A77B38527825A57000DE0F0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5A77B38927825A57000DE0F0 /* Nodes.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -217,28 +197,12 @@
 			);
 			productRefGroup = 5A2502B723566ACA004BFF01 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 5A77B38527825A57000DE0F0 /* Products */;
-					ProjectRef = 5A77B38427825A57000DE0F0 /* Nodes.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				5A2502B523566ACA004BFF01 /* NodeFlowSUI */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		5A77B38927825A57000DE0F0 /* Nodes.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Nodes.app;
-			remoteRef = 5A77B38827825A57000DE0F0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5A2502B423566ACA004BFF01 /* Resources */ = {

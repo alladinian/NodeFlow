@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:NodeFlowSUI/../Nodes/Nodes.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:NodeFlowSUI/NodeFlowSUI.xcodeproj">
    </FileRef>
    <FileRef

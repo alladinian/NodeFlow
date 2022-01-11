@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5A5EED24278DE0B2009CD007 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EED23278DE0B2009CD007 /* Models.swift */; };
 		5A5EED27278DE204009CD007 /* PureSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5EED26278DE204009CD007 /* PureSwiftUI */; };
+		5A5EED2A278DE8BF009CD007 /* SwiftGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5EED29278DE8BF009CD007 /* SwiftGraph */; };
 		5A77B37127825A4C000DE0F0 /* NodesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B37027825A4C000DE0F0 /* NodesApp.swift */; };
 		5A77B37327825A4C000DE0F0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B37227825A4C000DE0F0 /* ContentView.swift */; };
 		5A77B37527825A4E000DE0F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A77B37427825A4E000DE0F0 /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A5EED27278DE204009CD007 /* PureSwiftUI in Frameworks */,
+				5A5EED2A278DE8BF009CD007 /* SwiftGraph in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +100,7 @@
 			name = Nodes;
 			packageProductDependencies = (
 				5A5EED26278DE204009CD007 /* PureSwiftUI */,
+				5A5EED29278DE8BF009CD007 /* SwiftGraph */,
 			);
 			productName = Nodes;
 			productReference = 5A77B36D27825A4C000DE0F0 /* Nodes.app */;
@@ -129,6 +132,7 @@
 			mainGroup = 5A77B36427825A4C000DE0F0;
 			packageReferences = (
 				5A5EED25278DE204009CD007 /* XCRemoteSwiftPackageReference "pure-swift-ui" */,
+				5A5EED28278DE8BF009CD007 /* XCRemoteSwiftPackageReference "SwiftGraph" */,
 			);
 			productRefGroup = 5A77B36E27825A4C000DE0F0 /* Products */;
 			projectDirPath = "";
@@ -368,6 +372,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		5A5EED28278DE8BF009CD007 /* XCRemoteSwiftPackageReference "SwiftGraph" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:davecom/SwiftGraph.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -375,6 +387,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5A5EED25278DE204009CD007 /* XCRemoteSwiftPackageReference "pure-swift-ui" */;
 			productName = PureSwiftUI;
+		};
+		5A5EED29278DE8BF009CD007 /* SwiftGraph */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A5EED28278DE8BF009CD007 /* XCRemoteSwiftPackageReference "SwiftGraph" */;
+			productName = SwiftGraph;
 		};
 /* End XCSwiftPackageProductDependency section */
 
