@@ -29,10 +29,6 @@ class NumberProperty: NodeProperty {
         get { value as? Double ?? 0}
         set { value = newValue }
     }
-
-    override var controlView: AnyView {
-        NumberPropertyView(property: self).asAnyView
-    }
 }
 
 class PickerProperty: NodeProperty {
@@ -52,10 +48,6 @@ class PickerProperty: NodeProperty {
         self.name      = "Picker"
         self.type      = .picker
     }
-
-    override var controlView: AnyView {
-        PickerPropertyView(property: self).asAnyView
-    }
 }
 
 class ColorProperty: NodeProperty {
@@ -66,10 +58,6 @@ class ColorProperty: NodeProperty {
         super.init()
         self.name = "Color"
         self.type = .color
-    }
-
-    override var controlView: AnyView {
-        ColorPropertyView(property: self).asAnyView
     }
 }
 

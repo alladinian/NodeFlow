@@ -24,8 +24,17 @@ class NodeProperty: Identifiable, ObservableObject {
     var hasSocket: Bool              = true
     var type: ContentType            = .number
 
-    var controlView: AnyView {
-        EmptyView().asAnyView
+    @ViewBuilder
+    var controlView: some View {
+        if let property = self as? NumberProperty {
+            NumberPropertyView(property: property)
+        } else if let property = self as? ColorProperty {
+            ColorPropertyView(property: property)
+        } else if let property = self as? PickerProperty {
+            PickerPropertyView(property: property)
+        } else {
+            EmptyView()
+        }
     }
 }
 
