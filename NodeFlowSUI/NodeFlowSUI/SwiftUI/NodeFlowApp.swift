@@ -19,8 +19,8 @@ struct NodeFlowApp: App {
         WindowGroup {
             ContentView(graph: graph)
         }
-        .windowStyle(HiddenTitleBarWindowStyle())
-        .windowToolbarStyle(UnifiedCompactWindowToolbarStyle())
+        .windowStyle(.hiddenTitleBar)
+        .windowToolbarStyle(.unifiedCompact)
         .commands {
             EditCommands(selectionContext: graph.selectionContext)
         }

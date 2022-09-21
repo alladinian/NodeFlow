@@ -27,7 +27,9 @@
 		5AA4AC29289ECD11004C269B /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA4AC28289ECD11004C269B /* MetalView.swift */; };
 		5AA4AC2A289ECE80004C269B /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2502CC23566AFE004BFF01 /* BoardView.swift */; };
 		5AB591F527810B6700642B62 /* PropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB591F427810B6700642B62 /* PropertyView.swift */; };
+		7D212871289EC553002EEE92 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D212870289EC553002EEE92 /* MetalView.swift */; };
 		7D4126A12358956500213B23 /* PropertiesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4126A02358956500213B23 /* PropertiesFactory.swift */; };
+		7D80C0EF289FA1BA006FE3B9 /* Experiments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D80C0EE289FA1BA006FE3B9 /* Experiments.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,7 +55,9 @@
 		5A8CA7BC277F4C7300A88706 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AA4AC28289ECD11004C269B /* MetalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		5AB591F427810B6700642B62 /* PropertyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyView.swift; sourceTree = "<group>"; };
+		7D212870289EC553002EEE92 /* MetalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		7D4126A02358956500213B23 /* PropertiesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesFactory.swift; sourceTree = "<group>"; };
+		7D80C0EE289FA1BA006FE3B9 /* Experiments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experiments.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +76,7 @@
 		5A2502AD23566ACA004BFF01 = {
 			isa = PBXGroup;
 			children = (
+				7D80C0EE289FA1BA006FE3B9 /* Experiments.swift */,
 				5A2502B823566ACA004BFF01 /* NodeFlowSUI */,
 				5A2502B723566ACA004BFF01 /* Products */,
 			);
@@ -124,6 +129,7 @@
 				7D4126A02358956500213B23 /* PropertiesFactory.swift */,
 				5AB591F427810B6700642B62 /* PropertyView.swift */,
 				5A5AF3822773843C0082679D /* Hovering.swift */,
+				7D212870289EC553002EEE92 /* MetalView.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -229,10 +235,11 @@
 				5A2502DA23566B68004BFF01 /* Colors.swift in Sources */,
 				5A2502D423566B35004BFF01 /* SocketView.swift in Sources */,
 				5A2502D823566B4D004BFF01 /* GridView.swift in Sources */,
+				7D80C0EF289FA1BA006FE3B9 /* Experiments.swift in Sources */,
 				5A5AF3832773843C0082679D /* Hovering.swift in Sources */,
 				5AB591F527810B6700642B62 /* PropertyView.swift in Sources */,
 				7D4126A12358956500213B23 /* PropertiesFactory.swift in Sources */,
-				5AA4AC29289ECD11004C269B /* MetalView.swift in Sources */,
+				7D212871289EC553002EEE92 /* MetalView.swift in Sources */,
 				5A2502BC23566ACA004BFF01 /* ContentView.swift in Sources */,
 				5A824DAA278509CA00FB7393 /* NodeView.swift in Sources */,
 				5A2502DD23566BF9004BFF01 /* Graph.swift in Sources */,

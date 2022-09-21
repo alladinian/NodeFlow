@@ -52,12 +52,16 @@ class PickerProperty: NodeProperty {
 
 class ColorProperty: NodeProperty {
 
-    @Published var color: Color = .cgMagenta
+    var color: Color {
+        get { value as? Color ?? .purple }
+        set { value = newValue }
+    }
 
     override init() {
         super.init()
-        self.name = "Color"
-        self.type = .color
+        self.name  = "Color"
+        self.type  = .color
+        self.value = Color.purple
     }
 }
 
@@ -184,7 +188,23 @@ class OscillatorNode: Node {
 class ColorNode: Node {
     override init() {
         super.init()
-        self.name = "Color"
+        self.name    = "Color"
         self.outputs = [ColorProperty()]
     }
+}
+
+class MasterNode: Node {
+    override init() {
+        super.init()
+        self.name    = "Master"
+        self.inputs  = [ColorProperty()]
+        self.outputs = []
+        
+        self.inputs[0].$value
+            .sink(receiveValue: { value in
+                MASTER.render(value: value)
+            })
+            .store(in: &cancellables)
+    }
+
 }

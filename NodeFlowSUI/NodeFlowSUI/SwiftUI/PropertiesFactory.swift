@@ -34,10 +34,10 @@ struct PickerPropertyView: View {
 }
 
 struct ColorPropertyView: View {
-    @ObservedObject var property: NodeProperty
+    @ObservedObject var property: ColorProperty
     var body: some View {
         PropertyView(property: property) {
-            ColorPicker("Color", selection: .constant(.red))
+            ColorPicker("Color", selection: $property.color)
                 .labelsHidden()
         }
     }

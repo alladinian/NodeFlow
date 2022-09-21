@@ -8,9 +8,23 @@
 
 import SwiftUI
 
+class MasterOutput: ObservableObject {
+    @Published var image: CIImage?
+    
+    func render(value: Any?) {
+        guard let color = value as? Color, let cgColor = color.cgColor else { return }
+        let ciColor = CIColor(cgColor: cgColor)
+        DispatchQueue.main.async {
+            self.image = CIImage(color: ciColor)
+        }
+    }
+}
+
+let MASTER = MasterOutput()
+
 extension Graph {
     static var testGraph: Graph = {
-        let nodes: Set<Node> = [MathNode(), MathNode(), MathNode(), ColorNode()]
+        let nodes: Set<Node> = [ColorNode(), MasterNode()]
         let graph = Graph(nodes: nodes)
         return graph
     }()
@@ -18,8 +32,12 @@ extension Graph {
 
 struct ContentView: View {
     @ObservedObject var graph: Graph
+    @ObservedObject var master = MASTER
     var body: some View {
-        BoardView(graph: graph)
+        VStack {
+            MetalView(image: master.image)
+            BoardView(graph: graph)
+        }
     }
 }
 

@@ -46,7 +46,6 @@ class Node: Identifiable, ObservableObject {
 
     @Published var name: String    = "Node"
     @Published var offset: CGPoint = .zero
-    //@Published var frame: CGRect   = .zero
 
     var cancellables: Set<AnyCancellable> = []
 
@@ -82,9 +81,7 @@ class Connection: Identifiable, ObservableObject {
 
     func setup() {
         [output, input].forEach { $0.isConnected = true }
-        cancellable = output.$value
-            .receive(on: RunLoop.main, options: nil)
-            .assign(to: \.value, on: input)
+        cancellable = output.$value.assign(to: \.value, on: input)
     }
 
     func tearUp() {
@@ -311,13 +308,14 @@ public struct ContentType: OptionSet {
     public static let scene       = ContentType(rawValue: 1<<10)
     public static let cubeMap     = ContentType(rawValue: 1<<11)
     public static let picker      = ContentType(rawValue: 1<<12)
+    public static let ciImage     = ContentType(rawValue: 1<<13)
 
     public static var imageContent: ContentType {
         return [.image, .url]
     }
 
     public static var materialContent: ContentType {
-        return [.color, .number, .image, .string, .url, .video, .calayer, .texture, .scene, .cubeMap]
+        return [.color, .number, .image, .string, .url, .video, .calayer, .texture, .scene, .cubeMap, .ciImage]
     }
 
     public var associatedColors: [Color] {

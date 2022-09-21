@@ -74,8 +74,8 @@ class CIMetalView: MTKView {
     override func draw(_ rect: CGRect) {
 
         // See: https://stackoverflow.com/questions/55769612/mtkview-drawing-performance
-
-        let kImageProcessorContext = CIContext(mtlDevice: device!)
+        
+        let context = CIContext(mtlDevice: device!)
 
         guard let drawable = currentDrawable, let commandBuffer = commandQueue.makeCommandBuffer(), let image = image else { return }
 
@@ -116,7 +116,7 @@ class CIMetalView: MTKView {
                                               commandBuffer: commandBuffer,
                                               mtlTextureProvider: {  drawable.texture })
 
-        let _ = try! kImageProcessorContext.startTask(toRender: centeredImage, to: destination)
+        let _ = try! context.startTask(toRender: centeredImage, to: destination)
         // bonus: you can Quick Look the task to see what’s actually scheduled for the GPU
 
         // optional: you can wait for the task execution and Quick Look the info object to get insights and metrics
